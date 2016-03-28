@@ -148,23 +148,21 @@ app.controller('MainCtrl', [
       document.getElementById('data').textContent = info.data; //Actual text
     };
 
-    /* ---- In progress ----
-    $scope.addPrevClasses = function(info){
-      var data = info.data;
-      var lines = [];
-      for(){
-        lines.push({
 
+    $scope.addPrevClasses = function(info){
+      var localData = String(info.data);
+      console.log(data);
+      var lines = localData.split('\n');
+
+      for(var i = 0 ; i < lines.length ; i++){
+        $scope.classList.push({
+          name: $scope.name,
+          grade: 'A',
+          gpa: 4,
+          credits: 4
         });
       }
-      $scope.classList.push({
-        name: $scope.name,
-        grade: letter.toUpperCase() + mod,
-        gpa: gpa.toFixed(2),
-        credits: $scope.credits
-      });
     };
-    */
   }
 ]);
 
