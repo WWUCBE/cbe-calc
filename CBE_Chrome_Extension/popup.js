@@ -30,7 +30,7 @@ function renderStatus(statusText) {
 *
 */
 function show(elementID) {
-    document.getElementById(elementID).style.display='block';
+    document.getElementById(elementID).style.display='inline';
 }
 function hide(elementID) {
     document.getElementById(elementID).style.display='none';

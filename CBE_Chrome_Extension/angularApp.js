@@ -67,7 +67,7 @@ app.controller('MainCtrl', [
       }
 
       $scope.classList.push({
-        name: $scope.name,
+        name: $scope.name.substring(0,15),
         grade: letter.toUpperCase() + mod,
         gpa: gpa.toFixed(2),
         credits: $scope.credits

@@ -11,184 +11,158 @@
   </style>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
-<body id="main" data-ng-controller="MainCtrl" style="width:780px; height:580px">
-		<h3 style="font-weight:bold; text-align:center;">DOM Info</h3>
-    <table border="1" cellpadding="3" style="border-collapse:collapse;">
-      <tr>
-        <td nowrap>Total number of elements:</td>
-        <td align="right"><span id="total">N/A</span></td>
-      </tr>
-      <tr>
-        <td nowrap>Number of input elements:</td>
-        <td align="right"><span id="inputs">N/A</span></td>
-      </tr>
-      <tr>
-        <td nowrap>Number of button elements:</td>
-        <td align="right"><span id="buttons">N/A</span></td>
-      </tr>
-    </table>
-    <h3 style="font-weight:bold; text-align:center;" id="data">N/A</h3>
-	<div class="container">
-
-
-  <!--Redirect Block-->
-  <div class="container" id = "notOnPage">
-    <H3 style="text-align: center">
-      You've gotta be signed into MyWestern for us to access your transcript
-    </H3>
-    <div class="span7 text-center">
-      <button type="button" class="btn btn-primary wwuRedirect text-center">
-        Let's go!
-      </button>
+<body id="main" data-ng-controller="MainCtrl" style="width:780px; height:580px; overflow: hidden">
+    <!--Redirect Block-->
+    <div class="container" id = "notOnPage">
+      <H3 style="text-align: center">
+        You've gotta be signed into MyWestern for us to access your transcript
+      </H3>
+      <div class="span7 text-center">
+        <button type="button" class="btn btn-primary wwuRedirect text-center">
+          Let's go!
+        </button>
+      </div>
     </div>
-  </div>
 
-	<div class="container" id = "onPage">
-    <!--Title Block-->
-	  <div class = "row" id = "title">
-	    <div id="titleBlock" class="col-md-6 col-md-offset-3" style = "text-align: center">
+  	<div class="container" id = "onPage">
+      <!--Title Block-->
+  	  <div class = "row" id = "title">
+  	    <div id="titleBlock" class="col-md-6 col-md-offset-3" style = "text-align: center">
 	        <h1> CBE Grade Calculator </h1>
-	        <h3>
-	          <b>
-	            GPA: {{gpa}} - Credits: {{totalCredits}}
-	          </b>
-	        </h3>
-	        <div class = "col-xs-4">
-	          <h4>
-	            Class
-	          </h4>
-	        </div>
-	        <div class = "col-xs-4">
-	          <h4>
-	            Grade
-	          </h4>
-	        </div>
-	        <div class = "col-xs-4">
-	          <h4>
-	            Credits
-	          </h4>
-	        </div>
-	        <hr width="90%" style="float: center">
-	    </div>
-	  </div>
-
-	  <div class = "row" id = "grades">
+            <div class = "row" id = "gpaAndCredits">
+              <div id="GPA" class="col-sm-6" style = "text-align: center">
+                <h3><b> GPA: {{gpa}} </b></h3>
+              </div>
+              <div id="GPA" class="col-sm-6" style = "text-align: center">
+                <h3><b> Credits: {{totalCredits}} </b></h3>
+              </div>
+            </div>
+          <div class = "row" id = "gpaAndCredits">
+  	        <div class = "col-xs-4">
+  	          <h4>
+  	            Class
+  	          </h4>
+  	        </div>
+  	        <div class = "col-xs-4">
+  	          <h4>
+  	            Grade
+  	          </h4>
+  	        </div>
+  	        <div class = "col-xs-4">
+  	          <h4>
+  	            Credits
+  	          </h4>
+  	        </div>
+  	        <hr width="90%" style="float: center">
+          </div>
+  	    </div>
+  	  </div>
 
       <!--Grade Block-->
-	    <div class = "col-md-6 col-md-offset-3">
-	      <div id = "gradeBlock" style="overflow:auto; min-height:20%; max-height:40%;">
-	        <div ng-repeat="class in classList">
-	          <span style="font-size:20px; margin-left:10px; margin-top:15px;">
-	            <div class = "col-xs-4" style="text-align:center;">
-	              <span class="glyphicon glyphicon-remove-circle"
-	                ng-click="removeClass(class)"
-	                style="margin-left:5px; float:left;">
-	              </span>
-	              {{class.name}}
-	            </div>
-	            <div class = "col-xs-4" style="text-align:center;">
-	              {{class.grade}} ({{class.gpa}})
-	            </div>
-	            <div class = "col-xs-4" style="text-align:center;">
-	              {{class.credits}}
-	            </div>
-              <!-- Horizontal grade deviding line
-              <hr width="80%" style="margin-top:8px; float: center">
-              -->
-            </span>
-	        </div>
-	      </div>
-	    </div>
-
-      <!--Submit Block-->
-	    <div class = "col-md-3">
-	      <div id = "submitBlock"
-	        style="margin-left: 10% ; margin-right:10%">
-          <!-- Add Old Grades
-          <section>
-	          <form ng-submit="updatePrevious()">
-              <div class = "row" id = "oldGrades">
-  	            <h2 style="text-align:center">
-  	              Previous Info
-  	            </h2>
-                <div class = "col-md-6">
-    	            <div class="form-group">
-    	              <input type="text"
-    	                class="form-control"
-    	                placeholder="GPA"
-    	                ng-model="prevGPA">
-    	              </input>
-    	            </div>
-                </div>
-                <div class = "col-md-6">
-    	            <div class="form-group">
-    	              <input type="text"
-    	                class="form-control"
-    	                placeholder="Credits"
-    	                ng-model="prevCredits">
-    	              </input>
-    	            </div>
-                </div>
-              </div>
-	            <button type="submit" class="btn btn-primary" style="float: right;">
-	              Update
-	            </button>
-            </form>
-          </section>
-          -->
-	        <section>
-	          <form ng-submit="addClass()">
-              <div class = "row" id = "addAClass">
-  	            <h2 style="text-align:center">
-  	              Add a class
-  	            </h2>
-              </div>
-	            <div class="form-group">
-	              <input type="text"
-	                class="form-control"
-	                placeholder="Class name"
-	                ng-model="name">
-	              </input>
-	            </div>
-	            <div class="form-group">
-	              <input type="text"
-	                class="form-control"
-	                placeholder="Letter grade"
-	                ng-model="grade">
-	              </input>
-	            </div>
-	            <div class="form-group">
-	              <input type="text"
-	                class="form-control"
-	                placeholder="# credits"
-	                ng-model="credits">
-	              </input>
-	            </div>
-	            <button type="submit" class="btn btn-primary" style="float: right;">
-	              Add
-	            </button>
-
-  	            <!-- Upload Block
-  	            <div style="margin-top: 20%">
-  	              <h1 style="text-align:center"> Upload Your Transcript </h1>
-  	              <div class="center-block">
-  	                <button type="submit"
-  	                  class="btn btn-primary"
-  	                  style="position: center;">
-  	                  Upload
-  	                </button>
-  	              </div>
+  	  <div class = "row" id = "grades">
+  	    <div class = "col-md-6 col-md-offset-3">
+  	      <div id = "gradeBlock" style="overflow:auto; min-height:30%; max-height:30%;">
+  	        <div ng-repeat="class in classList">
+  	          <span style="font-size:20px; margin-left:10px; margin-top:15px;">
+  	            <div class = "col-xs-4" style="text-align:center;">
+  	              <span class="glyphicon glyphicon-remove-circle"
+  	                ng-click="removeClass(class)"
+  	                style="margin-left:5px; float:left;">
+  	              </span>
+  	              {{class.name}}
   	            </div>
-  	            -->
+  	            <div class = "col-xs-4" style="text-align:center;">
+  	              {{class.grade}} ({{class.gpa}})
+  	            </div>
+  	            <div class = "col-xs-4" style="text-align:center;">
+  	              {{class.credits}}
+  	            </div>
+                <!-- Horizontal grade deviding line
+                <hr width="80%" style="margin-top:8px; float: center">
+                -->
+              </span>
+  	        </div>
+  	      </div>
+  	    </div>
 
-	          </form>
-	        </section>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+        <!--Submit sub-block-->
+  	    <div class = "col-md-3">
+  	      <div id = "submitBlock"
+  	        style="margin-left: 10% ; margin-right:10%">
+            <!--**Insert "old grades" block here if needed**-->
+  	        <section>
+  	          <form ng-submit="addClass()">
+                <div class = "row" id = "addAClass">
+    	            <h2 style="text-align:center">
+    	              Add a class
+    	            </h2>
+                </div>
+  	            <div class="form-group">
+  	              <input type="text"
+  	                class="form-control"
+  	                placeholder="Class name"
+  	                ng-model="name">
+  	              </input>
+  	            </div>
+  	            <div class="form-group">
+  	              <input type="text"
+  	                class="form-control"
+  	                placeholder="Letter grade"
+  	                ng-model="grade">
+  	              </input>
+  	            </div>
+  	            <div class="form-group">
+  	              <input type="text"
+  	                class="form-control"
+  	                placeholder="# credits"
+  	                ng-model="credits">
+  	              </input>
+  	            </div>
+  	            <button type="submit" class="btn btn-primary" style="float: right;">
+  	              Add
+  	            </button>
+  	          </form>
+  	        </section>
+  	      </div>
+  	    </div>
+  	  </div>
+
+  	</div>
   <script src="popup.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
 	<script src="angularApp.js"></script>
 </body>
 </html>
+
+<!-- Add Old Grades
+<section>
+  <form ng-submit="updatePrevious()">
+    <div class = "row" id = "oldGrades">
+      <h2 style="text-align:center">
+        Previous Info
+      </h2>
+      <div class = "col-md-6">
+        <div class="form-group">
+          <input type="text"
+            class="form-control"
+            placeholder="GPA"
+            ng-model="prevGPA">
+          </input>
+        </div>
+      </div>
+      <div class = "col-md-6">
+        <div class="form-group">
+          <input type="text"
+            class="form-control"
+            placeholder="Credits"
+            ng-model="prevCredits">
+          </input>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" style="float: right;">
+      Update
+    </button>
+  </form>
+</section>
+-->
