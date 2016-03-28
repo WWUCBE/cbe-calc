@@ -13,17 +13,18 @@
 </head>
 <body  data-ng-controller="MainCtrl" style="width:780px; height:580px">
   <!--Redirect Block-->
-  <div class="container" style="visibility:visible">
+  <div class="container" id = "notOnPage">
     <H3 style="text-align: center">
-      You've gotta be signed into MyWestern for us to access your transcript, click here to let us take you there!
+      You've gotta be signed into MyWestern for us to access your transcript
     </H3>
-    <a href="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran" class="clickme">Click</a>
-    <button type="button" class="btn btn-primary">
-      Let's go!
-    </button>
+    <div class="span7 text-center">
+      <button type="button" class="btn btn-primary wwuRedirect text-center">
+        Let's go!
+      </button>
+    </div>
   </div>
 
-	<div class="container" style="visibility:hidden">
+	<div class="container" id = "onPage">
     <!--Title Block-->
 	  <div class = "row" id = "title">
 	    <div id="titleBlock" class="col-md-6 col-md-offset-3" style = "text-align: center">
@@ -167,6 +168,7 @@
 	    </div>
 	  </div>
 	</div>
+  <script src="popup.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
 	<script src="angularApp.js"></script>
 </body>
