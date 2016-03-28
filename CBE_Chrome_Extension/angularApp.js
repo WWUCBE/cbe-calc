@@ -150,7 +150,7 @@ app.controller('MainCtrl', [
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
-      console.log(data);
+      console.log(localData);
       var lines = localData.split('\n');
 
       for(var i = 0 ; i < lines.length ; i++){
