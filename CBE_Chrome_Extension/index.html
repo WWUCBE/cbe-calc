@@ -1,9 +1,7 @@
 <html data-ng-app="CBEcalc">
 <head>
   <title> CBE Calculator </title>
-  
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-  
   <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
   <style>
     .glyphicon-remove-circle {cursor:pointer}
@@ -14,8 +12,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body  data-ng-controller="MainCtrl" style="width:780px; height:580px">
-	<div class="container">
+  <!--Redirect Block-->
+  <div class="container" style="visibility:visible">
+    <H3 style="text-align: center">
+      You've gotta be signed into MyWestern for us to access your transcript, click here to let us take you there!
+    </H3>
+    <a href="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran" class="clickme">Click</a>
+    <button type="button" class="btn btn-primary">
+      Let's go!
+    </button>
+  </div>
 
+	<div class="container" style="visibility:hidden">
     <!--Title Block-->
 	  <div class = "row" id = "title">
 	    <div id="titleBlock" class="col-md-6 col-md-offset-3" style = "text-align: center">
@@ -76,6 +84,7 @@
 	    <div class = "col-md-3">
 	      <div id = "submitBlock"
 	        style="margin-left: 10% ; margin-right:10%">
+          <!-- Add Old Grades
           <section>
 	          <form ng-submit="updatePrevious()">
               <div class = "row" id = "oldGrades">
@@ -106,6 +115,7 @@
 	            </button>
             </form>
           </section>
+          -->
 	        <section>
 	          <form ng-submit="addClass()">
               <div class = "row" id = "addAClass">
