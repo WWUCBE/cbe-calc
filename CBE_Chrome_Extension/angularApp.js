@@ -140,12 +140,31 @@ app.controller('MainCtrl', [
       $scope.classList.splice(index, 1);
       $scope.setGpa();
     };
+    /* Proof of concept to fetch page content */
     $scope.updateDOMInfo = function(info){
-      document.getElementById('total').textContent   = info.total;
-      document.getElementById('inputs').textContent  = info.inputs;
+      document.getElementById('total').textContent = info.total;
+      document.getElementById('inputs').textContent = info.inputs;
       document.getElementById('buttons').textContent = info.buttons;
-      document.getElementById('data').textContent = info.data;
-    }
+      document.getElementById('data').textContent = info.data; //Actual text
+    };
+
+    /* ---- In progress ----
+    $scope.addPrevClasses = function(info){
+      var data = info.data;
+      var lines = [];
+      for(){
+        lines.push({
+
+        });
+      }
+      $scope.classList.push({
+        name: $scope.name,
+        grade: letter.toUpperCase() + mod,
+        gpa: gpa.toFixed(2),
+        credits: $scope.credits
+      });
+    };
+    */
   }
 ]);
 
@@ -154,7 +173,7 @@ app.controller('MainCtrl', [
 function setDOMInfo(info) {
   var scope = angular.element(document.getElementById("main")).scope();
   scope.$apply(function(){
-    scope.updateDOMInfo(info);
+    scope.addPrevClasses(info);
   });
 }
 
@@ -169,7 +188,7 @@ window.addEventListener('DOMContentLoaded', function () {
     chrome.tabs.sendMessage(
         tabs[0].id,
         {from: 'popup', subject: 'DOMInfo'},
-        // ...also specifying a callback to be called 
+        // ...also specifying a callback to be called
         //    from the receiving end (content script)
         setDOMInfo);
   });
