@@ -144,6 +144,7 @@ app.controller('MainCtrl', [
       document.getElementById('total').textContent   = info.total;
       document.getElementById('inputs').textContent  = info.inputs;
       document.getElementById('buttons').textContent = info.buttons;
+      document.getElementById('data').textContent = info.data;
     }
   }
 ]);

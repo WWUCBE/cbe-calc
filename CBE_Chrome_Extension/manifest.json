@@ -14,7 +14,7 @@
   "content_scripts":[{
     "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"],
     "js":["content.js"],
-    "run_at": "document_idle"
+    "run_at": "document_end"
     }],
   "permissions": [
     "activeTab",

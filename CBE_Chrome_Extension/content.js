@@ -15,7 +15,8 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     var domInfo = {
       total:   document.querySelectorAll('*').length,
       inputs:  document.querySelectorAll('input').length,
-      buttons: document.querySelectorAll('button').length
+      buttons: document.querySelectorAll('button').length,
+      data: document.children[0].children[1].children[0].children[3].innerText
     };
 
     // Directly respond to the sender (popup), 
