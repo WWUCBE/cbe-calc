@@ -150,16 +150,32 @@ app.controller('MainCtrl', [
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
-      console.log(data);
+      console.log(localData);
       var lines = localData.split('\n');
+      var headers = [
+        'ECON',
+        'ACCT',
+        'DSCI',
+        'MIS',
+        'FIN',
+        'MRKT',
+        'OPS',
+        'MGMT',
+        'IBUS',
+        'HRM'
+      ];
 
       for(var i = 0 ; i < lines.length ; i++){
-        $scope.classList.push({
-          name: $scope.name,
-          grade: 'A',
-          gpa: 4,
-          credits: 4
-        });
+        var lineArray = lines[i].split(' +');
+        console.log(lineArray[0] + '\n');
+        if(headers.indexOf(lineArray[1]) >= 0){
+          $scope.classList.push({
+            name: (lineArray[0] + ' ' + lineArray[1]).substring(0, 8),
+            grade: 'A',
+            gpa: 4,
+            credits: 4
+          });
+        }
       }
     };
   }
