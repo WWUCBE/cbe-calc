@@ -147,8 +147,7 @@ app.controller('MainCtrl', [
       document.getElementById('buttons').textContent = info.buttons;
       document.getElementById('data').textContent = info.data; //Actual text
     };
-
-
+    /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
       console.log(data);
