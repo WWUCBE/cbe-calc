@@ -140,13 +140,14 @@ app.controller('MainCtrl', [
       $scope.classList.splice(index, 1);
       $scope.setGpa();
     };
-    /* Proof of concept to fetch page content */
+    /* Proof of concept to fetch page content
     $scope.updateDOMInfo = function(info){
       document.getElementById('total').textContent = info.total;
       document.getElementById('inputs').textContent = info.inputs;
       document.getElementById('buttons').textContent = info.buttons;
       document.getElementById('data').textContent = info.data; //Actual text
     };
+    */
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
@@ -164,7 +165,6 @@ app.controller('MainCtrl', [
         'IBUS',
         'HRM'
       ];
-
       for(var i = 0 ; i < lines.length ; i++){
         var lineArray = lines[i].split(' +');
         console.log(lineArray[0] + '\n');
@@ -177,6 +177,7 @@ app.controller('MainCtrl', [
           });
         }
       }
+      return;
     };
   }
 ]);
