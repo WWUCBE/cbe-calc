@@ -183,21 +183,35 @@ app.controller('MainCtrl', [
         'F-'
       ];
       for(var i = 0 ; i < lines.length ; i++){
+        //split on space or group of spaces and store in lineArray
         var lineArray = lines[i].trim().split(/\s+/);
+
         if(headers.indexOf(lineArray[0]) >= 0){
           var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
           var tempGrade;
+          var tempCredits;
+          /*
           for(var j = 0 ; j < grades.length ; j++){
             if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
               tempGrade = lineArray[j];
               break;
             }
+          }*/
+          
+          for(var ind = 5; ind < lineArray.length; ind++){
+            if(grades.indexOf(lineArray[ind])>=0){
+              tempGrade = lineArray[ind];
+              //credits are located one before the grade.
+              tempCredits = lineArray[ind-1];
+              break;
+            }
           }
+
           $scope.classList.push({
             name: tempName,
             grade: tempGrade,
-            gpa: 4,
-            credits: 4
+            gpa: getGPAValue(tempGrade).toFixed(1),
+            credits: tempCredits
           });
         }
       }
@@ -206,6 +220,37 @@ app.controller('MainCtrl', [
     };
   }
 ]);
+//function to calculate GPA point based on letter grades
+function getGPAValue(string){
+  var gpa;
+  var letter = string.substring(0,1);
+  if(string.length >= 2){
+        var mod = string.substring(1,2);
+        if(!(mod === '+' || mod ==='-')){
+          var mod = '';
+        }
+      }
+      if(letter === "a" || letter === 'A'){
+        gpa = 4;
+      }else if(letter === "b" || letter === 'B'){
+        gpa = 3;
+      }else if(letter === "c" || letter === 'C'){
+        gpa = 2;
+      }else if(letter === "d" || letter === 'D'){
+        gpa = 1;
+      }else if(letter === "f" || letter === 'F'){
+        gpa = 0;
+      }else{
+        return;
+      }
+
+      if(mod === '+' && gpa < 4){
+        gpa += 0.3;
+      }else if(mod === '-'){
+        gpa -= 0.3;
+      }
+  return gpa;
+}
 
 
 // Update the relevant fields with the new data
