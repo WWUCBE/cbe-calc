@@ -257,7 +257,9 @@ function getGPAValue(string){
 function setDOMInfo(info) {
   var scope = angular.element(document.getElementById("main")).scope();
   scope.$apply(function(){
+    scope.classList.length = 0;
     scope.addPrevClasses(info);
+
   });
 }
 
