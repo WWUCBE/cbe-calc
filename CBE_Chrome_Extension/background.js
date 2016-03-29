@@ -5,3 +5,11 @@ chrome.runtime.onMessage.addListener(function (msg, sender) {
     chrome.pageAction.show(sender.tab.id);
   }
 });
+
+chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
+    chrome.tabs.executeScript(null,{file:"content.js"});
+});
+
+chrome.browserAction.onClicked.addListener(function(activeTab) {
+    chrome.tabs.executeScript(null, {file: "content.js"});
+});

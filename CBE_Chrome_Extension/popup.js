@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
       show('onPage');
       hide('notOnPage');
+      chrome.tabs.executeScript(null, {file: "content.js"});
     }else{
       show('notOnPage');
       hide('onPage');
