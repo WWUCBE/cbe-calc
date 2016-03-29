@@ -165,13 +165,37 @@ app.controller('MainCtrl', [
         'IBUS',
         'HRM',
       ];
+      var grades = [
+        'A',
+        'A+',
+        'A-',
+        'B',
+        'B+',
+        'B-',
+        'C',
+        'C+',
+        'C-',
+        'D',
+        'D+',
+        'D-',
+        'F',
+        'F+',
+        'F-'
+      ];
       for(var i = 0 ; i < lines.length ; i++){
-        var lineArray = lines[i].split(' ');
-        console.log(lineArray[0] + '\n');
+        var lineArray = lines[i].trim().split(/\s+/);
         if(headers.indexOf(lineArray[0]) >= 0){
+          var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
+          var tempGrade;
+          for(var j = 0 ; j < grades.length ; j++){
+            if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
+              tempGrade = lineArray[j];
+              break;
+            }
+          }
           $scope.classList.push({
-            name: (lineArray[0] + ' ' + lineArray[1]).substring(0, 8),
-            grade: 'A',
+            name: tempName,
+            grade: tempGrade,
             gpa: 4,
             credits: 4
           });
