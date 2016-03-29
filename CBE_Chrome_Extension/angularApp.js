@@ -163,7 +163,7 @@ app.controller('MainCtrl', [
         'OPS',
         'MGMT',
         'IBUS',
-        'HRM'
+        'HRM',
       ];
       for(var i = 0 ; i < lines.length ; i++){
         var lineArray = lines[i].split(' ');
@@ -177,6 +177,7 @@ app.controller('MainCtrl', [
           });
         }
       }
+      $scope.setGpa();
       return;
     };
   }
