@@ -51,6 +51,27 @@ window.addEventListener('load', function() {
    }
 }, false);
 
+window.addEventListener('load', function() {
+   var theAnchors = document.getElementsByClassName('refreshData');
+   for(i=0, len=theAnchors.length; i<len; i++) {
+      theAnchors[i].addEventListener('click', function() {
+        chrome.tabs.query({
+          active: true,
+          currentWindow: true
+        }, function (tabs) {
+          // ...and send a request for the DOM info...
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
+        });
+        
+      }, false);
+   }
+}, false);
+
 document.addEventListener('DOMContentLoaded', function() {
   getCurrentTabUrl(function(url) {
     if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
