@@ -166,9 +166,9 @@ app.controller('MainCtrl', [
         'HRM'
       ];
       for(var i = 0 ; i < lines.length ; i++){
-        var lineArray = lines[i].split(' +');
+        var lineArray = lines[i].split(' ');
         console.log(lineArray[0] + '\n');
-        if(headers.indexOf(lineArray[1]) >= 0){
+        if(headers.indexOf(lineArray[0]) >= 0){
           $scope.classList.push({
             name: (lineArray[0] + ' ' + lineArray[1]).substring(0, 8),
             grade: 'A',
