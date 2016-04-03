@@ -27,18 +27,18 @@
   	<div class="container" id = "onPage">
 
       <!--Title Block-->
-  	  <div class = "row" id = "title">
+  	  <div class = "row" id = "title" >
   	    <div id="titleBlock" class="col-md-6 col-md-offset-3" style = "text-align: center">
-	        <h1> CBE Grade Calculator </h1>
-            <div class = "row" id = "gpaAndCredits">
-              <div id="GPA" class="col-sm-6" style = "text-align: center">
-                <h3><b> GPA: {{gpa}} </b></h3>
-              </div>
-              <div id="GPA" class="col-sm-6" style = "text-align: center">
-                <h3><b> Credits: {{totalCredits}} </b></h3>
-              </div>
-            </div>
+	        <!--<h1> CBE Grade Calculator </h1>-->
           <div class = "row" id = "gpaAndCredits">
+            <div id="GPA" class="col-sm-6" style = "text-align: center">
+              <h3><b> GPA: {{gpa}} </b></h3>
+            </div>
+            <div id="GPA" class="col-sm-6" style = "text-align: center">
+              <h3><b> Credits: {{totalCredits}} </b></h3>
+            </div>
+          </div>
+          <div class = "row" id = "headers">
   	        <div class = "col-xs-4">
   	          <h4>
   	            Class
@@ -62,7 +62,7 @@
       <!--Grade Block-->
   	  <div class = "row" id = "grades">
   	    <div class = "col-md-6 col-md-offset-3">
-  	      <div id = "gradeBlock" style="overflow:auto; min-height:30%; max-height:30%;">
+  	      <div id = "gradeBlock" style="overflow:auto; min-height:35%; max-height:35%;">
   	        <div ng-repeat="class in classList">
   	          <span style="font-size:20px; margin-left:10px; margin-top:15px;">
   	            <div class = "col-xs-4" style="text-align:center;">

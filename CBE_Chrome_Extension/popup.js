@@ -30,7 +30,7 @@ function renderStatus(statusText) {
 *
 */
 function show(elementID) {
-    document.getElementById(elementID).style.display='inline';
+    document.getElementById(elementID).style.display='block';
 }
 function hide(elementID) {
     document.getElementById(elementID).style.display='none';
@@ -67,7 +67,7 @@ window.addEventListener('load', function() {
               //    from the receiving end (content script)
               setDOMInfo);
         });
-        
+
       }, false);
    }
 }, false);
