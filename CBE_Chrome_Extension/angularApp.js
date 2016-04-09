@@ -1,4 +1,4 @@
-var app = angular.module('CBEcalc', []);
+var app = angular.module("CBEcalc", ["xeditable"]);
 
 app.factory('classList', [function(){
   var o = {
@@ -151,7 +151,6 @@ app.controller('MainCtrl', [
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
-      console.log(localData);
       var lines = localData.split('\n');
       var headers = [
         'ECON',
@@ -165,15 +164,53 @@ app.controller('MainCtrl', [
         'IBUS',
         'HRM',
       ];
+      var grades = [
+        'A',
+        'A+',
+        'A-',
+        'B',
+        'B+',
+        'B-',
+        'C',
+        'C+',
+        'C-',
+        'D',
+        'D+',
+        'D-',
+        'F',
+        'F+',
+        'F-'
+      ];
       for(var i = 0 ; i < lines.length ; i++){
-        var lineArray = lines[i].split(' ');
-        console.log(lineArray[0] + '\n');
+        //split on space or group of spaces and store in lineArray
+        var lineArray = lines[i].trim().split(/\s+/);
+
         if(headers.indexOf(lineArray[0]) >= 0){
+          var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
+          var tempGrade;
+          var tempCredits;
+          /*
+          for(var j = 0 ; j < grades.length ; j++){
+            if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
+              tempGrade = lineArray[j];
+              break;
+            }
+          }*/
+
+          for(var ind = 5; ind < lineArray.length; ind++){
+            if(grades.indexOf(lineArray[ind])>=0){
+              tempGrade = lineArray[ind];
+              //credits are located one before the grade.
+              tempCredits = lineArray[ind-1];
+              break;
+            }
+          }
+
           $scope.classList.push({
-            name: (lineArray[0] + ' ' + lineArray[1]).substring(0, 8),
-            grade: 'A',
-            gpa: 4,
-            credits: 4
+            name: tempName,
+            grade: tempGrade,
+            gpa: getGPAValue(tempGrade).toFixed(1),
+            credits: tempCredits
           });
         }
       }
@@ -182,13 +219,46 @@ app.controller('MainCtrl', [
     };
   }
 ]);
+//function to calculate GPA point based on letter grades
+function getGPAValue(string){
+  var gpa;
+  var letter = string.substring(0,1);
+  if(string.length >= 2){
+        var mod = string.substring(1,2);
+        if(!(mod === '+' || mod ==='-')){
+          var mod = '';
+        }
+      }
+      if(letter === "a" || letter === 'A'){
+        gpa = 4;
+      }else if(letter === "b" || letter === 'B'){
+        gpa = 3;
+      }else if(letter === "c" || letter === 'C'){
+        gpa = 2;
+      }else if(letter === "d" || letter === 'D'){
+        gpa = 1;
+      }else if(letter === "f" || letter === 'F'){
+        gpa = 0;
+      }else{
+        return;
+      }
+
+      if(mod === '+' && gpa < 4){
+        gpa += 0.3;
+      }else if(mod === '-'){
+        gpa -= 0.3;
+      }
+  return gpa;
+}
 
 
 // Update the relevant fields with the new data
 function setDOMInfo(info) {
   var scope = angular.element(document.getElementById("main")).scope();
   scope.$apply(function(){
+    scope.classList.length = 0;
     scope.addPrevClasses(info);
+
   });
 }
 

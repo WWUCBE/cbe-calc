@@ -2,6 +2,7 @@
 <head>
   <title> CBE Calculator </title>
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/xeditable.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
   <style>
     .glyphicon-remove-circle {cursor:pointer}
@@ -11,10 +12,10 @@
   </style>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
-<body id="main" data-ng-controller="MainCtrl" style="width:780px; height:580px; overflow: hidden">
+<body id="main" data-ng-controller="MainCtrl"> <!--  overflow: hidden -->
     <!--Redirect Block-->
     <div class="container" id = "notOnPage">
-      <H3 style="text-align: center">
+      <H3>
         You've gotta be signed into MyWestern for us to access your transcript
       </H3>
       <div class="span7 text-center">
@@ -25,19 +26,20 @@
     </div>
 
   	<div class="container" id = "onPage">
+
       <!--Title Block-->
-  	  <div class = "row" id = "title">
-  	    <div id="titleBlock" class="col-md-6 col-md-offset-3" style = "text-align: center">
-	        <h1> CBE Grade Calculator </h1>
-            <div class = "row" id = "gpaAndCredits">
-              <div id="GPA" class="col-sm-6" style = "text-align: center">
-                <h3><b> GPA: {{gpa}} </b></h3>
-              </div>
-              <div id="GPA" class="col-sm-6" style = "text-align: center">
-                <h3><b> Credits: {{totalCredits}} </b></h3>
-              </div>
-            </div>
+  	  <div class = "row" id = "title" >
+  	    <div id="titleBlock" class="col-md-6 col-md-offset-3">
+	        <!--<h1> CBE Grade Calculator </h1>-->
           <div class = "row" id = "gpaAndCredits">
+            <div id="GPA" class="col-sm-6" style = "text-align: center">
+              <h3><b> GPA: {{gpa}} </b></h3>
+            </div>
+            <div id="GPA" class="col-sm-6" style = "text-align: center">
+              <h3><b> Credits: {{totalCredits}} </b></h3>
+            </div>
+          </div>
+          <div class = "row" id = "headers">
   	        <div class = "col-xs-4">
   	          <h4>
   	            Class
@@ -53,7 +55,7 @@
   	            Credits
   	          </h4>
   	        </div>
-  	        <hr width="90%" style="float: center">
+  	        <hr width="90%">
           </div>
   	    </div>
   	  </div>
@@ -61,21 +63,29 @@
       <!--Grade Block-->
   	  <div class = "row" id = "grades">
   	    <div class = "col-md-6 col-md-offset-3">
-  	      <div id = "gradeBlock" style="overflow:auto; min-height:30%; max-height:30%;">
-  	        <div ng-repeat="class in classList">
+  	      <div id = "gradeBlock" style="overflow:auto; min-height:32%; max-height:32%;">
+  	        <div ng-repeat="class in classList track by $index">
   	          <span style="font-size:20px; margin-left:10px; margin-top:15px;">
+                <div class = "col-xs-1" style="text-align:left">
+                  <span class="glyphicon glyphicon-remove-circle"
+                    ng-click="removeClass(class)"
+                    style="margin-left:5px; float:left;">
+                  </span>
+                </div>
+                <div class = "col-xs-3" style="text-align:left">
+                  <span editable-text="classList[$index].name" style="color:white; text-decoration:none;">
+                    {{ class.name }}
+                  </span>
+                </div>
   	            <div class = "col-xs-4" style="text-align:center;">
-  	              <span class="glyphicon glyphicon-remove-circle"
-  	                ng-click="removeClass(class)"
-  	                style="margin-left:5px; float:left;">
-  	              </span>
-  	              {{class.name}}
+                  <span editable-text="classList[$index].grade" style="color:white; text-decoration:none;">
+                    {{ class.grade }}
+                  </span>
   	            </div>
   	            <div class = "col-xs-4" style="text-align:center;">
-  	              {{class.grade}} ({{class.gpa}})
-  	            </div>
-  	            <div class = "col-xs-4" style="text-align:center;">
-  	              {{class.credits}}
+                  <span editable-text="classList[$index].credits" style="color:white; text-decoration:none;">
+                    {{ class.credits }}
+                  </span>
   	            </div>
                 <!-- Horizontal grade deviding line
                 <hr width="80%" style="margin-top:8px; float: center">
@@ -118,6 +128,9 @@
   	                ng-model="credits">
   	              </input>
   	            </div>
+                <button type="button" class="btn btn-primary refreshData text-center" style="float: left;">
+                  Refresh
+                </button>
   	            <button type="submit" class="btn btn-primary" style="float: right;">
   	              Add
   	            </button>
@@ -128,41 +141,10 @@
   	  </div>
 
   	</div>
-  <script src="popup.js"></script>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
-	<script src="angularApp.js"></script>
+  <script src="js/xeditable.js"></script>
+  <script src="angularApp.js"></script>
+  <script src="popup.js"></script>
 </body>
 </html>
-
-<!-- Add Old Grades
-<section>
-  <form ng-submit="updatePrevious()">
-    <div class = "row" id = "oldGrades">
-      <h2 style="text-align:center">
-        Previous Info
-      </h2>
-      <div class = "col-md-6">
-        <div class="form-group">
-          <input type="text"
-            class="form-control"
-            placeholder="GPA"
-            ng-model="prevGPA">
-          </input>
-        </div>
-      </div>
-      <div class = "col-md-6">
-        <div class="form-group">
-          <input type="text"
-            class="form-control"
-            placeholder="Credits"
-            ng-model="prevCredits">
-          </input>
-        </div>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary" style="float: right;">
-      Update
-    </button>
-  </form>
-</section>
--->

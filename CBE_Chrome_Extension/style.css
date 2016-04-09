@@ -1,21 +1,37 @@
 body {
-  padding: 50px;
+  width:780px;
+  height:580px;"
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-
-  background: #8e9eab; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #8e9eab , #eef2f3); /* Portrait gradient - Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #8e9eab , #eef2f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white;
+  font-weight: 400;
+  text-align: center;
+  background: #2654B3; /* fallback for old browsers */
+  /*background: -webkit-linear-gradient(to left, #8e9eab , #eef2f3); /* Portrait gradient - Chrome 10-25, Safari 5.1-6 */
+  /*background: linear-gradient(to left, #8e9eab , #eef2f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 /*
   background: #085078; /* fallback for old browsers
   background: -webkit-linear-gradient(to left, #085078 , #85D8CE); /* Chrome 10-25, Safari 5.1-6
-  background: linear-gradient(to left, #085078 , #85D8CE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+  background: linear-gradient(to left, #085078 , #85D8CE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+
 */
 }
 
-#calcBlock {
-  background-color: #E7E9BB;
+::-webkit-scrollbar {
+    width: 1em;
+    background-color: white;
+    border-radius: 10px;
+    margin-right: 5px;
 }
 
-a {
-  color: #00B7FF;
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+      border-radius: 10px;
+  outline: 1px solid slategrey;
+}
+/*
+#gradeBlock {
+  background-color: #1f4593;
 }
