@@ -78,10 +78,14 @@
                   </span>
                 </div>
   	            <div class = "col-xs-4" style="text-align:center;">
-  	              {{class.grade}} ({{class.gpa}})
+                  <span editable-text="classList[$index].grade" style="color:white; text-decoration:none;">
+                    {{ class.grade }}
+                  </span>
   	            </div>
   	            <div class = "col-xs-4" style="text-align:center;">
-  	              {{class.credits}}
+                  <span editable-text="classList[$index].credits" style="color:white; text-decoration:none;">
+                    {{ class.credits }}
+                  </span>
   	            </div>
                 <!-- Horizontal grade deviding line
                 <hr width="80%" style="margin-top:8px; float: center">
