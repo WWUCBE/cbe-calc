@@ -163,7 +163,6 @@ app.controller('MainCtrl', [
         'MGMT',
         'IBUS',
         'HRM',
-        'PSY'
       ];
       var grades = [
         'A',
