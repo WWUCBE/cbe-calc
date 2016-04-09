@@ -180,8 +180,10 @@ app.controller('MainCtrl', [
         $scope.classList[index].credits = 0;
         $scope.classList[index].grade = "invalid";
       }else{
-        $scope.classList[index].gpa = gpas[grades.indexOf($scope.classList[index].grade)].toFixed(2);
+        $scope.classList[index].gpa = gpas[grades.indexOf($scope.classList[index].grade.toUpperCase())].toFixed(2);
+        $scope.classList[index].grade = $scope.classList[index].grade.toUpperCase();
       }
+
       $scope.setGpa();
     }
 
@@ -200,6 +202,7 @@ app.controller('MainCtrl', [
         'MGMT',
         'IBUS',
         'HRM',
+        'CSCI'
       ];
       var grades = [
         'A',
