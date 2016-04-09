@@ -62,7 +62,7 @@
       <!--Grade Block-->
   	  <div class = "row" id = "grades">
   	    <div class = "col-md-6 col-md-offset-3">
-  	      <div id = "gradeBlock" style="overflow:auto; min-height:35%; max-height:35%;">
+  	      <div id = "gradeBlock" style="overflow:auto; min-height:33%; max-height:33%;">
   	        <div ng-repeat="class in classList">
   	          <span style="font-size:20px; margin-left:10px; margin-top:15px;">
   	            <div class = "col-xs-4" style="text-align:center;">
@@ -138,36 +138,3 @@
     <script src="popup.js"></script>
 </body>
 </html>
-
-<!-- Add Old Grades
-<section>
-  <form ng-submit="updatePrevious()">
-    <div class = "row" id = "oldGrades">
-      <h2 style="text-align:center">
-        Previous Info
-      </h2>
-      <div class = "col-md-6">
-        <div class="form-group">
-          <input type="text"
-            class="form-control"
-            placeholder="GPA"
-            ng-model="prevGPA">
-          </input>
-        </div>
-      </div>
-      <div class = "col-md-6">
-        <div class="form-group">
-          <input type="text"
-            class="form-control"
-            placeholder="Credits"
-            ng-model="prevCredits">
-          </input>
-        </div>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary" style="float: right;">
-      Update
-    </button>
-  </form>
-</section>
--->

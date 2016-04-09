@@ -164,6 +164,7 @@ app.controller('MainCtrl', [
         'MGMT',
         'IBUS',
         'HRM',
+        'CSCI'
       ];
       var grades = [
         'A',
@@ -197,7 +198,7 @@ app.controller('MainCtrl', [
               break;
             }
           }*/
-          
+
           for(var ind = 5; ind < lineArray.length; ind++){
             if(grades.indexOf(lineArray[ind])>=0){
               tempGrade = lineArray[ind];
