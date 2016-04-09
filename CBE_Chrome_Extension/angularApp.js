@@ -1,4 +1,4 @@
-var app = angular.module('CBEcalc', []);
+var app = angular.module("CBEcalc", ["xeditable"]);
 
 app.factory('classList', [function(){
   var o = {
@@ -151,7 +151,6 @@ app.controller('MainCtrl', [
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
-      console.log(localData);
       var lines = localData.split('\n');
       var headers = [
         'ECON',
@@ -164,7 +163,7 @@ app.controller('MainCtrl', [
         'MGMT',
         'IBUS',
         'HRM',
-        'CSCI'
+        'PSY'
       ];
       var grades = [
         'A',
