@@ -15,6 +15,21 @@ body {
 */
 }
 
+#grades {
+  color: black;
+}
+
+#removeIcon {
+  margin-left:5px;
+  float:left;
+  color: darkgray;
+}
+
+#editableField {
+  color: white;
+  text-decoration: none;
+}
+
 ::-webkit-scrollbar {
     width: 1em;
     background-color: white;
@@ -35,3 +50,4 @@ body {
 #gradeBlock {
   background-color: #1f4593;
 }
+*/

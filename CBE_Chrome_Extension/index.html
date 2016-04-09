@@ -67,23 +67,24 @@
   	        <div ng-repeat="class in classList track by $index">
   	          <span style="font-size:20px; margin-left:10px; margin-top:15px;">
                 <div class = "col-xs-1" style="text-align:left">
-                  <span class="glyphicon glyphicon-remove-circle"
+                  <span
+                    id=removeIcon
+                    class="glyphicon glyphicon-remove-circle"
                     ng-click="removeClass(class)"
-                    style="margin-left:5px; float:left;">
                   </span>
                 </div>
                 <div class = "col-xs-3" style="text-align:left">
-                  <span editable-text="classList[$index].name" style="color:white; text-decoration:none;">
+                  <span id="editableField" editable-text="classList[$index].name" buttons="no" e-required onhide="reCalc($index)">
                     {{ class.name }}
                   </span>
                 </div>
   	            <div class = "col-xs-4" style="text-align:center;">
-                  <span editable-text="classList[$index].grade" style="color:white; text-decoration:none;">
+                  <span id="editableField" editable-text="classList[$index].grade" buttons="no" e-required onhide="reCalc($index)">
                     {{ class.grade }}
                   </span>
   	            </div>
   	            <div class = "col-xs-4" style="text-align:center;">
-                  <span editable-text="classList[$index].credits" style="color:white; text-decoration:none;">
+                  <span id="editableField" editable-text="classList[$index].credits" buttons="no" e-required onhide="reCalc($index)">
                     {{ class.credits }}
                   </span>
   	            </div>

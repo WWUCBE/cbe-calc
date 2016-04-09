@@ -1,5 +1,10 @@
 var app = angular.module("CBEcalc", ["xeditable"]);
 
+app.run(function(editableOptions) {
+  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+  //editableOptions.buttons = no;
+});
+
 app.factory('classList', [function(){
   var o = {
     classList: []
@@ -140,14 +145,46 @@ app.controller('MainCtrl', [
       $scope.classList.splice(index, 1);
       $scope.setGpa();
     };
-    /* Proof of concept to fetch page content
-    $scope.updateDOMInfo = function(info){
-      document.getElementById('total').textContent = info.total;
-      document.getElementById('inputs').textContent = info.inputs;
-      document.getElementById('buttons').textContent = info.buttons;
-      document.getElementById('data').textContent = info.data; //Actual text
-    };
-    */
+
+    $scope.reCalc = function(index){
+      var grades = [
+        'A',
+        'A-',
+        'B',
+        'B+',
+        'B-',
+        'C',
+        'C+',
+        'C-',
+        'D',
+        'D+',
+        'D-',
+        'F',
+      ];
+      var gpas = [
+        4,
+        3.7,
+        3,
+        3.3,
+        2.7,
+        2,
+        2.3,
+        1.7,
+        1,
+        1.3,
+        0.7,
+        0
+      ];
+      if(grades.indexOf($scope.classList[index].grade.toUpperCase()) < 0){
+        $scope.classList[index].gpa = 0;
+        $scope.classList[index].credits = 0;
+        $scope.classList[index].grade = "invalid";
+      }else{
+        $scope.classList[index].gpa = gpas[grades.indexOf($scope.classList[index].grade)].toFixed(2);
+      }
+      $scope.setGpa();
+    }
+
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
