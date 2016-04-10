@@ -80,7 +80,9 @@
                 </div>
   	            <div class = "col-xs-4" style="text-align:center;">
                   <span id="editableField" editable-text="classList[$index].grade" buttons="no" e-required onhide="reCalc($index)">
-                    {{ class.grade }}
+                    <div id={{class.composite}}>
+                      {{ class.grade }}
+                    </div>
                   </span>
   	            </div>
   	            <div class = "col-xs-4" style="text-align:center;">

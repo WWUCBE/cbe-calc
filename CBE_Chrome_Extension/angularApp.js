@@ -71,12 +71,24 @@ app.controller('MainCtrl', [
         gpa -= 0.3;
       }
 
-      $scope.classList.push({
-        name: $scope.name.substring(0,15),
-        grade: letter.toUpperCase() + mod,
-        gpa: gpa.toFixed(2),
-        credits: $scope.credits
-      });
+      var found = false;
+      for(var i = 0 ; i < $scope.classList.length ; i++){
+        if($scope.classList[i].name === $scope.name){
+          found = true;
+          $scope.classList[i].gpa = ((+$scope.classList[i].gpa + gpa)/2).toFixed(2);
+          $scope.classList[i].grade = $scope.classList[i].gpa;
+          $scope.classList[i].composite = 'composite';
+        }
+      }
+
+      if(!found){
+        $scope.classList.push({
+          name: $scope.name.substring(0,15),
+          grade: letter.toUpperCase() + mod,
+          gpa: gpa.toFixed(2),
+          credits: $scope.credits
+        });
+      }
 
       $scope.name = '';
       $scope.grade = '';
@@ -245,12 +257,24 @@ app.controller('MainCtrl', [
             }
           }
 
-          $scope.classList.push({
-            name: tempName,
-            grade: tempGrade,
-            gpa: getGPAValue(tempGrade).toFixed(1),
-            credits: tempCredits
-          });
+          var found = false;
+          for(var j = 0 ; j < $scope.classList.length ; j++){
+            if($scope.classList[j].name === tempName){
+              found = true;
+              $scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
+              $scope.classList[j].grade = $scope.classList[j].gpa;
+              $scope.classList[j].composite = 'composite';
+            }
+          }
+
+          if(!found){
+            $scope.classList.push({
+              name: tempName,
+              grade: tempGrade,
+              gpa: getGPAValue(tempGrade).toFixed(1),
+              credits: tempCredits
+            });
+          }
         }
       }
       $scope.setGpa();

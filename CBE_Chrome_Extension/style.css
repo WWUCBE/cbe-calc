@@ -15,6 +15,10 @@ body {
 */
 }
 
+#composite{
+  color: red;
+}
+
 #gradeBlock{
   overflow:auto;
   min-height:32%;
