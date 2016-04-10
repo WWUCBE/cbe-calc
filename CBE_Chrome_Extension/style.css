@@ -37,7 +37,7 @@ body {
 #gradeBlock{
   overflow:auto;
   min-height:32%;
-  max-height:32%;"
+  max-height:32%;
 }
 
 #grades {
@@ -63,6 +63,10 @@ body {
 #submitBlock {
   margin-left: 10%;
   margin-right:10%;
+}
+
+#addAClass{
+  color: white;
 }
 
 ::-webkit-scrollbar {
