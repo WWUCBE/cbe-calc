@@ -1,0 +1,301 @@
+body {
+  margin-top: -20px;
+  width:780px;
+  height:580px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: white;
+  font-weight: 400;
+  text-align: center;
+  background: rgba(100, 100, 100, 1);
+  /*#2654B3*/
+}
+/*
+#TitleBanner {
+  border-radius: 10px;
+  position: absolute;
+  top: -20;
+  background-color: rgba(0,0,0, .3);
+  width: 780px;
+  height: 100px;
+}
+*/
+
+.even {
+  background-color: rgba(0,0,0, 0.05);
+}
+
+.glyphicon-large {
+  min-height: 40px;
+  line-height: 40px;
+  font-size: 25px;
+  min-width: 40px;
+  display: block;
+  margin: -0.5em auto 0px;
+}
+
+#gpaBanner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7%;
+  border-radius: 10px;
+  top: 28;
+  margin-left: 300;
+  margin-right: 300;
+  background-color: rgba(0,0,0, 0.65);
+}
+
+#gradeBanner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 42%;
+  border-radius: 10px;
+  top: 90;
+  margin-left: 15;
+  margin-right: 15;
+  background-color: rgba(0,0,0, 0.35);
+}
+
+#headerBanner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6%;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  top: 90;
+  margin-left: 15;
+  margin-right: 15;
+  background-color: rgba(0,0,0, 0.3);
+}
+
+#good {
+  color: #32CD32; /*Green*/
+}
+
+#ok {
+  color: #FFD700; /*Yellow*/
+}
+
+#bad {
+  color: #B22222; /*Red*/
+}
+
+#notOnPage{
+  position: absolute;
+  top: 90;
+  width: 100%;
+  left: 0;
+  padding: 20;
+}
+
+#onPage{
+
+}
+
+#composite{
+  color: darkgray;
+  text-shadow: 1px 1px black;
+}
+
+#titleBlock {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+#headers {
+
+}
+
+#gradeBlock{
+  overflow:auto;
+  margin-top: -5px;
+  height:214px;
+  font-size:20px;
+  margin-left:10px;
+}
+
+#grades {
+  margin-right: 15px;
+}
+
+#editableField {
+  color: white;
+  text-decoration: none;
+}
+
+#submitBlock {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+#addAClass{
+  color: white;
+}
+
+#contentRow {
+  margin-left: 5px;
+  height: 40px;
+  line-height: 40px;
+}
+
+#removeIcon {
+  margin-top: 0px;
+  top: inherit;
+  color: darkgray;
+}
+
+#oddContentRow {
+  margin-left: 5px;
+  background-color: rgba(0,0,0, .2);
+  height: 40;
+}
+
+::-webkit-scrollbar {
+  width: 0.85em;
+  background-color: white;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+/*
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+*/
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 10px;
+  outline: 1px solid slategrey;
+}
+
+/**
+ * Slide Menu
+ */
+.c-menu {
+  position: fixed;
+  z-index: 200;
+  background-color: #67b5d1;
+  transition: transform 0.3s;
+}
+
+.c-menu__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Close button resets.
+ */
+.c-menu__close {
+  color: #fff;
+  background-color: #3184a1;
+  font-size: 14px;
+  border: none;
+  box-shadow: none;
+  border-radius: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+/**
+ * Close button resets.
+ */
+.c-menu__close:focus {
+  outline: none;
+}
+
+/**
+ * Body states.
+ *
+ * When a menu is active, we want to hide the overflows on the body to prevent
+ * awkward document scrolling.
+ */
+body.has-active-menu {
+  overflow: hidden;
+}
+
+/**
+ * Mask component
+ */
+
+.c-mask {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  background-color: #000;
+  opacity: 0;
+  transition: opacity 0.3s, width 0s 0.3s, height 0s 0.3s;
+}
+
+.c-mask.is-active {
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.c-menu--slide-top,
+.c-menu--slide-bottom,
+.c-menu--push-top,
+.c-menu--push-bottom {
+  vertical-align: middle;
+  width: 100%;
+  height: 60px;
+  text-align: center;
+  overflow-x: scroll;
+}
+
+.c-menu--slide-top .c-menu__items,
+.c-menu--slide-bottom .c-menu__items,
+.c-menu--push-top .c-menu__items,
+.c-menu--push-bottom .c-menu__items {
+  display: inline-block;
+  text-align: center;
+}
+
+.c-menu--slide-top .c-menu__item,
+.c-menu--slide-bottom .c-menu__item,
+.c-menu--push-top .c-menu__item,
+.c-menu--push-bottom .c-menu__item {
+  display: inline-block;
+  line-height: 60px;
+}
+
+.c-menu--slide-top .c-menu__link,
+.c-menu--slide-bottom .c-menu__link,
+.c-menu--push-top .c-menu__link,
+.c-menu--push-bottom .c-menu__link {
+  display: block;
+  padding: 0 4px;
+  color: #fff;
+}
+
+.c-menu--slide-top .c-menu__close,
+.c-menu--slide-bottom .c-menu__close,
+.c-menu--push-top .c-menu__close,
+.c-menu--push-bottom .c-menu__close {
+  display: inline-block;
+  margin-right: 12px;
+  padding: 0 24px;
+  height: 60px;
+  line-height: 60px;
+}
+
+.c-menu--slide-bottom,
+.c-menu--push-bottom {
+  bottom: 0;
+  left: 0;
+  transform: translateY(60px);
+}
+
+.c-menu--slide-bottom.is-active,
+.c-menu--push-bottom.is-active {
+  transform: translateY(0);
+}
