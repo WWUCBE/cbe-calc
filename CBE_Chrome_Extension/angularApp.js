@@ -28,6 +28,7 @@ app.controller('MainCtrl', [
     $scope.previousGPA = [];
     $scope.classPrefixes = classPrefixes.classPrefixes;
     $scope.gpa = (0.0).toFixed(2);
+    $scope.standing = 'good';
     $scope.totalCredits = 0;
 
     $scope.addClass = function(){
@@ -150,6 +151,16 @@ app.controller('MainCtrl', [
       }
       $scope.totalCredits = credits;
       $scope.gpa = gpa.toFixed(2);
+
+      //Adjust academic standing (good, ok, bad)
+      if($scope.gpa >= 3){
+        $scope.standing = 'good';
+      }else if($scope.gpa > 2.5){
+        $scope.standing = 'ok';
+      }else{
+        $scope.standing = 'bad';
+      }
+
     };
 
     $scope.removeClass = function(item) {

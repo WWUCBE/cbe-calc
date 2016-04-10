@@ -1,22 +1,37 @@
 body {
+  margin-top: -10px;
   width:780px;
   height:580px;"
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: white;
   font-weight: 400;
   text-align: center;
-  background: #2654B3; /* fallback for old browsers */
-  /*background: -webkit-linear-gradient(to left, #8e9eab , #eef2f3); /* Portrait gradient - Chrome 10-25, Safari 5.1-6 */
-  /*background: linear-gradient(to left, #8e9eab , #eef2f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-/*
-  background: #085078; /* fallback for old browsers
-  background: -webkit-linear-gradient(to left, #085078 , #85D8CE); /* Chrome 10-25, Safari 5.1-6
-  background: linear-gradient(to left, #085078 , #85D8CE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+
-*/
+  background: #2654B3;
+}
+
+#good {
+  color: #32CD32; /*Green*/
+}
+
+#ok {
+  color: #FFD700; /*Yellow*/
+}
+
+#bad {
+  color: #B22222; /*Red*/
+}
+
+#notOnPage{
+
+}
+
+#onPage{
+
 }
 
 #composite{
-  color: red;
+  color: gray;
+  text-shadow: 1px 1px darkblue;
 }
 
 #gradeBlock{
@@ -40,6 +55,16 @@ body {
   text-decoration: none;
 }
 
+#gradeBlock {
+  font-size:20px;
+  margin-left:10px;
+}
+
+#submitBlock {
+  margin-left: 10%;
+  margin-right:10%;
+}
+
 ::-webkit-scrollbar {
     width: 1em;
     background-color: white;
@@ -56,8 +81,3 @@ body {
       border-radius: 10px;
   outline: 1px solid slategrey;
 }
-/*
-#gradeBlock {
-  background-color: #1f4593;
-}
-*/
