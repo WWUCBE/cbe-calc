@@ -9,11 +9,11 @@
   },
   "background":{
     "persistent":true,
-    "scripts":["background.js"]
+    "scripts":["js/background.js"]
   },
   "content_scripts":[{
     "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"],
-    "js":["content.js"],
+    "js":["js/content.js"],
     "run_at": "document_end"
     }],
   "permissions": [

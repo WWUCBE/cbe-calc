@@ -4,7 +4,7 @@
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
   <link href="css/xeditable.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
   <style>
     .glyphicon-remove-circle {cursor:pointer}
     div.stats{
@@ -14,55 +14,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body id="main" data-ng-controller="MainCtrl">
-    <!--Redirect Block-->
-    <div class="container" id = "notOnPage">
-      <H3>
-        You've gotta be signed into MyWestern for us to access your transcript
-      </H3>
-      <div class="span7 text-center">
-        <button type="button" class="btn btn-primary wwuRedirect text-center">
-          Let's go!
-        </button>
-      </div>
+  <!--Redirect Block-->
+  <div class="container" id = "notOnPage">
+    <H3>
+      You need to be signed into MyWestern for us to access your transcript
+    </H3>
+    <div class="span7 text-center">
+      <button type="button" class="btn btn-primary wwuRedirect text-center">
+        Let's go!
+      </button>
     </div>
+  </div>
 
-  	<div class="container" id = "onPage">
-  	  <div class = "row" id = "title" >
-  	    <div id="titleBlock" class="col-md-6 col-md-offset-3">
-          <div class = "row" id = "gpaAndCredits">
-            <div class="col-sm-12">
-              <h2><b id={{standing}}> GPA: {{gpa}} </b></h2>
-            </div>
+	<div class="container" id = "onPage">
+    <div id="gpaBanner"></div>
+    <div id="gradeBanner"></div>
+    <div id="headerBanner"></div>
+	  <div class = "row" id = "title" >
+	    <div id="titleBlock" class="col-xs-12">
+        <div class = "row" id = "gpaAndCredits">
+          <div class="col-sm-12">
+            <h2><b id={{standing}}> GPA: {{gpa}} </b></h2>
           </div>
-          <div class = "row" id = "headers">
-  	        <div class = "col-xs-4">
-  	          <h3>
-  	            Class
-  	          </h3>
-  	        </div>
-  	        <div class = "col-xs-4">
-  	          <h3>
-  	            Grade
-  	          </h3>
-  	        </div>
-  	        <div class = "col-xs-4">
-  	          <h3>
-  	            Credits ({{totalCredits}})
-  	          </h3>
-  	        </div>
-  	        <hr width="90%">
-          </div>
-  	    </div>
-  	  </div>
+        </div>
+        <div class = "row" id = "headers">
+	        <div class = "col-xs-2 col-xs-offset-1">
+	          <h3>
+	            Course
+	          </h3>
+	        </div>
+	        <div class = "col-xs-2 col-xs-offset-2">
+	          <h3>
+	            Grade
+	          </h3>
+	        </div>
+	        <div class = "col-xs-3 col-xs-offset-1">
+	          <h3>
+	            Credits ({{totalCredits}})
+	          </h3>
+	        </div>
+        </div>
+	    </div>
+	  </div>
 
-      <!--Grade Block-->
-  	  <div class = "row" id = "grades">
+    <!--Grade Block-->
+	  <div class = "row">
+      <div id = "grades">
   	    <div class = "col-md-6 col-md-offset-3">
   	      <div id = "gradeBlock">
-  	        <div ng-repeat="class in classList track by $index">
+  	        <div ng-repeat="class in classList track by $index" id="contentRow">
               <div class = "col-xs-1" style="text-align:left">
                 <span id=removeIcon
-                  class="glyphicon glyphicon-remove-circle"
+                  class="glyphicon glyphicon-remove-circle glyphicon-large"
                   ng-click="removeClass(class)"
                 </span>
               </div>
@@ -73,73 +76,75 @@
                   </div>
                 </span>
               </div>
-	            <div class = "col-xs-4">
+              <div class = "col-xs-4">
                 <span id="editableField" editable-text="classList[$index].grade" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.grade }}
                   </div>
                 </span>
-	            </div>
-	            <div class = "col-xs-4">
+              </div>
+              <div class = "col-xs-4">
                 <span id="editableField" editable-text="classList[$index].credits" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.credits }}
                   </div>
                 </span>
-	            </div>
+              </div>
   	        </div>
   	      </div>
   	    </div>
+      </div>
 
-        <!--Submit sub-block-->
-  	    <div class = "col-md-3">
-  	      <div id = "submitBlock">
-            <!--**Insert "old grades" block here if needed**-->
-  	        <section>
-  	          <form ng-submit="addClass()">
-                <div class = "row" id = "addAClass">
-    	            <h2>
-    	              Add a class
-    	            </h2>
-                </div>
-  	            <div class="form-group">
-  	              <input type="text"
-  	                class="form-control"
-  	                placeholder="Class name"
-  	                ng-model="name">
-  	              </input>
-  	            </div>
-  	            <div class="form-group">
-  	              <input type="text"
-  	                class="form-control"
-  	                placeholder="Letter grade"
-  	                ng-model="grade">
-  	              </input>
-  	            </div>
-  	            <div class="form-group">
-  	              <input type="text"
-  	                class="form-control"
-  	                placeholder="# credits"
-  	                ng-model="credits">
-  	              </input>
-  	            </div>
-                <button type="button" class="btn btn-primary refreshData text-center" style="float: left;">
-                  Refresh
-                </button>
-                
-  	            <button type="submit" class="btn btn-primary" style="float: right;">
-  	              Add
-  	            </button>
-  	          </form>
-  	        </section>
-  	      </div>
-  	    </div>
-  	  </div>
-  	</div>
+      <!--Submit sub-block-->
+	    <div class = "col-md-3">
+	      <div id = "submitBlock">
+          <!--**Insert "old grades" block here if needed**-->
+	        <section>
+	          <form ng-submit="addClass()">
+              <div class = "row" id = "addAClass">
+  	            <h2>
+  	              Add a class
+  	            </h2>
+              </div>
+	            <div class="form-group">
+	              <input type="text"
+	                class="form-control"
+	                placeholder="Class name"
+	                ng-model="name">
+	              </input>
+	            </div>
+	            <div class="form-group">
+	              <input type="text"
+	                class="form-control"
+	                placeholder="Letter grade"
+	                ng-model="grade">
+	              </input>
+	            </div>
+	            <div class="form-group">
+	              <input type="text"
+	                class="form-control"
+	                placeholder="# credits"
+	                ng-model="credits">
+	              </input>
+	            </div>
+              <button type="button" class="btn btn-primary refreshData text-center" style="float: left;">
+                Refresh
+              </button>
+              <!-- <button id="c-button--slide-bottom" class="c-button">Slide Botton</button> -->
+	            <button type="submit" class="btn btn-primary" style="float: right;">
+	              Add
+	            </button>
+	          </form>
+	        </section>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
   <script src="js/xeditable.js"></script>
-  <script src="angularApp.js"></script>
-  <script src="popup.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/angularApp.js"></script>
+  <script src="js/popup.js"></script>
 </body>
 </html>
