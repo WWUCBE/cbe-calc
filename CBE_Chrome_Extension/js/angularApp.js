@@ -224,24 +224,33 @@ app.controller('MainCtrl', [
         'OPS',
         'MGMT',
         'IBUS',
-        'HRM'
+        'HRM',
+        'CSCI'
       ];
       var grades = [
         'A',
-        'A+',
         'A-',
+        'KA',
+        'KA-',
         'B',
         'B+',
         'B-',
+        'KB',
+        'KB+',
+        'KB-',
         'C',
         'C+',
         'C-',
+        'KC',
+        'KC+',
+        'KC-',
         'D',
         'D+',
         'D-',
-        'F',
-        'F+',
-        'F-'
+        'KD',
+        'KD+',
+        'KD-',
+        'F'
       ];
       for(var i = 0 ; i < lines.length ; i++){
         //split on space or group of spaces and store in lineArray
@@ -258,33 +267,39 @@ app.controller('MainCtrl', [
               break;
             }
           }*/
-
+          var realGrade = false;
           for(var ind = 5; ind < lineArray.length; ind++){
             if(grades.indexOf(lineArray[ind])>=0){
               tempGrade = lineArray[ind];
+              if(tempGrade[0] === 'K'){
+                tempGrade = tempGrade.substring(1,tempGrade.length);
+              }
               //credits are located one before the grade.
               tempCredits = lineArray[ind-1];
+              realGrade = true;
               break;
             }
           }
 
-          var found = false;
-          for(var j = 0 ; j < $scope.classList.length ; j++){
-            if($scope.classList[j].name === tempName){
-              found = true;
-              $scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
-              $scope.classList[j].grade = $scope.classList[j].gpa;
-              $scope.classList[j].composite = 'composite';
+          if(realGrade){
+            var found = false;
+            for(var j = 0 ; j < $scope.classList.length ; j++){
+              if($scope.classList[j].name === tempName){
+                found = true;
+                $scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
+                $scope.classList[j].grade = $scope.classList[j].gpa;
+                $scope.classList[j].composite = 'composite';
+              }
             }
-          }
 
-          if(!found){
-            $scope.classList.push({
-              name: tempName,
-              grade: tempGrade,
-              gpa: getGPAValue(tempGrade).toFixed(1),
-              credits: tempCredits
-            });
+            if(!found){
+              $scope.classList.push({
+                name: tempName,
+                grade: tempGrade,
+                gpa: getGPAValue(tempGrade).toFixed(1),
+                credits: tempCredits
+              });
+            }
           }
         }
       }
