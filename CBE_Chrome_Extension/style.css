@@ -6,7 +6,8 @@ body {
   color: white;
   font-weight: 400;
   text-align: center;
-  background: #2654B3;
+  background: rgba(76, 146, 255, 1);
+  /*#2654B3*/
 }
 
 #good {
@@ -22,7 +23,7 @@ body {
 }
 
 #notOnPage{
-
+  padding-top: 100px;
 }
 
 #onPage{
@@ -32,6 +33,10 @@ body {
 #composite{
   color: gray;
   text-shadow: 1px 1px darkblue;
+}
+
+#titleBlock {
+  font-family: 'Ubuntu', sans-serif;
 }
 
 #gradeBlock{
