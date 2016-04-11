@@ -119,7 +119,7 @@ div.stats{
 }
 
 #bad {
-  color: #B22222; /*Red*/
+  color: #EF2323; /*Red*/
 }
 
 #notOnPage{
@@ -166,12 +166,13 @@ div.stats{
 }
 
 #submitBlock {
-  margin-top: 18px;
+  margin-top: 17px;
   margin-left: 10%;
   margin-right: 10%;
 }
 
 #addAClass{
+  font-family: 'Ubuntu', sans-serif;
   font-size: 40;
   font-weight: 500;
   color: rgba(80,80,80,1); /*Gray*/
