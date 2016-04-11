@@ -83,12 +83,12 @@ app.controller('MainCtrl', [
       }
 
       //if(!found){
-        $scope.classList.push({
-          name: $scope.name.substring(0,15),
-          grade: letter.toUpperCase() + mod,
-          gpa: gpa.toFixed(2),
-          credits: $scope.credits
-        });
+      $scope.classList.push({
+        name: $scope.name.substring(0,15),
+        grade: letter.toUpperCase() + mod,
+        gpa: gpa.toFixed(2),
+        credits: $scope.credits
+      });
       //}
 
       $scope.name = '';
@@ -133,25 +133,12 @@ app.controller('MainCtrl', [
       return;
     };
 
-    /*
-    for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
-      for(var j = 0 ; j < i ; j++){
-        if($scope.classList[j].name === $scope.classList[i].name){
-          $scope.classList[j].composite = "composite";
-          break;
-        }
-      }
-    }
-    */
-
     $scope.setGpa = function() {
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
-        if($scope.classList[i].composite === "composite"){
-          $scope.classList[i].composite = "unique";
-          for(var j = i+1 ; j < $scope.classList.length ; j++){
-            if($scope.classList[j].name === $scope.classList[i].name){
-              $scope.classList[i].composite = "composite";
-            }
+        $scope.classList[i].composite = "unique";
+        for(var j = i+1 ; j < $scope.classList.length ; j++){
+          if($scope.classList[j].name === $scope.classList[i].name){
+            $scope.classList[i].composite = "composite";
           }
         }
       }
@@ -192,6 +179,15 @@ app.controller('MainCtrl', [
     };
 
     $scope.reCalc = function(index){
+      for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+        $scope.classList[i].composite = "unique";
+        for(var j = i+1 ; j < $scope.classList.length ; j++){
+          if($scope.classList[j].name === $scope.classList[i].name){
+            $scope.classList[i].composite = "composite";
+          }
+        }
+      }
+
       var grades = [
         'A',
         'A-',
@@ -246,7 +242,7 @@ app.controller('MainCtrl', [
         'OPS',
         'MGMT',
         'IBUS',
-        'HRM'
+        'HRM',
       ];
       var grades = [
         'A',

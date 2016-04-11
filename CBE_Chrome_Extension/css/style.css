@@ -6,14 +6,16 @@ body {
   color: white;
   font-weight: 400;
   text-align: center;
-  background: rgba(233, 233, 233, 1); /* off-white */
+  background: rgba(233,233,233, 1);
+  /*background-image: linear-gradient(180deg, rgba(239, 244, 212, 1), white); /* CBE Green */
+  /*background: rgba(233, 233, 233, 1); /* off-white */
   /*background: rgba(0, 63, 135, 1); WWU Blue */
   /*background: rgba(100, 100, 100, 1); Gray */
   /*#2654B3*/
 }
 
 #blueButton {
-background: rgba(0, 63, 135, 1); /*WWU Blue*/
+background: rgba(0, 63, 135, 0.8); /*WWU Blue*/
 }
 
 .even {
@@ -35,7 +37,7 @@ div.stats{
 }
 
 .myform {
-  color: background: rgba(0, 63, 135, 1); /* WWU Blue */;
+
 }
 
 #gpaBanner {
@@ -47,7 +49,7 @@ div.stats{
   top: 28;
   margin-left: 300;
   margin-right: 300;
-  background: rgba(0, 63, 135, 1);
+  background: rgba(0, 63, 135, 0.85);
   /* background-color: rgba(0,0,0, 0.65); */
 }
 
@@ -61,14 +63,13 @@ div.stats{
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background-color: rgba(0,131,214,.8); /* WWU light blue */
+  background-color: rgba(0,131,214, 0.8); /* WWU light blue */
   /*rgba(0,0,0, 0.35) Black */
 }
 
 #treeImage {
   position: absolute;
   top: 0;
-  /* top: 360; /* to position on input bar */
   left: -50;
   height: 183;
   width: 1060;
@@ -80,17 +81,18 @@ div.stats{
   position: absolute;
   left: 0;
   right: 0;
-  height: 33%;
+  height: 40%;
   /* height: 84%; Alternative */
   border: solid;
-  border-radius: 5px;
-  border-width: 1;
+  border-radius: 15px;
+  border-width: 2;
   border-color: lightgray;
-  top: 395;
+  top: 355;
   margin-left: 50;
   margin-right: 50;
-  background: rgba(240, 240, 240, 1);
-  /*background-color: rgba(0,131,214,1); /* WWU light blue */
+  /*background: rgba(244, 248, 224, 1); /* CBE Light Green */
+  background: rgba(240, 240, 240, 1); /* CBE Gray */
+  /*background-color: rgba(0,131,214, 0.8); /* WWU light blue */
   /*rgba(0,0,0, 0.35) Black */
 }
 
@@ -104,7 +106,7 @@ div.stats{
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background: rgba(0, 63, 135, 1);
+  background: rgba(0, 63, 135, .8);
   /*background-color: rgba(0,0,0, 0.5); Black */
 }
 
@@ -121,6 +123,7 @@ div.stats{
 }
 
 #notOnPage{
+  background: rgba(0, 63, 135, 1);
   position: absolute;
   top: 90;
   width: 100%;
@@ -163,13 +166,15 @@ div.stats{
 }
 
 #submitBlock {
+  margin-top: 18px;
   margin-left: 10%;
   margin-right: 10%;
 }
 
 #addAClass{
-  color: white;
-  color: rgba(105,105,105,1); /*Gray*/
+  font-size: 40;
+  font-weight: 500;
+  color: rgba(80,80,80,1); /*Gray*/
 }
 
 #contentRow {
