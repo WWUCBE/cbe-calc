@@ -246,9 +246,7 @@ app.controller('MainCtrl', [
         'OPS',
         'MGMT',
         'IBUS',
-        'HRM',
-        'CSCI',
-        'MATH'
+        'HRM'
       ];
       var grades = [
         'A',
