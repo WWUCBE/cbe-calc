@@ -7,19 +7,9 @@ body {
   font-weight: 400;
   text-align: center;
   background: rgba(0, 63, 135, 1);
-  /*background: rgba(100, 100, 100, 1);*/
+  /*background: rgba(100, 100, 100, 1); Gray */
   /*#2654B3*/
 }
-/*
-#TitleBanner {
-  border-radius: 10px;
-  position: absolute;
-  top: -20;
-  background-color: rgba(0,0,0, .3);
-  width: 780px;
-  height: 100px;
-}
-*/
 
 .even {
   background-color: rgba(0,0,0, 0.05);
@@ -60,7 +50,8 @@ div.stats{
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background-color: rgba(0,0,0, 0.35);
+  background-color: rgba(0,112,182,0.8);
+  /*rgba(0,0,0, 0.35) Black */
 }
 
 #headerBanner {
@@ -73,7 +64,7 @@ div.stats{
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background-color: rgba(0,0,0, 0.3);
+  background-color: rgba(0,0,0, 0.5);
 }
 
 #good {
