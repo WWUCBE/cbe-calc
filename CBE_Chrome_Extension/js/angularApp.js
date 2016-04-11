@@ -72,24 +72,24 @@ app.controller('MainCtrl', [
         gpa -= 0.3;
       }
 
-      var found = false;
+      //var found = false;
       for(var i = 0 ; i < $scope.classList.length ; i++){
         if($scope.classList[i].name === $scope.name){
-          found = true;
-          $scope.classList[i].gpa = ((+$scope.classList[i].gpa + gpa)/2).toFixed(2);
-          $scope.classList[i].grade = $scope.classList[i].gpa;
+          //found = true;
+          //$scope.classList[i].gpa = ((+$scope.classList[i].gpa + gpa)/2).toFixed(2);
+          //$scope.classList[i].grade = $scope.classList[i].gpa;
           $scope.classList[i].composite = 'composite';
         }
       }
 
-      if(!found){
+      //if(!found){
         $scope.classList.push({
           name: $scope.name.substring(0,15),
           grade: letter.toUpperCase() + mod,
           gpa: gpa.toFixed(2),
           credits: $scope.credits
         });
-      }
+      //}
 
       $scope.name = '';
       $scope.grade = '';
@@ -133,21 +133,43 @@ app.controller('MainCtrl', [
       return;
     };
 
+    /*
+    for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+      for(var j = 0 ; j < i ; j++){
+        if($scope.classList[j].name === $scope.classList[i].name){
+          $scope.classList[j].composite = "composite";
+          break;
+        }
+      }
+    }
+    */
+
     $scope.setGpa = function() {
+      for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+        if($scope.classList[i].composite === "composite"){
+          $scope.classList[i].composite = "unique";
+          for(var j = i+1 ; j < $scope.classList.length ; j++){
+            if($scope.classList[j].name === $scope.classList[i].name){
+              $scope.classList[i].composite = "composite";
+            }
+          }
+        }
+      }
+
       var gpa = 0.00;
       var credits = 0.00;
-
-      if($scope.previousGPA.length > 0){
-        gpa = $scope.previousGPA[0].gpa * $scope.previousGPA[0].prevCredits;
-        credits = $scope.previousGPA[0].prevCredits;
-      }
+      var countCredits = 0.00; //The number of credits minus credits from classes that were retaken
 
       for(var i = 0 ; i < $scope.classList.length ; i++){
         gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
-        credits += +$scope.classList[i].credits;
+        countCredits += +$scope.classList[i].credits;
+        if($scope.classList[i].composite != "composite"){
+          credits +=  +$scope.classList[i].credits;
+        }
       }
+
       if(gpa != 0){
-        gpa = gpa / credits;
+        gpa = gpa / countCredits;
       }
       $scope.totalCredits = credits;
       $scope.gpa = gpa.toFixed(2);
@@ -225,6 +247,8 @@ app.controller('MainCtrl', [
         'MGMT',
         'IBUS',
         'HRM',
+        'CSCI',
+        'MATH'
       ];
       var grades = [
         'A',
@@ -281,24 +305,23 @@ app.controller('MainCtrl', [
           }
 
           if(realGrade){
-            var found = false;
+            //var found = false;
             for(var j = 0 ; j < $scope.classList.length ; j++){
               if($scope.classList[j].name === tempName){
-                found = true;
-                $scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
-                $scope.classList[j].grade = $scope.classList[j].gpa;
+                //found = true;
+                //$scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
                 $scope.classList[j].composite = 'composite';
               }
             }
 
-            if(!found){
+            //if(!found){
               $scope.classList.push({
                 name: tempName,
                 grade: tempGrade,
                 gpa: getGPAValue(tempGrade).toFixed(1),
                 credits: tempCredits
               });
-            }
+            //}
           }
         }
       }

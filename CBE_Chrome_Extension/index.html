@@ -21,9 +21,11 @@
   </div>
 
 	<div class="container" id = "onPage">
+    <div id=treeImage></div>
     <div id="gpaBanner"></div>
     <div id="gradeBanner"></div>
     <div id="headerBanner"></div>
+    <div id="inputBanner"></div>
 	  <div class = "row" id = "title" >
 	    <div id="titleBlock" class="col-xs-12">
         <div class = "row" id = "gpaAndCredits">
@@ -100,32 +102,32 @@
   	              Add a class
   	            </h2>
               </div>
-	            <div class="form-group">
+	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
 	                placeholder="Class name"
 	                ng-model="name">
 	              </input>
 	            </div>
-	            <div class="form-group">
+	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
 	                placeholder="Letter grade"
 	                ng-model="grade">
 	              </input>
 	            </div>
-	            <div class="form-group">
+	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
 	                placeholder="# credits"
 	                ng-model="credits">
 	              </input>
 	            </div>
-              <button type="button" class="btn btn-primary refreshData text-center" style="float: left;">
+              <button id="blueButton" type="button" class="btn btn-primary refreshData text-center" style="float: left;">
                 Refresh
               </button>
               <!-- <button id="c-button--slide-bottom" class="c-button">Slide Botton</button> -->
-	            <button type="submit" class="btn btn-primary" style="float: right;">
+	            <button id="blueButton" type="submit" class="btn btn-primary" style="float: right;">
 	              Add
 	            </button>
 	          </form>

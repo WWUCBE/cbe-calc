@@ -6,14 +6,18 @@ body {
   color: white;
   font-weight: 400;
   text-align: center;
-  background: rgba(255, 255, 255, 1); /* white */
+  background: rgba(233, 233, 233, 1); /* off-white */
   /*background: rgba(0, 63, 135, 1); WWU Blue */
   /*background: rgba(100, 100, 100, 1); Gray */
   /*#2654B3*/
 }
 
+#blueButton {
+background: rgba(0, 63, 135, 1); /*WWU Blue*/
+}
+
 .even {
-  background-color: rgba(0,0,0, 0.05);
+  background-color: rgba(0,0,0, 0.05); /*Slightly darker strip*/
 }
 
 div.stats{
@@ -30,6 +34,10 @@ div.stats{
   cursor:pointer;
 }
 
+.myform {
+  color: background: rgba(0, 63, 135, 1); /* WWU Blue */;
+}
+
 #gpaBanner {
   position: absolute;
   left: 0;
@@ -39,7 +47,8 @@ div.stats{
   top: 28;
   margin-left: 300;
   margin-right: 300;
-  background-color: rgba(0,0,0, 0.65);
+  background: rgba(0, 63, 135, 1);
+  /* background-color: rgba(0,0,0, 0.65); */
 }
 
 #gradeBanner {
@@ -47,11 +56,41 @@ div.stats{
   left: 0;
   right: 0;
   height: 42%;
+  /* height: 84%; Alternative */
   border-radius: 10px;
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background-color: rgba(0,112,182,0.8);
+  background-color: rgba(0,131,214,.8); /* WWU light blue */
+  /*rgba(0,0,0, 0.35) Black */
+}
+
+#treeImage {
+  position: absolute;
+  top: 0;
+  /* top: 360; /* to position on input bar */
+  left: -50;
+  height: 183;
+  width: 1060;
+  background-image: url("https://cbe.wwu.edu/sites/cbe.wwu.edu/files/HeaderCBE.jpg"); /* 1060 x 183 */
+}
+
+#inputBanner {
+  visibility: visible; /**/
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 33%;
+  /* height: 84%; Alternative */
+  border: solid;
+  border-radius: 5px;
+  border-width: 1;
+  border-color: lightgray;
+  top: 395;
+  margin-left: 50;
+  margin-right: 50;
+  background: rgba(240, 240, 240, 1);
+  /*background-color: rgba(0,131,214,1); /* WWU light blue */
   /*rgba(0,0,0, 0.35) Black */
 }
 
@@ -130,6 +169,7 @@ div.stats{
 
 #addAClass{
   color: white;
+  color: rgba(105,105,105,1); /*Gray*/
 }
 
 #contentRow {
@@ -152,7 +192,7 @@ div.stats{
 
 ::-webkit-scrollbar {
   width: 0.85em;
-  background-color: white;
+  background-color: rgba(0,0,0,0.2);
   border-radius: 10px;
   margin-right: 5px;
 }
@@ -162,7 +202,7 @@ div.stats{
 }
 */
 ::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
+  background-color: rgba(0,0,0,0.5);
   border-radius: 10px;
   outline: 1px solid slategrey;
 }
