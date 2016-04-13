@@ -73,7 +73,7 @@ div.stats{
   left: -50;
   height: 183;
   width: 1060;
-  background-image: url("https://cbe.wwu.edu/sites/cbe.wwu.edu/files/HeaderCBE.jpg"); /* 1060 x 183 */
+  background-image: url("../resources/treeHeader.jpg"); /* 1060 x 183 */
 }
 
 #inputBanner {
