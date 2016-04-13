@@ -1,4 +1,5 @@
 body {
+  overflow: hidden;
   margin-top: -20px;
   width:780px;
   height:580px;
