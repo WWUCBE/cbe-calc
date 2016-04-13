@@ -12,7 +12,7 @@
     "scripts":["js/background.js"]
   },
   "content_scripts":[{
-    "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"],
+      "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran", "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"],
     "js":["js/content.js"],
     "run_at": "document_end"
     }],
