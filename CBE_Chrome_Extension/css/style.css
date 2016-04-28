@@ -28,9 +28,9 @@ div.stats{
 }
 
 .glyphicon-large {
-  min-height: 40px;
-  line-height: 40px;
-  font-size: 25px;
+  min-height: 25px;
+  line-height: 25px;
+  font-size: 18px; /*was 25*/
   min-width: 40px;
   display: block;
   margin: -0.5em auto 0px;
@@ -145,15 +145,11 @@ div.stats{
   font-family: 'Ubuntu', sans-serif;
 }
 
-#headers {
-
-}
-
 #gradeBlock{
   overflow:auto;
   margin-top: -5px;
   height:214px;
-  font-size:20px;
+  font-size:16px;
   margin-left:10px;
 }
 
@@ -181,8 +177,8 @@ div.stats{
 
 #contentRow {
   margin-left: 5px;
-  height: 40px;
-  line-height: 40px;
+  height: 25px;
+  line-height: 25px;
 }
 
 #removeIcon {
@@ -194,7 +190,7 @@ div.stats{
 #oddContentRow {
   margin-left: 5px;
   background-color: rgba(0,0,0, .2);
-  height: 40;
+  height: 30;
 }
 
 ::-webkit-scrollbar {
