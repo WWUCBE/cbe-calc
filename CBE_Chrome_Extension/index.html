@@ -65,14 +65,14 @@
                   ng-click="removeClass(class)"
                 </span>
               </div>
-              <div class = "col-xs-3" style="text-align:left">
+              <div class = "col-xs-5" style="text-align:left">
                 <span id="editableField" editable-text="classList[$index].name" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.name }}
                   </div>
                 </span>
               </div>
-              <div class = "col-xs-4">
+              <div class = "col-xs-2" style="text-align:left">
                 <span id="editableField" editable-text="classList[$index].grade" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.grade }}
