@@ -66,21 +66,21 @@
                 </span>
               </div>
               <div class = "col-xs-5" style="text-align:left">
-                <span id="editableField" editable-text="classList[$index].name" buttons="no" e-required onaftersave="reCalc($index)">
+                <span id="editableField" editable-text="classList[$index].name" blur="submit" e-style="height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.name }}
                   </div>
                 </span>
               </div>
               <div class = "col-xs-2" style="text-align:left">
-                <span id="editableField" editable-text="classList[$index].grade" buttons="no" e-required onaftersave="reCalc($index)">
+                <span id="editableField" editable-text="classList[$index].grade" blur="submit" e-style="width:50px; height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.grade }}
                   </div>
                 </span>
               </div>
               <div class = "col-xs-4">
-                <span id="editableField" editable-text="classList[$index].credits" buttons="no" e-required onaftersave="reCalc($index)">
+                <span id="editableField" editable-text="classList[$index].credits" blur="submit" e-style="width:50px; height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
                   <div id={{class.composite}}>
                     {{ class.credits }}
                   </div>
