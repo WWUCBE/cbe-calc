@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
       show('onPage');
       hide('notOnPage');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else if(url=="file:///C:/Users/Jherr/GOOGLE~1/School/COMPUT~1/CS493~1/TOTALA~1.HTM"){
+    }else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
       show('onPage');
       hide('notOnPage');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
