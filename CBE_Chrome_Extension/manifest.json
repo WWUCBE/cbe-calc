@@ -12,7 +12,9 @@
     "scripts":["js/background.js"]
   },
   "content_scripts":[{
-      "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran", "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"],
+      "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran",
+        "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent",
+        "file:///C:/Users/Jherr/GOOGLE~1/School/COMPUT~1/CS493~1/TOTALA~1.HTM"],
     "js":["js/content.js"],
     "run_at": "document_end"
     }],
