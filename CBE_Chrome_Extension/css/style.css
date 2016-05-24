@@ -176,7 +176,7 @@ div.stats{
   right: 0;
   height: 7%;
   border-radius: 10px;
-  top: 380;
+  top: 360;
   width: 200;
   margin-left: 500;
   background: rgba(0, 63, 135, 0.85);
@@ -193,7 +193,7 @@ div.stats{
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background-color: rgba(0,131,214, 0.8); /* WWU light blue */
+  background-color: rgba(0,131,214, 1); /* WWU light blue */
   /*rgba(0,0,0, 0.35) Black */
 }
 
@@ -218,7 +218,25 @@ div.stats{
   border-color: lightgray;
   top: 355;
   margin-left: 15;
-  margin-right: 360;
+  margin-right: 380;
+  /*background: rgba(244, 248, 224, 1); /* CBE Light Green */
+  background: rgba(240, 240, 240, 1); /* CBE Gray */
+  /*background-color: rgba(0,131,214, 0.8); /* WWU light blue */
+  /*rgba(0,0,0, 0.35) Black */
+}
+
+#gpaIndent {
+  visibility: visible; /**/
+  position: absolute;
+  height: 20%;
+  /* height: 84%; Alternative */
+  border: solid;
+  border-radius: 15px;
+  border-width: 2;
+  border-color: lightgray;
+  top: 300;
+  margin-left: 480;
+  width: 240;
   /*background: rgba(244, 248, 224, 1); /* CBE Light Green */
   background: rgba(240, 240, 240, 1); /* CBE Gray */
   /*background-color: rgba(0,131,214, 0.8); /* WWU light blue */
@@ -235,7 +253,7 @@ div.stats{
   top: 90;
   margin-left: 15;
   margin-right: 15;
-  background: rgba(0, 63, 135, .8);
+  background: rgba(0, 63, 135, 1);
   /*background-color: rgba(0,0,0, 0.5); Black */
 }
 
