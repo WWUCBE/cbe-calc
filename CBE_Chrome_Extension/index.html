@@ -20,17 +20,40 @@
     </div>
   </div>
 
+  <input id="toggle" type="checkbox"><label for="toggle"><span class="glyphicon glyphicon-chevron-left"></span></label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
+
+  <div class="slide-menu">
+    <div id="menuText">
+      <h1> Instructions </h1>
+      <hr>
+      <p id="intro">
+        This is an application designed to help students and faculty more easily asses their standing in the College of Business and Economics.
+      </p>
+      <ul id="features">
+        <li>
+          Add a class by typing it's information into the provided fields under the "add a class" header
+        </li>
+        <li>
+          Removed a class by clicking on the  <span class="glyphicon glyphicon-remove-circle"></span>  next to a class
+        </li>
+        <li>
+          Classes become grayed out when a more recent attempt is entered (or detected by our app)
+        </li>
+      </ul>
+    </div>
+  </div>
+
 	<div class="container" id = "onPage">
-    <div id=treeImage></div>
-    <div id="gpaBanner"></div>
+    <div id="grayBlock"></div>
+    <div id="gpaBanner"><div id="gpaText"><b id={{standing}}> GPA: {{gpa}} </b></div></div>
     <div id="gradeBanner"></div>
     <div id="headerBanner"></div>
     <div id="inputBanner"></div>
 	  <div class = "row" id = "title" >
 	    <div id="titleBlock" class="col-xs-12">
-        <div class = "row" id = "gpaAndCredits">
+        <div class = "row" id = "appName">
           <div class="col-sm-12">
-            <h2><b id={{standing}}> GPA: {{gpa}} </b></h2>
+            <h1><b> CBE Grade Calculator</b></h1> <!--<b id={{standing}}> GPA: {{gpa}} </b>-->
           </div>
         </div>
         <div class = "row" id = "headers">
@@ -132,6 +155,9 @@
 	        </section>
 	      </div>
 	    </div>
+      <div class = "col-md-3">
+
+      </div>
 	  </div>
 	</div>
 

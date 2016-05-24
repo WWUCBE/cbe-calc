@@ -1,3 +1,8 @@
+html{
+  width:800px;
+  height:600px;
+}
+
 body {
   overflow: hidden;
   margin-top: -20px;
@@ -15,8 +20,131 @@ body {
   /*#2654B3*/
 }
 
+/**/
+/**/
+/* slide-menu stuff */
+/**/
+/**/
+
+ul {
+  margin-top: 10;
+  margin-left: -20;
+  text-align: left;
+}
+
+li:not(:last-child) {
+    margin-bottom: 7px;
+}
+
+#intro {
+  font-size: 16px;
+}
+
+#features {
+  margin-top: 30px;
+  list-style-type: square;
+}
+
+.glyphicon-chevron-left{
+  color: #18324A; rgba(0, 63, 135, 1);
+}
+
+#menuText{
+  color: white;
+  text-align:center;
+  font-size: 15;
+  margin-top: 50;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+}
+label {
+  right: 25px;
+  position: absolute;
+  top: 10px;
+  z-index: 1;
+  display: block;
+  font-size:3em;
+  color: #444;
+  cursor: pointer;
+  transform: translate3d(0, 0, 0);
+  transition: transform .4s;
+}
+input[type=checkbox]:checked ~ label {
+  transform: translate3d(-250px, 530px, 0) rotate(180deg);
+}
+.content {
+  width:100%;
+  padding: 40px;
+  background: #f2f2f2;
+  transform: translate3d(0, 0, 0);
+  transition: transform .4s;
+}
+input[type=checkbox]:checked ~ .content {
+  transform: translate3d(-250px, 0, 0);
+}
+input[type=checkbox]:checked ~ .slide-menu {
+  transform: translate3d(0, 0, 0);
+}
+input[type=checkbox]:checked ~ .slide-menu .menu li {
+  width: 100%;
+}
+.slide-menu {
+  z-index: 1;
+  transform: translate3d(250px, 0, 0);
+  right: 0;
+  position: absolute;
+  width: 250px;
+  background: #18324A ; rgba(0, 63, 135, 1);
+  color: #ddd;
+  height: 120%;
+  transition: all .4s;
+}
+.slide-menu h1 {
+  margin: 10px;
+  text-shadow: 1px 1px 1px #000;
+}
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu a {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.1em;
+  padding: 15px;
+  background: linear-gradient(#628297, #4f6b81);
+  border-bottom: 1px solid #1e222b;
+  box-shadow: inset 0px 1px 1px #8b9db3;
+}
+.menu a:hover {
+  background: linear-gradient(#3b3f48, #3c434d);
+  box-shadow: inset 0px 1px 1px #475059;
+}
+
+/**/
+/**/
+/* End slide-menu stuff */
+/**/
+/**/
+
+#gpaText {
+  margin-top: 4;
+}
+
+#appName {
+  color: rgba(0, 63, 135, 1);
+  margin-top: -6;
+}
+
 #blueButton {
-background: rgba(0, 63, 135, 0.8); /*WWU Blue*/
+  background: rgba(0, 63, 135, 0.8); /*WWU Blue*/
 }
 
 .even {
@@ -42,14 +170,15 @@ div.stats{
 }
 
 #gpaBanner {
+  font-size: 30;
   position: absolute;
   left: 0;
   right: 0;
   height: 7%;
   border-radius: 10px;
-  top: 28;
-  margin-left: 300;
-  margin-right: 300;
+  top: 380;
+  width: 200;
+  margin-left: 500;
   background: rgba(0, 63, 135, 0.85);
   /* background-color: rgba(0,0,0, 0.65); */
 }
@@ -68,13 +197,12 @@ div.stats{
   /*rgba(0,0,0, 0.35) Black */
 }
 
-#treeImage {
+#grayBlock {
   position: absolute;
   top: 0;
-  left: -50;
-  height: 183;
+  height: 110;
   width: 1060;
-  background-image: url("../resources/treeHeader.jpg"); /* 1060 x 183 */
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 #inputBanner {
@@ -89,8 +217,8 @@ div.stats{
   border-width: 2;
   border-color: lightgray;
   top: 355;
-  margin-left: 50;
-  margin-right: 50;
+  margin-left: 15;
+  margin-right: 360;
   /*background: rgba(244, 248, 224, 1); /* CBE Light Green */
   background: rgba(240, 240, 240, 1); /* CBE Gray */
   /*background-color: rgba(0,131,214, 0.8); /* WWU light blue */
@@ -113,10 +241,6 @@ div.stats{
 
 #good {
   color: #32CD32; /*Green*/
-}
-
-#ok {
-  color: #FFD700; /*Yellow*/
 }
 
 #bad {
@@ -164,8 +288,8 @@ div.stats{
 
 #submitBlock {
   margin-top: 17px;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 5%;
+  margin-right: 50%;
 }
 
 #addAClass{
