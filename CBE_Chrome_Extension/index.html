@@ -43,7 +43,7 @@
     </div>
   </div>
 
-	<div class="container" id = "onPage">
+  <div class="container backBlur" id="onPage">
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>
     <div id="gpaBanner"><div id="gpaText"><b id={{standing}}> GPA: {{gpa}} </b></div></div>
@@ -54,10 +54,10 @@
 	    <div id="titleBlock" class="col-xs-12">
         <div class = "row" id = "appName">
           <div class="col-sm-12">
-            <h1><b> CBE Grade Calculator</b></h1> <!--<b id={{standing}}> GPA: {{gpa}} </b>-->
+            <h1 class="backBlur"><b> CBE Grade Calculator </b></h1> <!--<b id={{standing}}> GPA: {{gpa}} </b>-->
           </div>
         </div>
-        <div class = "row" id = "headers">
+        <div class = "row backBlur" id = "headers">
 	        <div class = "col-xs-2 col-xs-offset-1">
 	          <h3>
 	            Course
@@ -80,7 +80,7 @@
     <!--Grade Block-->
 	  <div class = "row">
       <div id = "grades">
-  	    <div class = "col-md-6 col-md-offset-3">
+  	    <div class = "col-md-6 col-md-offset-3 backBlur">
   	      <div id = "gradeBlock">
   	        <div ng-repeat="class in classList track by $index" id="contentRow" ng-class-even="'even'">
               <div class = "col-xs-1" style="text-align:left">
@@ -116,7 +116,7 @@
       </div>
 
       <!--Submit sub-block-->
-	    <div class = "col-md-3">
+	    <div class = "col-md-3 backBlur">
 	      <div id = "submitBlock">
           <!--**Insert "old grades" block here if needed**-->
 	        <section>

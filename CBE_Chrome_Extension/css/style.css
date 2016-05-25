@@ -13,6 +13,7 @@ body {
   font-weight: 400;
   text-align: center;
   background: rgba(233,233,233, 1);
+  z-index: 3;
   /*background-image: linear-gradient(180deg, rgba(239, 244, 212, 1), white); /* CBE Green */
   /*background: rgba(233, 233, 233, 1); /* off-white */
   /*background: rgba(0, 63, 135, 1); WWU Blue */
@@ -25,6 +26,19 @@ body {
 /* slide-menu stuff */
 /**/
 /**/
+
+.backBlur {
+  -webkit-filter: blur(0px);
+}
+
+#blurSpan {
+  width: 800;
+  height: 800;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  -webkit-filter: blur(3px);
+}
 
 ul {
   margin-top: 10;
@@ -93,6 +107,19 @@ input[type=checkbox]:checked ~ .slide-menu {
 input[type=checkbox]:checked ~ .slide-menu .menu li {
   width: 100%;
 }
+input[type=checkbox]:checked ~ .backBlur {
+  -webkit-filter: blur(3px);
+}
+input[type=checkbox]:checked ~ .backBlur .col-md-6{
+  -webkit-filter: blur(3px);
+}
+input[type=checkbox]:checked ~ .backBlur .col-xs-12{
+  -webkit-filter: blur(3px);
+}
+input[type=checkbox]:checked ~ .backBlur .col-md-3 {
+  -webkit-filter: blur(3px);
+}
+
 .slide-menu {
   z-index: 1;
   transform: translate3d(250px, 0, 0);
