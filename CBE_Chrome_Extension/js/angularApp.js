@@ -236,7 +236,7 @@ app.controller('MainCtrl', [
         'DSCI',
         'MIS',
         'FIN',
-        'MRKT',
+        'MKTG',
         'OPS',
         'MGMT',
         'IBUS',

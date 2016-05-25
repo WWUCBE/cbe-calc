@@ -57,7 +57,7 @@ li:not(:last-child) {
   list-style-type: square;
 }
 
-.glyphicon-chevron-left{
+.menuButton{
   color: #18324A; rgba(0, 63, 135, 1);
 }
 
@@ -81,13 +81,13 @@ label {
   z-index: 3;
   display: block;
   font-size:3em;
-  color: #444;
+  color: #18324A;
   cursor: pointer;
   transform: translate3d(0, 0, 0);
   transition: transform .4s;
 }
 input[type=checkbox]:checked ~ label {
-  transform: translate3d(-250px, 520px, 0) rotate(180deg);
+  transform: translate3d(-250px, 520px, 0) rotate(90deg);
 }
 .content {
   width:100%;

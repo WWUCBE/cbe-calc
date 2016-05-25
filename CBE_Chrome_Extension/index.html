@@ -8,8 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body id="main" data-ng-controller="MainCtrl">
-  
-  <input id="toggle" type="checkbox"><label for="toggle"><span class="glyphicon glyphicon-chevron-left"></span></label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
+
+  <input id="toggle" type="checkbox">
+    <label for="toggle">
+      &equiv; <!--The following would be better, but I can't seem to get google chrome to display an SVG: <img src="resources/menu.svg" class="menuButton"> -->
+    </label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
 
   <div class="slide-menu">
     <div id="menuText">
