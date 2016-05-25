@@ -8,18 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body id="main" data-ng-controller="MainCtrl">
-  <!--Redirect Block-->
-  <div class="container" id = "notOnPage">
-    <H3>
-      You need to be signed into MyWestern for us to access your transcript
-    </H3>
-    <div class="span7 text-center">
-      <button type="button" class="btn btn-primary wwuRedirect text-center">
-        Let's go!
-      </button>
-    </div>
-  </div>
-
+  
   <input id="toggle" type="checkbox"><label for="toggle"><span class="glyphicon glyphicon-chevron-left"></span></label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
 
   <div class="slide-menu">
@@ -43,7 +32,20 @@
     </div>
   </div>
 
+  <!--Redirect Block-->
+  <div class="container backBlur" id = "notOnPage">
+    <H3 class="backBlur">
+      You need to be signed into MyWestern for us to access your transcript
+    </H3>
+    <div class="span7 text-center backBlur">
+      <button type="button" class="btn btn-primary wwuRedirect text-center backBlur">
+        Let's go!
+      </button>
+    </div>
+  </div>
+
   <div class="container backBlur" id="onPage">
+    <div class="backFilter"></div>
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>
     <div id="gpaBanner"><div id="gpaText"><b id={{standing}}> GPA: {{gpa}} </b></div></div>
