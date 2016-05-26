@@ -238,15 +238,15 @@ div.stats{
   position: absolute;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 290;
   /* height: 84%; Alternative */
   border: solid;
   border-radius: 15px;
   border-width: 2;
   border-color: lightgray;
-  top: 355;
-  margin-left: 15;
-  margin-right: 380;
+  top: 300;
+  margin-left: 30;
+  margin-right: 365;
   /*background: rgba(244, 248, 224, 1); /* CBE Light Green */
   background: rgba(240, 240, 240, 1); /* CBE Gray */
   /*background-color: rgba(0,131,214, 0.8); /* WWU light blue */
@@ -333,9 +333,9 @@ div.stats{
 }
 
 #submitBlock {
-  margin-top: 17px;
-  margin-left: 5%;
-  margin-right: 50%;
+  margin-top: 12px;
+  margin-left: 50;
+  margin-right: 370;
 }
 
 #addAClass{
