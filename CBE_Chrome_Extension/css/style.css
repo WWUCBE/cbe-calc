@@ -87,7 +87,7 @@ label {
   transition: transform .4s;
 }
 input[type=checkbox]:checked ~ label {
-  transform: translate3d(-250px, 520px, 0) rotate(90deg);
+  transform: translate3d(-250px, 0, 0) rotate(90deg);
 }
 .content {
   width:100%;
@@ -122,7 +122,7 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 }
 
 .slide-menu {
-  z-index: 1;
+  z-index: 3;
   transform: translate3d(250px, 0, 0);
   right: 0;
   position: absolute;
