@@ -87,7 +87,9 @@ label {
   transition: transform .4s;
 }
 input[type=checkbox]:checked ~ label {
-  transform: translate3d(-250px, 0, 0) rotate(90deg);
+  /*transform: translate3d(-250px, 0, 0) rotate(90deg);*/
+  transform: scale3d(76,76,76);
+  opacity: 0;
 }
 .content {
   width:100%;
