@@ -84,13 +84,14 @@ label {
   color: #18324A;
   cursor: pointer;
   transform: translate3d(0, 0, 0);
-  transition: transform .4s;
+  transition: transform 0s;
 }
 input[type=checkbox]:checked ~ label {
   /*transform: translate3d(-250px, 0, 0) rotate(90deg);*/
   transform: scale3d(76,76,76);
   opacity: 0;
 }
+
 .content {
   width:100%;
   padding: 40px;
@@ -175,6 +176,14 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 
 #blueButton {
   background: rgba(0, 63, 135, 0.8); /*WWU Blue*/
+}
+
+#printButton {
+  position: absolute;
+  border-radius: 10px;
+  left: 745;
+  top: 182.5;
+  background: rgba(0, 63, 135, 1); /*WWU Blue*/
 }
 
 .even {

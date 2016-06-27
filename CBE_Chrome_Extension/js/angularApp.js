@@ -170,6 +170,10 @@ app.controller('MainCtrl', [
 
     };
 
+    $scope.printSection = function() {
+        window.print();
+    }
+
     $scope.removeClass = function(item) {
       var index = $scope.classList.indexOf(item);
       $scope.classList.splice(index, 1);
