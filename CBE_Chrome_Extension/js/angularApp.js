@@ -133,6 +133,8 @@ app.controller('MainCtrl', [
       return;
     };
 
+
+
     $scope.setGpa = function() {
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
         $scope.classList[i].composite = "unique";
@@ -358,6 +360,24 @@ function getGPAValue(string){
   return gpa;
 }
 
+//TODO: fix storage functions
+/*
+//Save entered classes when minimized
+function setProgress(classList) {
+  chrome.storage.local.set({'classes': classList}, function(){
+    message('Classes Saved');
+  });
+};
+
+//Retreive classes when maximized (If previous classes exist)
+function getProgress() {
+  classList = [];
+  chrome.storage.local.get({'classes', function(result){
+    classList = result.classes;
+    message('Classes retreived');
+  });
+};
+*/
 
 // Update the relevant fields with the new data
 function setDOMInfo(info) {

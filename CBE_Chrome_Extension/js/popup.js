@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', function() {
       show('onPage');
       hide('notOnPage');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
+    }else if(url=="file:///C:/Users/Jherr/Desktop/testPage.html"){ //For testing
+      show('onPage');
+      hide('notOnPage');
+      chrome.tabs.executeScript(null, {file: "js/content.js"});
     }else{
       show('notOnPage');
       hide('onPage');
