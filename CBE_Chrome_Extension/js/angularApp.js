@@ -96,12 +96,12 @@ app.controller('MainCtrl', [
       $scope.credits = '';
 
       $scope.setGpa();
+      setProgress($scope.classList);
 
       return;
     };
 
     $scope.updatePrevious = function() {
-      console.log("made it into function");
       console.log($scope.prevGPA);
       console.log($scope.prevCredits);
       if(!$scope.prevGPA || $scope.prevGPA === ''){
@@ -132,8 +132,6 @@ app.controller('MainCtrl', [
 
       return;
     };
-
-
 
     $scope.setGpa = function() {
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
@@ -312,18 +310,17 @@ app.controller('MainCtrl', [
               }
             }
 
-            //if(!found){
-              $scope.classList.push({
-                name: tempName,
-                grade: tempGrade,
-                gpa: getGPAValue(tempGrade).toFixed(1),
-                credits: tempCredits
-              });
-            //}
+            $scope.classList.push({
+              name: tempName,
+              grade: tempGrade,
+              gpa: getGPAValue(tempGrade).toFixed(1),
+              credits: tempCredits
+            });
           }
         }
       }
       $scope.setGpa();
+      setProgress($scope.classList);
       return;
     };
   }
@@ -361,23 +358,28 @@ function getGPAValue(string){
 }
 
 //TODO: fix storage functions
-/*
+
 //Save entered classes when minimized
 function setProgress(classList) {
   chrome.storage.local.set({'classes': classList}, function(){
-    message('Classes Saved');
-  });
-};
+    console.debug('Classes Saved');
+    //TEST RETREIVAL
+    chrome.storage.local.get('classes', function(result){
+      classList = result.classes;
+      console.debug(classList);
+    })
+    //END TEST
+  })
+}
 
 //Retreive classes when maximized (If previous classes exist)
-function getProgress() {
-  classList = [];
-  chrome.storage.local.get({'classes', function(result){
+function getProgress(classList) {
+  chrome.storage.local.get('classes', function(result){
     classList = result.classes;
-    message('Classes retreived');
-  });
-};
-*/
+    console.debug('Classes retreived');
+  })
+}
+
 
 // Update the relevant fields with the new data
 function setDOMInfo(info) {
