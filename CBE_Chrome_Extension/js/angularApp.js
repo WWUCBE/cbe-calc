@@ -84,14 +84,12 @@ app.controller('MainCtrl', [
         }
       }
 
-      //if(!found){
       $scope.classList.push({
         name: $scope.name.substring(0,15),
         grade: letter.toUpperCase() + mod,
         gpa: gpa.toFixed(2),
         credits: $scope.credits
       });
-      //}
 
       $scope.name = '';
       $scope.grade = '';
@@ -183,6 +181,7 @@ app.controller('MainCtrl', [
       console.log("removeClass()");
       var index = $scope.classList.indexOf(item);
       $scope.classList.splice(index, 1);
+      setProgress($scope.classList);
       $scope.setGpa();
     };
 
@@ -237,118 +236,118 @@ app.controller('MainCtrl', [
       $scope.setGpa();
     }
 
+    $scope.readFromPage = function(info){
+      console.debug("readFromPage()");
+      var localData = String(info.data);
+      var lines = localData.split('\n');
+      var headers = [
+        'ECON',
+        'ACCT',
+        'DSCI',
+        'MIS',
+        'FIN',
+        'MKTG',
+        'OPS',
+        'MGMT',
+        'IBUS',
+        'HRM'
+      ];
+      var grades = [
+        'A',
+        'A-',
+        'KA',
+        'KA-',
+        'B',
+        'B+',
+        'B-',
+        'KB',
+        'KB+',
+        'KB-',
+        'C',
+        'C+',
+        'C-',
+        'KC',
+        'KC+',
+        'KC-',
+        'D',
+        'D+',
+        'D-',
+        'KD',
+        'KD+',
+        'KD-',
+        'F'
+      ];
+      for(var i = 0 ; i < lines.length ; i++){
+        //split on space or group of spaces and store in lineArray
+        var lineArray = lines[i].trim().split(/\s+/);
+
+        if(headers.indexOf(lineArray[0]) >= 0){
+          var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
+          var tempGrade;
+          var tempCredits;
+          /*
+          for(var j = 0 ; j < grades.length ; j++){
+            if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
+              tempGrade = lineArray[j];
+              break;
+            }
+          }*/
+          var realGrade = false;
+          for(var ind = 5; ind < lineArray.length; ind++){
+            if(grades.indexOf(lineArray[ind])>=0){
+              tempGrade = lineArray[ind];
+              if(tempGrade[0] === 'K'){
+                tempGrade = tempGrade.substring(1,tempGrade.length);
+              }
+              //credits are located one before the grade.
+              tempCredits = lineArray[ind-1];
+              realGrade = true;
+              break;
+            }
+          }
+
+          if(realGrade){
+            //var found = false;
+            for(var j = 0 ; j < $scope.classList.length ; j++){
+              if($scope.classList[j].name === tempName){
+                //found = true;
+                //$scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
+                $scope.classList[j].composite = 'composite';
+              }
+            }
+
+            $scope.classList.push({
+              name: tempName,
+              grade: tempGrade,
+              gpa: getGPAValue(tempGrade).toFixed(1),
+              credits: tempCredits
+            });
+          }
+        }
+      }
+      setProgress($scope.classList);
+      $scope.setGpa();
+      $scope.updatePrevious();
+      $scope.setGpa();
+      return;
+    }
+
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       console.log("addPrevClasses()");
-      skip = false;
 
-      //Check to see if there are classes saved in storage
-      chrome.storage.local.get('classes', function(result){
-        if(typeof(result.classes) != "undefined"){
+      chrome.storage.sync.get('classes', function(result){
+        if(typeof(result.classes) != "undefined"){ //Check to see if there are classes saved in storage
           $scope.classList = result.classes;
           console.debug("Found previous classes");
           console.debug($scope.classList);
-          skip = true;
           $scope.setGpa();
           $scope.updatePrevious();
-        }else{
+          $scope.$apply();
+        }else{ //Else read from page
           console.debug("No previous classes");
-
-          var localData = String(info.data);
-          var lines = localData.split('\n');
-          var headers = [
-            'ECON',
-            'ACCT',
-            'DSCI',
-            'MIS',
-            'FIN',
-            'MKTG',
-            'OPS',
-            'MGMT',
-            'IBUS',
-            'HRM'
-          ];
-          var grades = [
-            'A',
-            'A-',
-            'KA',
-            'KA-',
-            'B',
-            'B+',
-            'B-',
-            'KB',
-            'KB+',
-            'KB-',
-            'C',
-            'C+',
-            'C-',
-            'KC',
-            'KC+',
-            'KC-',
-            'D',
-            'D+',
-            'D-',
-            'KD',
-            'KD+',
-            'KD-',
-            'F'
-          ];
-          for(var i = 0 ; i < lines.length ; i++){
-            //split on space or group of spaces and store in lineArray
-            var lineArray = lines[i].trim().split(/\s+/);
-
-            if(headers.indexOf(lineArray[0]) >= 0){
-              var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
-              var tempGrade;
-              var tempCredits;
-              /*
-              for(var j = 0 ; j < grades.length ; j++){
-                if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
-                  tempGrade = lineArray[j];
-                  break;
-                }
-              }*/
-              var realGrade = false;
-              for(var ind = 5; ind < lineArray.length; ind++){
-                if(grades.indexOf(lineArray[ind])>=0){
-                  tempGrade = lineArray[ind];
-                  if(tempGrade[0] === 'K'){
-                    tempGrade = tempGrade.substring(1,tempGrade.length);
-                  }
-                  //credits are located one before the grade.
-                  tempCredits = lineArray[ind-1];
-                  realGrade = true;
-                  break;
-                }
-              }
-
-              if(realGrade){
-                //var found = false;
-                for(var j = 0 ; j < $scope.classList.length ; j++){
-                  if($scope.classList[j].name === tempName){
-                    //found = true;
-                    //$scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
-                    $scope.classList[j].composite = 'composite';
-                  }
-                }
-
-                $scope.classList.push({
-                  name: tempName,
-                  grade: tempGrade,
-                  gpa: getGPAValue(tempGrade).toFixed(1),
-                  credits: tempCredits
-                });
-              }
-            }
-          }
-          setProgress($scope.classList);
-          /*TEST RETREIVAL
-          chrome.storage.local.get('classes', function(result){
-            classList = result.classes;
-            console.debug(classList);
-          })
-          //END TEST
-          */
+          $scope.readFromPage(info);
+          $scope.$apply();
         }
       });
 
@@ -357,14 +356,12 @@ app.controller('MainCtrl', [
       $scope.setGpa();
       return;
     };
-
   }
 ]);
 
 //Function to clean added classes and read classes that were removed when 'refresh' button is pressed
 function clearCache(){
-  console.log("Attempting to delete storage...");
-  chrome.storage.local.clear();
+  chrome.storage.sync.clear();
   console.log("Classes deleted");
 }
 
@@ -406,7 +403,7 @@ function getGPAValue(string){
 //Save entered classes when minimized
 function setProgress(classList) {
   console.log("setProgress()");
-  chrome.storage.local.set({'classes': classList}, function(){
+  chrome.storage.sync.set({'classes': classList}, function(){
     console.debug('Classes Saved');
   })
 }
@@ -414,7 +411,7 @@ function setProgress(classList) {
 //Retreive classes when maximized (If previous classes exist)
 function getProgress(classList) {
   console.log("getProgress()");
-  chrome.storage.local.get('classes', function(result){
+  chrome.storage.sync.get('classes', function(result){
     classList = result.classes;
     console.debug('Classes retreived');
     console.debug(classList);
@@ -434,7 +431,7 @@ function setDOMInfo(info) {
 
 document.getElementById("refreshButton").addEventListener("click", function () {
   clearCache();
-  window.location.reload();
+  //window.location.reload();
 });
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
