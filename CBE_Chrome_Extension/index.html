@@ -5,6 +5,7 @@
   <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
   <link href="css/xeditable.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="css/css-toggle-switch-master/dist/toggle-switch.css">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body id="main" data-ng-controller="MainCtrl">
@@ -18,9 +19,14 @@
     <div id="menuText">
       <h1> Instructions </h1>
       <hr>
-      <p id="intro">
-        Select <q>CBE GPA</q> to calculate all CBE grades (CBE GPA is based on graded CBE classes taken at Western only) Select <q>MSCM Foundation GPA</q> to calculate your MSCM Foundation GPA. Equivalent classes taken outside Western do count toward this GPA and must be manually entered into the calculator to determine your MSCM Foundation GPA. Only the most recent graded attempt is used.
+      <p id="CBEBlurb">
+        Select <q>CBE</q> to calculate your GPA for a CBE major, including all CBE grades (CBE GPA is based on graded CBE classes taken at Western only)
       </p>
+      <p id="MSCMBlurb">
+      Select <q>MSCM</q> to calculate your MSCM Foundation GPA. Equivalent classes taken outside Western do count toward this GPA and must be manually entered into the calculator. Only the most recent graded attempt is used.
+      </p>
+
+      <hr>
       <ul id="features">
         <li>
           To add a Class: Complete the information in the provided fields and click <q>Add</q>
@@ -35,6 +41,19 @@
           To remove all modifications you have made and restore only those CBE classes listed on your Western transcript, click the <q>Restore</q> button
         </li>
       </ul>
+
+      <label id="toggleSwitch" class="switch-light" onclick="">
+        <input type="checkbox">
+        <strong>
+          Test Label
+        </strong>
+
+        <span class="well">
+          <span>CBE</span>
+          <span>MSCM</span>
+          <a class="btn btn-primary"></a>
+        </span>
+      </label>
     </div>
   </div>
 

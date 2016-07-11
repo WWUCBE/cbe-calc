@@ -59,7 +59,18 @@ li:not(:last-child) {
     margin-bottom: 7px;
 }
 
-#intro {
+#toggleSwitch {
+  font-size: 16px;
+  width: 300;
+  left: 15;
+  top: -15;
+}
+
+#CBEBlurb {
+  font-size: 16px;
+}
+
+#MSCMBlurb {
   font-size: 16px;
 }
 
@@ -137,10 +148,10 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 
 .slide-menu {
   z-index: 3;
-  transform: translate3d(250px, 0, 0);
+  transform: translate3d(350px, 0, 0);
   right: 0;
   position: absolute;
-  width: 250px;
+  width: 350px;
   background: #18324A ; rgba(0, 63, 135, 1);
   color: #ddd;
   height: 120%;
