@@ -45,11 +45,17 @@ app.controller('MainCtrl', [
 
       var gpa = 0;
       var tempGrade = $scope.grade;
-      var letter = tempGrade.substring(0,1);
+      var letter = tempGrade.substring(0,1).toUpperCase();
       var mod = '';
       if(tempGrade.length >= 2){
         mod = tempGrade.substring(1,2);
         if(!(mod === '+' || mod ==='-')){
+          mod = '';
+        }
+        //Remove disallowed modifiers
+        if((mod === '+') && ((letter === 'A') || (letter === 'F'))){
+          mod = '';
+        }else if((mod === '-') && (letter === 'F')){
           mod = '';
         }
       }
