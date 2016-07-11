@@ -174,7 +174,7 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
   margin-top: -6;
 }
 
-#blueButton {
+.blueButton {
   background: rgba(0, 63, 135, 0.8); /*WWU Blue*/
 }
 
