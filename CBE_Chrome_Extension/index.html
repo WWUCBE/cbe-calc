@@ -19,17 +19,20 @@
       <h1> Instructions </h1>
       <hr>
       <p id="intro">
-        This is an application designed to help students and faculty more easily asses their standing in the College of Business and Economics.
+        Select <q>CBE GPA</q> to calculate all CBE grades (CBE GPA is based on graded CBE classes taken at Western only) Select <q>MSCM Foundation GPA</q> to calculate your MSCM Foundation GPA. Equivalent classes taken outside Western do count toward this GPA and must be manually entered into the calculator to determine your MSCM Foundation GPA. Only the most recent graded attempt is used.
       </p>
       <ul id="features">
         <li>
-          Add a class by typing it's information into the provided fields under the "add a class" header
+          To add a Class: Complete the information in the provided fields and click <q>Add</q>
         </li>
         <li>
-          Removed a class by clicking on the <span class="glyphicon glyphicon-remove" style="color: gray;"></span> next to a class
+          To remove a class: click on the X next to it
         </li>
         <li>
-          Classes become grayed out when a more recent attempt is entered (or detected by our app)
+          If you have repeated a course the older attempt will be listed in gray font.
+        </li>
+        <li>
+          To remove all modifications you have made and restore only those CBE classes listed on your Western transcript, click the <q>Restore</q> button
         </li>
       </ul>
     </div>
@@ -163,7 +166,7 @@
 	            </div>
 <!--TODO: fix refresh -->
               <button id="refreshButton" type="button" class="blueButton btn btn-primary refreshData text-center" style="float: left;">
-                Refresh
+                Restore
               </button>
               <!-- <button id="c-button--slide-bottom" class="c-button">Slide Botton</button> -->
 	            <button id="addButton" type="submit" class="blueButton btn btn-primary" style="float: right;">
