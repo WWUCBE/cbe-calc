@@ -213,7 +213,7 @@ app.controller('MainCtrl', [
         'D',
         'D+',
         'D-',
-        'F',
+        'F'
       ];
       var gpas = [
         4,
@@ -280,7 +280,10 @@ app.controller('MainCtrl', [
         'KD',
         'KD+',
         'KD-',
-        'F'
+        'F',
+        'KF',
+        'S',
+        'U'
       ];
       for(var i = 0 ; i < lines.length ; i++){
         //split on space or group of spaces and store in lineArray
@@ -301,9 +304,17 @@ app.controller('MainCtrl', [
           for(var ind = 5; ind < lineArray.length; ind++){
             if(grades.indexOf(lineArray[ind])>=0){
               tempGrade = lineArray[ind];
+
+              //Class has a 'K' preceeding the grade
               if(tempGrade[0] === 'K'){
                 tempGrade = tempGrade.substring(1,tempGrade.length);
               }
+
+              //If class is pass/fail, break loop and ignore it
+              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
+                break;
+              }
+
               //credits are located one before the grade.
               tempCredits = lineArray[ind-1];
               realGrade = true;
@@ -312,11 +323,8 @@ app.controller('MainCtrl', [
           }
 
           if(realGrade){
-            //var found = false;
             for(var j = 0 ; j < $scope.classList.length ; j++){
               if($scope.classList[j].name === tempName){
-                //found = true;
-                //$scope.classList[j].gpa = ((+$scope.classList[j].gpa + +getGPAValue(tempGrade).toFixed(1))/2).toFixed(2);
                 $scope.classList[j].composite = 'composite';
               }
             }
