@@ -1,3 +1,13 @@
+@font-face{
+  font-family: 'Avenir';
+  src: url('Fonts/AvenirLTStd-light.otf');
+}
+
+@font-face{
+  font-family: 'Avenir-bold';
+  src: url('Fonts/AvenirLTStd-light.otf');
+}
+
 html{
   width:800px;
   height:600px;
@@ -9,6 +19,7 @@ body {
   width:780px;
   height:580px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir';
   color: white;
   font-weight: 400;
   text-align: center;
@@ -323,7 +334,7 @@ div.stats{
 }
 
 #titleBlock {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Avenir', sans-serif;
 }
 
 #gradeBlock{
@@ -350,7 +361,7 @@ div.stats{
 }
 
 #addAClass{
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 40;
   font-weight: 500;
   color: rgba(80,80,80,1); /*Gray*/
