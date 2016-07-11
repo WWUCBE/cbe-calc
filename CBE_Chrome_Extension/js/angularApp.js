@@ -1,8 +1,7 @@
 var app = angular.module("CBEcalc", ["xeditable"]);
 
 app.run(function(editableOptions) {
-  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
-  //editableOptions.buttons = no;
+  editableOptions.theme = 'bs3';
 });
 
 app.factory('classList', [function(){
@@ -398,23 +397,11 @@ function getGPAValue(string){
   return gpa;
 }
 
-//TODO: fix storage functions
-
-//Save entered classes when minimized
+//Save entered classes to chrome.storage.sync
 function setProgress(classList) {
   console.log("setProgress()");
   chrome.storage.sync.set({'classes': classList}, function(){
     console.debug('Classes Saved');
-  })
-}
-
-//Retreive classes when maximized (If previous classes exist)
-function getProgress(classList) {
-  console.log("getProgress()");
-  chrome.storage.sync.get('classes', function(result){
-    classList = result.classes;
-    console.debug('Classes retreived');
-    console.debug(classList);
   })
 }
 
@@ -429,10 +416,11 @@ function setDOMInfo(info) {
   });
 }
 
+//listener to purge storage when 'refreshButton' is pressed
 document.getElementById("refreshButton").addEventListener("click", function () {
   clearCache();
-  //window.location.reload();
 });
+
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
   // ...query for the active tab...
