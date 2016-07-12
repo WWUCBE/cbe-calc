@@ -283,7 +283,8 @@ app.controller('MainCtrl', [
         'F',
         'KF',
         'S',
-        'U'
+        'U',
+        'Z'
       ];
       for(var i = 0 ; i < lines.length ; i++){
         //split on space or group of spaces and store in lineArray
@@ -311,7 +312,7 @@ app.controller('MainCtrl', [
               }
 
               //If class is pass/fail, break loop and ignore it
-              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
+              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U') || (tempGrade[0] === 'Z')){
                 break;
               }
 
@@ -349,9 +350,9 @@ app.controller('MainCtrl', [
     $scope.addPrevClasses = function(info){
       console.log("addPrevClasses()");
 
-      chrome.storage.sync.get('classes', function(result){
-        if(typeof(result.classes) != "undefined"){ //Check to see if there are classes saved in storage
-          $scope.classList = result.classes;
+      chrome.storage.sync.get('CBEclasses', function(result){
+        if(typeof(result.CBEclasses) != "undefined"){ //Check to see if there are classes saved in storage
+          $scope.classList = result.CBEclasses;
           console.debug("Found previous classes");
           console.debug($scope.classList);
           $scope.setGpa();
@@ -414,7 +415,7 @@ function getGPAValue(string){
 //Save entered classes to chrome.storage.sync
 function setProgress(classList) {
   console.log("setProgress()");
-  chrome.storage.sync.set({'classes': classList}, function(){
+  chrome.storage.sync.set({'CBEclasses': classList}, function(){
     console.debug('Classes Saved');
   })
 }
