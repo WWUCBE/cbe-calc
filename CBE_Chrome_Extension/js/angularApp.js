@@ -534,7 +534,7 @@ app.controller('MainCtrl', [
       });
 
       chrome.storage.sync.get('CBEclasses', function(result){
-        if(typeof(result.CBEclasses) != "undefined"){ //Check to see if there are classes saved in storage
+        if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
           $scope.classList = result.CBEclasses;
           //console.debug("Found previous classes");
           //console.debug($scope.classList);
@@ -564,6 +564,12 @@ app.controller('MainCtrl', [
 function clearCache(){
   chrome.storage.sync.clear();
   //console.log("Classes deleted");
+
+
+  var scope = angular.element(document.getElementById("main")).scope();
+  var bool = scope.cbe.toString();
+  setMode(bool);
+
 }
 
 //function to calculate GPA point based on letter grades
@@ -662,6 +668,11 @@ function toggleView(e) {
 
 //listener to purge storage when 'refreshButton' is pressed
 document.getElementById("refreshButton").addEventListener("click", function () {
+  //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
+  clearCache();
+});
+
+document.getElementById("refreshButton2").addEventListener("click", function () {
   //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
   clearCache();
 });
