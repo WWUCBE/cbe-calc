@@ -521,6 +521,8 @@ app.controller('MainCtrl', [
           }else{
             $scope.cbe = false;
             document.getElementById("toggleSwitchBox").checked="true";
+            hide('onPageCBE');
+            show('onPageMSCM');
             console.debug("$scope.cbe = " + result.mode);
             $scope.$apply();
           }
