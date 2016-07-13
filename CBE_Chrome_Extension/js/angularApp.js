@@ -23,7 +23,7 @@ app.controller('MainCtrl', [
   'classList',
   'classPrefixes',
   function($scope, classList, classPrefixes){
-    console.log("mainControllerFunction()");
+    //console.log("mainControllerFunction()");
     $scope.classList = classList.classList;
     $scope.previousGPA = [];
     $scope.classPrefixes = classPrefixes.classPrefixes;
@@ -33,7 +33,7 @@ app.controller('MainCtrl', [
     $scope.cbe = true;
 
     $scope.addClass = function(){
-      console.log("addClass()");
+      //console.log("addClass()");
       if(!$scope.name || $scope.name === ''){
         return;
       }
@@ -112,9 +112,9 @@ app.controller('MainCtrl', [
     };
 
     $scope.updatePrevious = function() {
-      console.log("updatePrevious()");
-      console.log($scope.prevGPA);
-      console.log($scope.prevCredits);
+      //console.log("updatePrevious()");
+      //console.log($scope.prevGPA);
+      //console.log($scope.prevCredits);
       if(!$scope.prevGPA || $scope.prevGPA === ''){
         return;
       }
@@ -149,7 +149,7 @@ app.controller('MainCtrl', [
     };
 
     $scope.setGpa = function() {
-      console.log("setGpa()");
+      //console.log("setGpa()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
         $scope.classList[i].composite = "unique";
         for(var j = i+1 ; j < $scope.classList.length ; j++){
@@ -187,7 +187,7 @@ app.controller('MainCtrl', [
     };
 
     $scope.setGpaFinalOnly = function() {
-      console.log("setGpaFinalOnly()");
+      //console.log("setGpaFinalOnly()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
         $scope.classList[i].composite = "unique";
         for(var j = i+1 ; j < $scope.classList.length ; j++){
@@ -224,12 +224,12 @@ app.controller('MainCtrl', [
     };
 
     $scope.printSection = function() {
-      console.log("printSection()");
+      //console.log("printSection()");
       window.print();
     }
 
     $scope.removeClass = function(item) {
-      console.log("removeClass()");
+      //console.log("removeClass()");
       var index = $scope.classList.indexOf(item);
       $scope.classList.splice(index, 1);
       setProgress($scope.classList);
@@ -241,7 +241,7 @@ app.controller('MainCtrl', [
     };
 
     $scope.reCalc = function(index){
-      console.log("reCalc()");
+      //console.log("reCalc()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
         $scope.classList[i].composite = "unique";
         for(var j = i+1 ; j < $scope.classList.length ; j++){
@@ -296,7 +296,7 @@ app.controller('MainCtrl', [
     }
 
     $scope.readFromPageCBE = function(info){
-      console.debug("readFromPageCBE()");
+      //console.debug("readFromPageCBE()");
       var localData = String(info.data);
       var lines = localData.split('\n');
       var headers = [
@@ -400,7 +400,7 @@ app.controller('MainCtrl', [
     }
 
     $scope.readFromPageMSCM = function(info){
-      console.debug("readFromPageMSCM()");
+      //console.debug("readFromPageMSCM()");
       var localData = String(info.data);
       var lines = localData.split('\n');
       var headers = [
@@ -509,21 +509,21 @@ app.controller('MainCtrl', [
 
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
-      console.log("addPrevClasses()");
+      //console.log("addPrevClasses()");
 
       chrome.storage.sync.get('mode', function(result){
-        console.debug("Mode: " + result.mode);
+        //console.debug("Mode: " + result.mode);
         if(typeof(result.mode) != "undefined"){
           if(result.mode === 'true'){
             $scope.cbe = true;
-            console.debug("$scope.cbe = " + result.mode);
+            //console.debug("$scope.cbe = " + result.mode);
             $scope.$apply();
           }else{
             $scope.cbe = false;
             document.getElementById("toggleSwitchBox").checked="true";
             hide('onPageCBE');
             show('onPageMSCM');
-            console.debug("$scope.cbe = " + result.mode);
+            //console.debug("$scope.cbe = " + result.mode);
             $scope.$apply();
           }
         }else{
@@ -536,8 +536,8 @@ app.controller('MainCtrl', [
       chrome.storage.sync.get('CBEclasses', function(result){
         if(typeof(result.CBEclasses) != "undefined"){ //Check to see if there are classes saved in storage
           $scope.classList = result.CBEclasses;
-          console.debug("Found previous classes");
-          console.debug($scope.classList);
+          //console.debug("Found previous classes");
+          //console.debug($scope.classList);
           if($scope.cbe){
             $scope.setGpa();
           }else{
@@ -545,7 +545,7 @@ app.controller('MainCtrl', [
           }
           $scope.$apply();
         }else{ //Else read from page
-          console.debug("No previous classes");
+          //console.debug("No previous classes");
           if($scope.cbe){ //CBE/MSCM toggle is on CBE
             $scope.readFromPageCBE(info);
           }else{//CBE/MSCM toggle is on MSCM
@@ -563,12 +563,12 @@ app.controller('MainCtrl', [
 //Function to clean added classes and read classes that were removed when 'refresh' button is pressed
 function clearCache(){
   chrome.storage.sync.clear();
-  console.log("Classes deleted");
+  //console.log("Classes deleted");
 }
 
 //function to calculate GPA point based on letter grades
 function getGPAValue(string){
-  console.log("getGPAValue()");
+  //console.log("getGPAValue()");
   var gpa;
   var letter = string.substring(0,1);
   if(string.length >= 2){
@@ -602,22 +602,22 @@ function getGPAValue(string){
 //Saves mode - either 'True' or 'False', where 'True' is CBE and 'False' is MSCM
 function setMode(mode) {
   chrome.storage.sync.set({'mode': mode}, function(){
-    console.debug("setMode(): " + mode);
+    //console.debug("setMode(): " + mode);
     //console.debug('Mode Saved');
   })
 }
 
 //Save entered classes to chrome.storage.sync
 function setProgress(classList) {
-  console.log("setProgress()");
+  //console.log("setProgress()");
   chrome.storage.sync.set({'CBEclasses': classList}, function(){
-    console.debug('Classes Saved');
+    //console.debug('Classes Saved');
   })
 }
 
 // Update the relevant fields with the new data
 function setDOMInfo(info) {
-  console.log("setDomInfo()");
+  //console.log("setDomInfo()");
   var scope = angular.element(document.getElementById("main")).scope();
   scope.$apply(function(){
     scope.classList.length = 0;
