@@ -662,6 +662,7 @@ function toggleView(e) {
 
 //listener to purge storage when 'refreshButton' is pressed
 document.getElementById("refreshButton").addEventListener("click", function () {
+  //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
   clearCache();
 });
 
