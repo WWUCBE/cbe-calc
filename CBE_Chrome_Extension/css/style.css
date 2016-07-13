@@ -68,10 +68,12 @@ li:not(:last-child) {
 
 #CBEBlurb {
   font-size: 16px;
+  text-align: left;
 }
 
 #MSCMBlurb {
   font-size: 16px;
+  text-align: left;
 }
 
 #features {
@@ -335,7 +337,11 @@ div.stats{
   padding: 20;
 }
 
-#onPage{
+#onPageCBE{
+
+}
+
+#onPageMSCM{
 
 }
 

@@ -1,7 +1,7 @@
 {
-  "name": "WWU CBE Grade Calculator",
-  "description": "An application allowing users to view their current CBE GPA, and add/remove classes to see how these changes will effect their GPA.",
-  "version": "0.0.0.7",
+  "name": "WWU CBE GPA Calculator",
+  "description": "An application allowing Western students to view their current CBE GPA, or their CBE MSCM Foundation GPA, and add/remove classes and grades to see how these changes will affect their GPA.",
+  "version": "0.0.0.8",
 
   "browser_action": {
     "default_icon": "icon.png",

@@ -75,20 +75,34 @@ window.addEventListener('load', function() {
 document.addEventListener('DOMContentLoaded', function() {
   getCurrentTabUrl(function(url) {
     if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
-      show('onPage');
+      show('onPageCBE');
       hide('notOnPage');
+      hide('onPageMSCM');
+      show('toggleSwitch');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
     }else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
-      show('onPage');
+      show('onPageCBE');
       hide('notOnPage');
+      hide('onPageMSCM');
+      show('toggleSwitch');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
     }else if(url=="file:///C:/Users/Jherr/Desktop/testPage.html"){ //For testing
-      show('onPage');
+      show('onPageCBE');
       hide('notOnPage');
+      hide('onPageMSCM');
+      show('toggleSwitch');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
     }else{
       show('notOnPage');
-      hide('onPage');
+      hide('onPageCBE');
+      hide('onPageMSCM');
+      hide('toggleSwitch');
     };
   });
 });
+
+/*
+document.getElementById("toggleSwitch").addEventListener('', function() {
+
+});
+*/

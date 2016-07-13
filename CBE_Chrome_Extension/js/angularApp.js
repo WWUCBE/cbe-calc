@@ -30,6 +30,7 @@ app.controller('MainCtrl', [
     $scope.gpa = (0.0).toFixed(2);
     $scope.standing = 'good';
     $scope.totalCredits = 0;
+    $scope.cbe = true;
 
     $scope.addClass = function(){
       console.log("addClass()");
@@ -100,7 +101,11 @@ app.controller('MainCtrl', [
       $scope.grade = '';
       $scope.credits = '';
 
-      $scope.setGpa();
+      if($scope.cbe){
+        $scope.setGpa();
+      }else{
+        $scope.setGpaFinalOnly();
+      }
       setProgress($scope.classList);
 
       return;
@@ -134,7 +139,11 @@ app.controller('MainCtrl', [
       $scope.prevGPA = '';
       $scope.prevCredits = '';
 
-      $scope.setGpa();
+      if($scope.cbe){
+        $scope.setGpa();
+      }else{
+        $scope.setGpaFinalOnly();
+      }
 
       return;
     };
@@ -177,6 +186,43 @@ app.controller('MainCtrl', [
 
     };
 
+    $scope.setGpaFinalOnly = function() {
+      console.log("setGpaFinalOnly()");
+      for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+        $scope.classList[i].composite = "unique";
+        for(var j = i+1 ; j < $scope.classList.length ; j++){
+          if($scope.classList[j].name === $scope.classList[i].name){
+            $scope.classList[i].composite = "composite";
+          }
+        }
+      }
+
+      var gpa = 0.00;
+      var credits = 0.00;
+
+      for(var i = 0 ; i < $scope.classList.length ; i++){
+        if($scope.classList[i].composite != "composite"){
+          gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
+          credits +=  +$scope.classList[i].credits;
+        }
+      }
+
+      if(gpa != 0){
+        gpa = gpa / credits;
+      }
+
+      $scope.totalCredits = credits;
+      $scope.gpa = gpa.toFixed(2);
+
+      //Adjust academic standing (good, ok, bad)
+      if($scope.gpa > 2.3){
+        $scope.standing = 'good';
+      }else{
+        $scope.standing = 'bad';
+      }
+
+    };
+
     $scope.printSection = function() {
       console.log("printSection()");
       window.print();
@@ -187,7 +233,11 @@ app.controller('MainCtrl', [
       var index = $scope.classList.indexOf(item);
       $scope.classList.splice(index, 1);
       setProgress($scope.classList);
-      $scope.setGpa();
+      if($scope.cbe){
+        $scope.setGpa();
+      }else{
+        $scope.setGpaFinalOnly();
+      }
     };
 
     $scope.reCalc = function(index){
@@ -238,11 +288,15 @@ app.controller('MainCtrl', [
         $scope.classList[index].grade = $scope.classList[index].grade.toUpperCase();
       }
 
-      $scope.setGpa();
+      if($scope.cbe){
+        $scope.setGpa();
+      }else{
+        $scope.setGpaFinalOnly();
+      }
     }
 
-    $scope.readFromPage = function(info){
-      console.debug("readFromPage()");
+    $scope.readFromPageCBE = function(info){
+      console.debug("readFromPageCBE()");
       var localData = String(info.data);
       var lines = localData.split('\n');
       var headers = [
@@ -340,9 +394,116 @@ app.controller('MainCtrl', [
         }
       }
       setProgress($scope.classList);
-      $scope.setGpa();
       $scope.updatePrevious();
       $scope.setGpa();
+      return;
+    }
+
+    $scope.readFromPageMSCM = function(info){
+      console.debug("readFromPageMSCM()");
+      var localData = String(info.data);
+      var lines = localData.split('\n');
+      var headers = [
+        'ECON',
+        'ACCT',
+        'DSCI',
+        'MIS',
+        'FIN',
+        'MKTG',
+        'OPS',
+        'MGMT',
+        'IBUS',
+        'HRM'
+      ];
+      var validclasses = {
+        'MATH': ['157'],
+        'DSCI': ['205'],
+        'ACCT': ['240','245'],
+        'ECON':['206','207'],
+        'MIS': ['220'],
+        'MGMT':['271'],
+        'PHYS':['114'],
+        'CHEM': ['121']
+      }
+      var grades = [
+        'A',
+        'A-',
+        'KA',
+        'KA-',
+        'B',
+        'B+',
+        'B-',
+        'KB',
+        'KB+',
+        'KB-',
+        'C',
+        'C+',
+        'C-',
+        'KC',
+        'KC+',
+        'KC-',
+        'D',
+        'D+',
+        'D-',
+        'KD',
+        'KD+',
+        'KD-',
+        'F',
+        'KF',
+        'S',
+        'U',
+        'Z'
+      ];
+      for(var i = 0 ; i < lines.length ; i++){
+        //split on space or group of spaces and store in lineArray
+        var lineArray = lines[i].trim().split(/\s+/);
+
+        if(validclasses.hasOwnProperty(lineArray[0]) && validclasses[lineArray[0]].indexOf(lineArray[1].substring(0,3))>=0){
+          var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
+          var tempGrade;
+          var tempCredits;
+
+          var realGrade = false;
+          for(var ind = 5; ind < lineArray.length; ind++){
+            if(grades.indexOf(lineArray[ind])>=0){
+              tempGrade = lineArray[ind];
+
+              //Class has a 'K' preceeding the grade
+              if(tempGrade[0] === 'K'){
+                tempGrade = tempGrade.substring(1,tempGrade.length);
+              }
+
+              //If class is pass/fail, break loop and ignore it
+              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U') || (tempGrade[0] === 'Z')){
+                break;
+              }
+
+              //credits are located one before the grade.
+              tempCredits = lineArray[ind-1];
+              realGrade = true;
+              break;
+            }
+          }
+
+          if(realGrade){
+            for(var j = 0 ; j < $scope.classList.length ; j++){
+              if($scope.classList[j].name === tempName){
+                $scope.classList[j].composite = 'composite';
+              }
+            }
+
+            $scope.classList.push({
+              name: tempName,
+              grade: tempGrade,
+              gpa: getGPAValue(tempGrade).toFixed(1),
+              credits: tempCredits
+            });
+          }
+        }
+      }
+      setProgress($scope.classList);
+      $scope.updatePrevious();
+      $scope.setGpaFinalOnly();
       return;
     }
 
@@ -355,19 +516,27 @@ app.controller('MainCtrl', [
           $scope.classList = result.CBEclasses;
           console.debug("Found previous classes");
           console.debug($scope.classList);
-          $scope.setGpa();
-          $scope.updatePrevious();
+          if($scope.cbe){
+            $scope.setGpa();
+          }else{
+            $scope.setGpaFinalOnly();
+          }
+          //$scope.updatePrevious();
           $scope.$apply();
         }else{ //Else read from page
           console.debug("No previous classes");
-          $scope.readFromPage(info);
+          if($scope.cbe){ //CBE/MSCM toggle is on CBE
+            $scope.readFromPageCBE(info);
+          }else{//CBE/MSCM toggle is on MSCM
+            $scope.readFromPageMSCM(info);
+          }
           $scope.$apply();
         }
       });
 
-      $scope.setGpa();
-      $scope.updatePrevious();
-      $scope.setGpa();
+      //$scope.setGpa();
+      //$scope.updatePrevious();
+      //$scope.setGpa();
       return;
     };
   }
@@ -427,13 +596,49 @@ function setDOMInfo(info) {
   scope.$apply(function(){
     scope.classList.length = 0;
     scope.addPrevClasses(info);
+  });
+}
 
+function toggleView(e) {
+  var scope = angular.element(document.getElementById("main")).scope();
+  if(e.target.checked){
+    hide('onPageCBE');
+    show('onPageMSCM');
+    scope.$apply(function(){
+      scope.cbe = false;
+    });
+  }else{
+    hide('onPageMSCM');
+    show('onPageCBE');
+    scope.$apply(function(){
+      scope.cbe = true;
+    });
+  }
+  // Clear the cache...
+  clearCache();
+  // ...query for the active tab...
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function (tabs) {
+    // ...and send a request for the DOM info...
+    chrome.tabs.sendMessage(
+        tabs[0].id,
+        {from: 'popup', subject: 'DOMInfo'},
+        // ...also specifying a callback to be called
+        //    from the receiving end (content script)
+        setDOMInfo);
   });
 }
 
 //listener to purge storage when 'refreshButton' is pressed
 document.getElementById("refreshButton").addEventListener("click", function () {
   clearCache();
+});
+
+//Add listener to CBE/MSCM toggle
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('#toggleSwitch').addEventListener('change', toggleView);
 });
 
 // Once the DOM is ready...
