@@ -511,6 +511,26 @@ app.controller('MainCtrl', [
     $scope.addPrevClasses = function(info){
       console.log("addPrevClasses()");
 
+      chrome.storage.sync.get('mode', function(result){
+        console.debug("Mode: " + result.mode);
+        if(typeof(result.mode) != "undefined"){
+          if(result.mode === 'true'){
+            $scope.cbe = true;
+            console.debug("$scope.cbe = " + result.mode);
+            $scope.$apply();
+          }else{
+            $scope.cbe = false;
+            document.getElementById("toggleSwitchBox").checked="true";
+            console.debug("$scope.cbe = " + result.mode);
+            $scope.$apply();
+          }
+        }else{
+          $scope.cbe = true;
+          setMode('true');
+          $scope.$apply();
+        }
+      });
+
       chrome.storage.sync.get('CBEclasses', function(result){
         if(typeof(result.CBEclasses) != "undefined"){ //Check to see if there are classes saved in storage
           $scope.classList = result.CBEclasses;
@@ -521,7 +541,6 @@ app.controller('MainCtrl', [
           }else{
             $scope.setGpaFinalOnly();
           }
-          //$scope.updatePrevious();
           $scope.$apply();
         }else{ //Else read from page
           console.debug("No previous classes");
@@ -534,9 +553,6 @@ app.controller('MainCtrl', [
         }
       });
 
-      //$scope.setGpa();
-      //$scope.updatePrevious();
-      //$scope.setGpa();
       return;
     };
   }
@@ -581,6 +597,14 @@ function getGPAValue(string){
   return gpa;
 }
 
+//Saves mode - either 'True' or 'False', where 'True' is CBE and 'False' is MSCM
+function setMode(mode) {
+  chrome.storage.sync.set({'mode': mode}, function(){
+    console.debug("setMode(): " + mode);
+    //console.debug('Mode Saved');
+  })
+}
+
 //Save entered classes to chrome.storage.sync
 function setProgress(classList) {
   console.log("setProgress()");
@@ -600,22 +624,25 @@ function setDOMInfo(info) {
 }
 
 function toggleView(e) {
+  // Clear the cache...
+  clearCache();
+  // ...set CBE/MSCM mode...
   var scope = angular.element(document.getElementById("main")).scope();
   if(e.target.checked){
     hide('onPageCBE');
     show('onPageMSCM');
+    setMode('false');
     scope.$apply(function(){
       scope.cbe = false;
     });
   }else{
     hide('onPageMSCM');
     show('onPageCBE');
+    setMode('true');
     scope.$apply(function(){
       scope.cbe = true;
     });
   }
-  // Clear the cache...
-  clearCache();
   // ...query for the active tab...
   chrome.tabs.query({
     active: true,
