@@ -17,13 +17,13 @@
 
   <div class="slide-menu">
     <div id="menuText">
-      <h1> Instructions </h1>
-      <hr>
+      <!--<h1> Instructions </h1>
+      <hr>-->
       <p id="CBEBlurb">
-        Select <q>CBE</q> to calculate your GPA for a CBE major, which includes all CBE grades (excluding pass/fail). CBE GPA is based on classes taken at Western only.
+        Select <q>CBE</q> to calculate your GPA for CBE majors, which includes all CBE grades (excluding business calc and MIS 220). CBE GPA is based <b><i>only</i></b> on classes taken at Western.
       </p>
       <p id="MSCMBlurb">
-      Select <q>MSCM</q> to calculate your MSCM Foundation GPA. Equivalent classes taken outside Western do count toward this GPA and must be manually entered into the calculator. Only the most recent graded attempt is used.
+        Select <q>MSCM</q> to calculate your MSCM Foundation GPA. Equivalent classes taken outside Western <b><i>do</i></b> count toward this GPA and must be manually entered. Only the <b><i>most recent</i></b> attempt is used. Business Calculus is included in this GPA. MIS 220 or a graded equivalent course taken elseqhere is <b><i>not</i></b> included.
       </p>
 
       <hr>
@@ -35,14 +35,17 @@
           To remove a class: click on the <span class="glyphicon glyphicon-remove"></span> next to it
         </li>
         <li>
-          If you have repeated a course the older attempt will be listed in gray font.
+          To modify the grade.credits on a listed class, click on them and edit
+        </li>
+        <li>
+          If you have repeated a course the older attempt will be listed in gray font
         </li>
         <li>
           To remove all modifications you have made and restore only those CBE classes listed on your Western transcript, click the <q>Restore</q> button
         </li>
       </ul>
 
-      <label id="toggleSwitch" class="switch-light">
+      <label id="toggleSwitch" class="switch-light toggleSwitch">
         <input type="checkbox" id="toggleSwitchBox">
         <strong>
         </strong>
@@ -58,7 +61,7 @@
   <div class="backFilter"></div>
 
   <!--Redirect Block-->
-  <div class="container backBlur" id = "notOnPage">
+  <div class="container backBlur" id="notOnPage">
     <H3 class="backBlur">
       You need to be signed into MyWestern for us to access your transcript
     </H3>
@@ -70,6 +73,18 @@
   </div>
 
   <div class="container backBlur" id="onPageCBE">
+    <div class="toggleDiv">
+      <label id="toggleSwitch2" class="switch-light toggleSwitch" style="width: 200;">
+        <input type="checkbox" id="toggleSwitchBox2">
+        <strong>
+        </strong>
+        <span class="well">
+          <span>CBE</span>
+          <span>MSCM</span>
+          <a class="btn btn-primary"></a>
+        </span>
+      </label>
+    </div>
     <div id="inputBanner"></div>
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>
@@ -187,6 +202,18 @@
 	</div>
 
   <div class="container backBlur" id="onPageMSCM">
+    <div class="toggleDiv">
+      <label id="toggleSwitch3" class="switch-light toggleSwitch" style="width: 200;">
+        <input type="checkbox" id="toggleSwitchBox3">
+        <strong>
+        </strong>
+        <span class="well">
+          <span>CBE</span>
+          <span>MSCM</span>
+          <a class="btn btn-primary"></a>
+        </span>
+      </label>
+    </div>
     <div id="inputBanner"></div>
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>

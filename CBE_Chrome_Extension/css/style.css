@@ -59,11 +59,17 @@ li:not(:last-child) {
     margin-bottom: 7px;
 }
 
-#toggleSwitch {
+.toggleSwitch {
   font-size: 16px;
   width: 300;
   left: 0;
-  top: 0;
+  top: -4;
+}
+
+.toggleDiv {
+  position: absolute;
+  left: 500;
+  top: 420;
 }
 
 #CBEBlurb {
@@ -77,7 +83,7 @@ li:not(:last-child) {
 }
 
 #features {
-  margin-top: 30px;
+  margin-top: -5px;
   list-style-type: square;
 }
 
@@ -149,7 +155,7 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 }
 
 .slide-menu {
-  z-index: 3;
+  z-index: 6;
   transform: translate3d(350px, 0, 0);
   right: 0;
   position: absolute;
@@ -291,8 +297,7 @@ div.stats{
 #gpaIndent {
   visibility: visible; /**/
   position: absolute;
-  height: 20%;
-  /* height: 84%; Alternative */
+  height: 27%; /* Previously 20% */
   border: solid;
   border-radius: 15px;
   border-width: 2;
@@ -300,10 +305,7 @@ div.stats{
   top: 300;
   margin-left: 480;
   width: 240;
-  /*background: rgba(244, 248, 224, 1); /* CBE Light Green */
   background: rgba(240, 240, 240, 1); /* CBE Gray */
-  /*background-color: rgba(0,131,214, 0.8); /* WWU light blue */
-  /*rgba(0,0,0, 0.35) Black */
 }
 
 #headerBanner {

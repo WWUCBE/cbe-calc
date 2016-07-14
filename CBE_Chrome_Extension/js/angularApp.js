@@ -521,8 +521,14 @@ app.controller('MainCtrl', [
           }else{
             $scope.cbe = false;
             document.getElementById("toggleSwitchBox").checked="true";
+            document.getElementById("toggleSwitchBox2").checked="true";
+            document.getElementById("toggleSwitchBox3").checked="true";
             hide('onPageCBE');
             show('onPageMSCM');
+            // Check to see if other div is visible - if so, hide MSCM div
+            if(document.getElementById("notOnPage").style.display == "inline"){
+              hide('onPageMSCM');
+            }
             //console.debug("$scope.cbe = " + result.mode);
             $scope.$apply();
           }
@@ -666,6 +672,34 @@ function toggleView(e) {
   });
 }
 
+function bind(e) {
+  if(e.target.id == "toggleSwitchBox2"){
+    console.log("toggleSwitchBox2");
+    document.getElementById("toggleSwitchBox").checked = document.getElementById("toggleSwitchBox2").checked;
+    document.getElementById("toggleSwitchBox3").checked = document.getElementById("toggleSwitchBox2").checked;
+  }
+  if(e.target.id == "toggleSwitchBox"){
+    console.log("toggleSwitchBox");
+    document.getElementById("toggleSwitchBox2").checked = document.getElementById("toggleSwitchBox").checked;
+    document.getElementById("toggleSwitchBox3").checked = document.getElementById("toggleSwitchBox").checked;
+  }
+  if(e.target.id == "toggleSwitchBox3"){
+    console.log("toggleSwitchBox3");
+    document.getElementById("toggleSwitchBox").checked = document.getElementById("toggleSwitchBox3").checked;
+    document.getElementById("toggleSwitchBox2").checked = document.getElementById("toggleSwitchBox3").checked;
+  }
+  toggleView(e);
+}
+
+//Add listener to CBE/MSCM toggle
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('toggleSwitchBox').addEventListener('change', bind);
+  document.getElementById('toggleSwitchBox2').addEventListener('change', bind);
+  document.getElementById('toggleSwitchBox3').addEventListener('change', bind);
+  //document.querySelector('#toggleSwitch').addEventListener('change', toggleView);
+  //document.querySelector('#toggleSwitch2').addEventListener('change', toggleView);
+});
+
 //listener to purge storage when 'refreshButton' is pressed
 document.getElementById("refreshButton").addEventListener("click", function () {
   //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
@@ -675,11 +709,6 @@ document.getElementById("refreshButton").addEventListener("click", function () {
 document.getElementById("refreshButton2").addEventListener("click", function () {
   //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
   clearCache();
-});
-
-//Add listener to CBE/MSCM toggle
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelector('#toggleSwitch').addEventListener('change', toggleView);
 });
 
 // Once the DOM is ready...
