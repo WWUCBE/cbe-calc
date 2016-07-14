@@ -212,7 +212,11 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 
 #appName {
   color: rgba(0, 63, 135, 1);
-  margin-top: -30;
+  margin-top: -15;
+}
+
+#headers {
+  border-top: 0;
 }
 
 .blueButton {
@@ -363,8 +367,8 @@ div.stats{
   text-shadow: 1px 1px black;
 }
 
-#title {
-
+.title {
+ height: 47;
 }
 
 #titleBlock {
