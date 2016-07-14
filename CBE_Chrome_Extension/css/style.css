@@ -42,6 +42,10 @@ body {
   position: absolute;
 }
 
+.leftBuffer {
+  padding-left: 45;
+}
+
 .backFilter {
   cursor: pointer;
   visibility: hidden;
