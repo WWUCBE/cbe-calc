@@ -15,7 +15,7 @@
       &equiv; <!--The following would be better, but I can't seem to get google chrome to display an SVG: <img src="resources/menu.svg" class="menuButton"> -->
     </label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
 
-  <div class="slide-menu">
+  <div class="slide-menu" id="menu">
     <div id="menuText">
       <!--<h1> Instructions </h1>
       <hr>-->
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <div class="backFilter"></div>
+  <div class="backFilter" id="backFilter"></div>
 
   <!--Redirect Block-->
   <div class="container backBlur" id="notOnPage">
@@ -72,19 +72,20 @@
     </div>
   </div>
 
+  <div id="toggleDiv" class="backBlur">
+    <label id="toggleSwitch2" class="switch-light toggleSwitch">
+      <input type="checkbox" id="toggleSwitchBox2">
+      <strong>
+      </strong>
+      <span class="well">
+        <span>CBE</span>
+        <span>MSCM</span>
+        <a class="btn btn-primary"></a>
+      </span>
+    </label>
+  </div>
+
   <div class="container backBlur" id="onPageCBE">
-    <div class="toggleDiv">
-      <label id="toggleSwitch2" class="switch-light toggleSwitch" style="width: 200;">
-        <input type="checkbox" id="toggleSwitchBox2">
-        <strong>
-        </strong>
-        <span class="well">
-          <span>CBE</span>
-          <span>MSCM</span>
-          <a class="btn btn-primary"></a>
-        </span>
-      </label>
-    </div>
     <div id="inputBanner"></div>
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>
@@ -111,7 +112,7 @@
 	        </div>
 	        <div class = "col-xs-3 col-xs-offset-1">
 	          <h3>
-	            Credits ({{totalCredits}})
+	            GPA Credits ({{totalCredits}})
 	          </h3>
 	        </div>
         </div>
@@ -202,18 +203,6 @@
 	</div>
 
   <div class="container backBlur" id="onPageMSCM">
-    <div class="toggleDiv">
-      <label id="toggleSwitch3" class="switch-light toggleSwitch" style="width: 200;">
-        <input type="checkbox" id="toggleSwitchBox3">
-        <strong>
-        </strong>
-        <span class="well">
-          <span>CBE</span>
-          <span>MSCM</span>
-          <a class="btn btn-primary"></a>
-        </span>
-      </label>
-    </div>
     <div id="inputBanner"></div>
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>
@@ -240,7 +229,7 @@
 	        </div>
 	        <div class = "col-xs-3 col-xs-offset-1">
 	          <h3>
-	            Credits ({{totalCredits}})
+	            GPA Credits ({{totalCredits}})
 	          </h3>
 	        </div>
         </div>

@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
       hide('onPageCBE');
       hide('onPageMSCM');
       hide('toggleSwitch');
+      hide('toggleDiv');
     };
   });
 });

@@ -82,7 +82,7 @@ app.controller('MainCtrl', [
 
       //var found = false;
       for(var i = 0 ; i < $scope.classList.length ; i++){
-        if($scope.classList[i].name === $scope.name){
+        if($scope.classList[i].name === $scope.name.toUpperCase()){
           //found = true;
           //$scope.classList[i].gpa = ((+$scope.classList[i].gpa + gpa)/2).toFixed(2);
           //$scope.classList[i].grade = $scope.classList[i].gpa;
@@ -91,7 +91,7 @@ app.controller('MainCtrl', [
       }
 
       $scope.classList.push({
-        name: $scope.name.substring(0,15),
+        name: $scope.name.substring(0,15).toUpperCase(),
         grade: letter.toUpperCase() + mod,
         gpa: gpa.toFixed(2),
         credits: $scope.credits
@@ -244,6 +244,7 @@ app.controller('MainCtrl', [
       //console.log("reCalc()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
         $scope.classList[i].composite = "unique";
+        $scope.classList[i].name = $scope.classList[i].name.toUpperCase();
         for(var j = i+1 ; j < $scope.classList.length ; j++){
           if($scope.classList[j].name === $scope.classList[i].name){
             $scope.classList[i].composite = "composite";
@@ -522,7 +523,6 @@ app.controller('MainCtrl', [
             $scope.cbe = false;
             document.getElementById("toggleSwitchBox").checked="true";
             document.getElementById("toggleSwitchBox2").checked="true";
-            document.getElementById("toggleSwitchBox3").checked="true";
             hide('onPageCBE');
             show('onPageMSCM');
             // Check to see if other div is visible - if so, hide MSCM div
@@ -676,28 +676,25 @@ function bind(e) {
   if(e.target.id == "toggleSwitchBox2"){
     console.log("toggleSwitchBox2");
     document.getElementById("toggleSwitchBox").checked = document.getElementById("toggleSwitchBox2").checked;
-    document.getElementById("toggleSwitchBox3").checked = document.getElementById("toggleSwitchBox2").checked;
   }
   if(e.target.id == "toggleSwitchBox"){
     console.log("toggleSwitchBox");
     document.getElementById("toggleSwitchBox2").checked = document.getElementById("toggleSwitchBox").checked;
-    document.getElementById("toggleSwitchBox3").checked = document.getElementById("toggleSwitchBox").checked;
-  }
-  if(e.target.id == "toggleSwitchBox3"){
-    console.log("toggleSwitchBox3");
-    document.getElementById("toggleSwitchBox").checked = document.getElementById("toggleSwitchBox3").checked;
-    document.getElementById("toggleSwitchBox2").checked = document.getElementById("toggleSwitchBox3").checked;
   }
   toggleView(e);
+}
+
+function minimize(e) {
+  console.log("clicked");
+  document.getElementById('toggle').checked = false;
 }
 
 //Add listener to CBE/MSCM toggle
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('toggleSwitchBox').addEventListener('change', bind);
   document.getElementById('toggleSwitchBox2').addEventListener('change', bind);
-  document.getElementById('toggleSwitchBox3').addEventListener('change', bind);
-  //document.querySelector('#toggleSwitch').addEventListener('change', toggleView);
-  //document.querySelector('#toggleSwitch2').addEventListener('change', toggleView);
+  document.getElementById('menu').addEventListener('click', minimize);
+  document.getElementById('backFilter').addEventListener('click', minimize);
 });
 
 //listener to purge storage when 'refreshButton' is pressed
