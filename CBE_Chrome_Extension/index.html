@@ -11,13 +11,13 @@
 <body id="main" data-ng-controller="MainCtrl">
 
   <input id="toggle" type="checkbox">
-    <label for="toggle">
+    <label for="toggle" id="menuButton">
       &equiv; <!--The following would be better, but I can't seem to get google chrome to display an SVG: <img src="resources/menu.svg" class="menuButton"> -->
     </label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
 
   <div class="slide-menu" id="menu">
     <div id="menuText">
-      <!--<h1> Instructions </h1>
+      <!--<h2> Instructions </h2>
       <hr>-->
       <p id="CBEBlurb">
         Select <q>CBE</q> to calculate your GPA for CBE majors, which includes all CBE grades (excluding business calc and MIS 220). CBE GPA is based <b><i>only</i></b> on classes taken at Western.
@@ -96,7 +96,7 @@
 	    <div id="titleBlock" class="col-xs-12">
         <div class = "row" id = "appName">
           <div class="col-sm-12">
-            <h1 class="backBlur"><b> CBE Grade Calculator </b></h1> <!--<b id={{standing}}> GPA: {{gpa}} </b>-->
+            <h2 class="backBlur"><b> CBE Grade Calculator </b></h2>
           </div>
         </div>
         <div class = "row backBlur" id = "headers">
@@ -110,7 +110,7 @@
 	            Grade
 	          </h3>
 	        </div>
-	        <div class = "col-xs-3 col-xs-offset-1">
+	        <div class = "col-xs-4 col-xs-offset-1">
 	          <h3>
 	            GPA Credits ({{totalCredits}})
 	          </h3>
@@ -210,10 +210,10 @@
     <div id="gradeBanner"></div>
     <div id="headerBanner"></div>
 	  <div class = "row" id = "title" >
-	    <div id="titleBlockAlt" class="col-xs-12">
+	    <div id="titleBlock" class="col-xs-12">
         <div class = "row" id = "appName">
           <div class="col-sm-12">
-            <h1 class="backBlur"><b> MSCM Foundation Calculator </b></h1> <!--<b id={{standing}}> GPA: {{gpa}} </b>-->
+            <h2 class="backBlur"><b> MSCM Foundation Calculator </b></h2>
           </div>
         </div>
         <div class = "row backBlur" id = "headers">
@@ -227,7 +227,7 @@
 	            Grade
 	          </h3>
 	        </div>
-	        <div class = "col-xs-3 col-xs-offset-1">
+	        <div class = "col-xs-4 col-xs-offset-1">
 	          <h3>
 	            GPA Credits ({{totalCredits}})
 	          </h3>

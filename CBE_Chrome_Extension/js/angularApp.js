@@ -177,11 +177,19 @@ app.controller('MainCtrl', [
       $scope.totalCredits = credits;
       $scope.gpa = gpa.toFixed(2);
 
-      //Adjust academic standing (good, ok, bad)
-      if($scope.gpa > 2.3){
-        $scope.standing = 'good';
+      //Adjust academic standing color (good, bad)
+      if($scope.cbe){
+        if($scope.gpa > 2.3){
+          $scope.standing = 'good';
+        }else{
+          $scope.standing = 'bad';
+        }
       }else{
-        $scope.standing = 'bad';
+        if($scope.gpa >= 3.0){
+          $scope.standing = 'good';
+        }else{
+          $scope.standing = 'bad';
+        }
       }
 
     };
@@ -214,11 +222,19 @@ app.controller('MainCtrl', [
       $scope.totalCredits = credits;
       $scope.gpa = gpa.toFixed(2);
 
-      //Adjust academic standing (good, ok, bad)
-      if($scope.gpa > 2.3){
-        $scope.standing = 'good';
+      //Adjust academic standing color (good, bad)
+      if($scope.cbe){
+        if($scope.gpa > 2.3){
+          $scope.standing = 'good';
+        }else{
+          $scope.standing = 'bad';
+        }
       }else{
-        $scope.standing = 'bad';
+        if($scope.gpa >= 3.0){
+          $scope.standing = 'good';
+        }else{
+          $scope.standing = 'bad';
+        }
       }
 
     };
@@ -404,18 +420,6 @@ app.controller('MainCtrl', [
       //console.debug("readFromPageMSCM()");
       var localData = String(info.data);
       var lines = localData.split('\n');
-      var headers = [
-        'ECON',
-        'ACCT',
-        'DSCI',
-        'MIS',
-        'FIN',
-        'MKTG',
-        'OPS',
-        'MGMT',
-        'IBUS',
-        'HRM'
-      ];
       var validclasses = {
         'MATH': ['157'],
         'DSCI': ['205'],

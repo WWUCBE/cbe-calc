@@ -38,6 +38,10 @@ body {
 /**/
 /**/
 
+#menuButton {
+  position: absolute;
+}
+
 .backFilter {
   cursor: pointer;
   visibility: hidden;
@@ -74,7 +78,7 @@ li:not(:last-child) {
 #toggleDiv {
   position: absolute;
   left: 500;
-  top: 420;
+  top: 460;
   z-index: 2;
 }
 
@@ -113,7 +117,7 @@ input[type=checkbox] {
 label {
   right: 25px;
   position: absolute;
-  top: 20px;
+  top: 10px;
   z-index: 3;
   display: block;
   font-size:3em;
@@ -203,12 +207,12 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 /**/
 
 #gpaText {
-  margin-top: 4;
+  margin-top: 3; /*old*/
 }
 
 #appName {
   color: rgba(0, 63, 135, 1);
-  margin-top: -6;
+  margin-top: -30;
 }
 
 .blueButton {
@@ -252,7 +256,7 @@ div.stats{
   right: 0;
   height: 7%;
   border-radius: 10px;
-  top: 360;
+  top: 410;
   width: 200;
   margin-left: 500;
   background: rgba(0, 63, 135, 0.85);
@@ -263,10 +267,10 @@ div.stats{
   position: absolute;
   left: 0;
   right: 0;
-  height: 42%;
+  height: 55%;
   /* height: 84%; Alternative */
   border-radius: 10px;
-  top: 90;
+  top: 70;
   margin-left: 15;
   margin-right: 15;
   background-color: rgba(0,131,214, 1); /* WWU light blue */
@@ -286,7 +290,7 @@ div.stats{
   position: absolute;
   left: 0;
   right: 0;
-  height: 290;
+  height: 296;
   /* height: 84%; Alternative */
   border: solid;
   border-radius: 15px;
@@ -304,7 +308,7 @@ div.stats{
 #gpaIndent {
   visibility: visible; /**/
   position: absolute;
-  height: 27%; /* Previously 20% */
+  height: 33%; /* Previously 20% */
   border: solid;
   border-radius: 15px;
   border-width: 2;
@@ -322,7 +326,7 @@ div.stats{
   height: 6%;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  top: 90;
+  top: 62;
   margin-left: 15;
   margin-right: 15;
   background: rgba(0, 63, 135, 1);
@@ -359,6 +363,10 @@ div.stats{
   text-shadow: 1px 1px black;
 }
 
+#title {
+
+}
+
 #titleBlock {
   font-family: 'Avenir', sans-serif;
 }
@@ -366,13 +374,13 @@ div.stats{
 #gradeBlock{
   overflow:auto;
   margin-top: -5px;
-  height:214px;
+  height:302px;
   font-size:16px;
   margin-left:10px;
 }
 
 #grades {
-  margin-right: 15px;
+  width: 815;
 }
 
 #editableField {
@@ -381,14 +389,17 @@ div.stats{
 }
 
 #submitBlock {
-  margin-top: 12px;
+  margin-top: 4px;
   margin-left: 50;
   margin-right: 370;
 }
 
+.myform {
+  height: 23;
+}
+
 #addAClass{
-  font-family: 'Avenir', sans-serif;
-  font-size: 40;
+  font-size: 30;
   font-weight: 500;
   color: rgba(80,80,80,1); /*Gray*/
 }
