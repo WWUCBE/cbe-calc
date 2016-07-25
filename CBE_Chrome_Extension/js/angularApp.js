@@ -108,6 +108,12 @@ app.controller('MainCtrl', [
       }
       setProgress($scope.classList);
 
+      var cbe = "CBE"
+      if(!$scope.cbe){
+        cbe = "MSCM";
+      }
+      setGradeInfo([$scope.gpa, cbe]);
+
       return;
     };
 
@@ -248,7 +254,17 @@ app.controller('MainCtrl', [
       //console.log("removeClass()");
       var index = $scope.classList.indexOf(item);
       $scope.classList.splice(index, 1);
+
+      //Save class list
       setProgress($scope.classList);
+
+      //save other grade info
+      var cbe = "CBE"
+      if(!$scope.cbe){
+        cbe = "MSCM";
+      }
+      setGradeInfo([$scope.gpa, cbe]);
+
       if($scope.cbe){
         $scope.setGpa();
       }else{
@@ -410,7 +426,16 @@ app.controller('MainCtrl', [
           }
         }
       }
+      //save classes
       setProgress($scope.classList);
+
+      //Save other grade info
+      var cbe = "CBE"
+      if(!$scope.cbe){
+        cbe = "MSCM";
+      }
+      setGradeInfo([$scope.gpa, cbe]);
+
       $scope.updatePrevious();
       $scope.setGpa();
       return;
@@ -506,7 +531,17 @@ app.controller('MainCtrl', [
           }
         }
       }
+
+      //save classes
       setProgress($scope.classList);
+
+      //Save other class info
+      var cbe = "CBE"
+      if(!$scope.cbe){
+        cbe = "MSCM";
+      }
+      setGradeInfo([$scope.gpa, cbe]);
+
       $scope.updatePrevious();
       $scope.setGpaFinalOnly();
       return;
@@ -564,6 +599,13 @@ app.controller('MainCtrl', [
           $scope.$apply();
         }
       });
+
+      //save other grade info
+      var cbe = "CBE"
+      if(!$scope.cbe){
+        cbe = "MSCM";
+      }
+      setGradeInfo([$scope.gpa, cbe]);
 
       return;
     };
@@ -625,9 +667,16 @@ function setMode(mode) {
 
 //Save entered classes to chrome.storage.sync
 function setProgress(classList) {
-  //console.log("setProgress()");
   chrome.storage.sync.set({'CBEclasses': classList}, function(){
-    //console.debug('Classes Saved');
+    //Saves classes to variable for persistent storage
+    console.debug('Classes saved');
+  })
+}
+
+function setGradeInfo(gradeInfo) {
+  chrome.storage.sync.set({'gradeInfo': gradeInfo}, function(){
+    //saves grade info for printing
+    console.debug('Grade info saved');
   })
 }
 

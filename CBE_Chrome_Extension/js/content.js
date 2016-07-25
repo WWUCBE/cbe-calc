@@ -1,5 +1,11 @@
 // Inform the background page that
 // this tab should have a page-action
+
+function formatForPrint(){
+  console.log("Attempted to format");
+  document.getElementById("body").innerHTML = test;
+}
+
 chrome.runtime.sendMessage({
   from:    'content',
   subject: 'showPageAction'
