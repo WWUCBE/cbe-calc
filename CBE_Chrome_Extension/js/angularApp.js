@@ -112,7 +112,6 @@ app.controller('MainCtrl', [
       if(!$scope.cbe){
         cbe = "MSCM";
       }
-      setGradeInfo([$scope.gpa, cbe]);
 
       return;
     };
@@ -198,6 +197,8 @@ app.controller('MainCtrl', [
         }
       }
 
+      //save class info
+      setGradeInfo([$scope.gpa, $scope.totalCredits]);
     };
 
     $scope.setGpaFinalOnly = function() {
@@ -243,12 +244,9 @@ app.controller('MainCtrl', [
         }
       }
 
+      //save class info
+      setGradeInfo([$scope.gpa, $scope.totalCredits]);
     };
-
-    $scope.printSection = function() {
-      //console.log("printSection()");
-      window.print();
-    }
 
     $scope.removeClass = function(item) {
       //console.log("removeClass()");
@@ -263,7 +261,6 @@ app.controller('MainCtrl', [
       if(!$scope.cbe){
         cbe = "MSCM";
       }
-      setGradeInfo([$scope.gpa, cbe]);
 
       if($scope.cbe){
         $scope.setGpa();
@@ -326,6 +323,10 @@ app.controller('MainCtrl', [
       }else{
         $scope.setGpaFinalOnly();
       }
+
+      //save classes
+      setProgress($scope.classList);
+      setGradeInfo([$scope.gpa, $scope.totalCredits]);
     }
 
     $scope.readFromPageCBE = function(info){
@@ -434,7 +435,6 @@ app.controller('MainCtrl', [
       if(!$scope.cbe){
         cbe = "MSCM";
       }
-      setGradeInfo([$scope.gpa, cbe]);
 
       $scope.updatePrevious();
       $scope.setGpa();
@@ -535,15 +535,15 @@ app.controller('MainCtrl', [
       //save classes
       setProgress($scope.classList);
 
+      $scope.updatePrevious();
+      $scope.setGpaFinalOnly();
+
       //Save other class info
       var cbe = "CBE"
       if(!$scope.cbe){
         cbe = "MSCM";
       }
-      setGradeInfo([$scope.gpa, cbe]);
 
-      $scope.updatePrevious();
-      $scope.setGpaFinalOnly();
       return;
     }
 
@@ -605,7 +605,6 @@ app.controller('MainCtrl', [
       if(!$scope.cbe){
         cbe = "MSCM";
       }
-      setGradeInfo([$scope.gpa, cbe]);
 
       return;
     };
@@ -616,7 +615,6 @@ app.controller('MainCtrl', [
 function clearCache(){
   chrome.storage.sync.clear();
   //console.log("Classes deleted");
-
 
   var scope = angular.element(document.getElementById("main")).scope();
   var bool = scope.cbe.toString();
@@ -671,6 +669,14 @@ function setProgress(classList) {
     //Saves classes to variable for persistent storage
     console.debug('Classes saved');
   })
+  /*
+  var scope = angular.element(document.getElementById("main")).scope();
+  scope.$apply(function(){
+    setGradeInfo([$scope.gpa, $scope.totalCredits]);
+    console.log("TEST: " + $scope.gpa + " " + $scope.totalCredits);
+    scope.$apply();
+  })
+  */
 }
 
 function setGradeInfo(gradeInfo) {
@@ -742,22 +748,31 @@ function minimize(e) {
   document.getElementById('toggle').checked = false;
 }
 
+function printSection(e) {
+  console.log("Sent print message");
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {action: "print"}, function(response) {
+      //console.log(response.farewell);
+    });
+  });
+}
+
 //Add listener to CBE/MSCM toggle
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('toggleSwitchBox').addEventListener('change', bind);
   document.getElementById('toggleSwitchBox2').addEventListener('change', bind);
   document.getElementById('menu').addEventListener('click', minimize);
   document.getElementById('backFilter').addEventListener('click', minimize);
+  document.getElementById('printButton').addEventListener('click', printSection);
+  document.getElementById('printButton2').addEventListener('click', printSection);
 });
 
 //listener to purge storage when 'refreshButton' is pressed
 document.getElementById("refreshButton").addEventListener("click", function () {
-  //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
   clearCache();
 });
 
 document.getElementById("refreshButton2").addEventListener("click", function () {
-  //TODO: fix bug where 'Restore' button doesn't work in MSCM mode
   clearCache();
 });
 
