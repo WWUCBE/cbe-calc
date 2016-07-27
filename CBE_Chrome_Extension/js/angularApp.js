@@ -179,7 +179,7 @@ app.controller('MainCtrl', [
       if(gpa != 0){
         gpa = gpa / countCredits;
       }
-      $scope.totalCredits = credits;
+      $scope.totalCredits = countCredits;
       $scope.gpa = gpa.toFixed(2);
 
       //Adjust academic standing color (good, bad)
