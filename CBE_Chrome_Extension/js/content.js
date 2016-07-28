@@ -14,28 +14,57 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     var pageData = ""
 
     //For students who HAVE applied for graduation
-    if(document.children[0].children[1].children[2].children[1].innerText != "\n\n"){
-      pageData += document.children[0].children[1].children[2].children[1].innerText
-    }
+    try{
+      pageData = document.children[0].children[1].children[2].children[1].innerText;
 
+      if(pageData.includes("Subj")){
+        //Add valid text to domInfo
+        var domInfo = {
+          data: pageData
+        }
+        // Directly respond to the sender (popup),
+        // through the specified callback
+        response(domInfo);
+        return;
+      }
+    }catch (e){
+
+    }
     //For advisers
-    else if(document.children[0].children[1].children[0].children[2].innerText != "\n\n"){
-      pageData += document.children[0].children[1].children[0].children[2].innerText
-    }
+    try{
+      pageData = document.children[0].children[1].children[0].children[2].innerText;
 
+      if(pageData.includes("Subj")){
+        //Add valid text to domInfo
+        var domInfo = {
+          data: pageData
+        }
+        // Directly respond to the sender (popup),
+        // through the specified callback
+        response(domInfo);
+        return;
+      }
+    }catch (f){
+
+    }
     //For students who have NOT applied for graduation
-    else if(document.children[0].children[1].children[0].children[3].innerText != "\n\n"){
-      pageData += document.children[0].children[1].children[0].children[3].innerText
+    try{
+      pageData = document.children[0].children[1].children[0].children[3].innerText;
+
+      if(pageData.includes("Subj")){
+        //Add valid text to domInfo
+        var domInfo = {
+          data: pageData
+        }
+        // Directly respond to the sender (popup),
+        // through the specified callback
+        response(domInfo);
+        return;
+      }
+    }catch (g){
+
     }
 
-    //Add valid text to domInfo
-    var domInfo = {
-      data: pageData
-    }
-
-    // Directly respond to the sender (popup),
-    // through the specified callback */
-    response(domInfo);
   }
 });
 

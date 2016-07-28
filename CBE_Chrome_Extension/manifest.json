@@ -15,7 +15,8 @@
   },
   "content_scripts":[{
       "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran",
-        "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent", "file:///C:/Users/Jherr/Desktop/testPage.html"],
+        "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent", "file:///C:/Users/Jherr/Desktop/testPage.html",
+        "file:///C:/Users/Jherr/Desktop/teriTranscript.html"],
     "js":["js/content.js"],
     "run_at": "document_end"
     }],

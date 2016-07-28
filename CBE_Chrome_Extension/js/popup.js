@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
       hide('onPageMSCM');
       show('toggleSwitch');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else if(url=="file:///C:/Users/Jherr/Desktop/testPage.html"){ //For testing
+    }else if((url == "file:///C:/Users/Jherr/Desktop/testPage.html") || (url == "file:///C:/Users/Jherr/Desktop/teriTranscript.html")){ //For testing
       show('onPageCBE');
       hide('notOnPage');
       hide('onPageMSCM');
