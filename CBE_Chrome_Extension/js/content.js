@@ -13,11 +13,22 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     // Collect the necessary data
     var pageData = ""
 
-    pageData = document.children[0].children[1].children[0].children[2].innerText
-    if(document.children[0].children[1].children[0].children[3].innerText != "\n\n"){
-      pageData = document.children[0].children[1].children[0].children[3].innerText
+    //For students who HAVE applied for graduation
+    if(document.children[0].children[1].children[2].children[1].innerText != "\n\n"){
+      pageData += document.children[0].children[1].children[2].children[1].innerText
     }
 
+    //For advisers
+    else if(document.children[0].children[1].children[0].children[2].innerText != "\n\n"){
+      pageData += document.children[0].children[1].children[0].children[2].innerText
+    }
+
+    //For students who have NOT applied for graduation
+    else if(document.children[0].children[1].children[0].children[3].innerText != "\n\n"){
+      pageData += document.children[0].children[1].children[0].children[3].innerText
+    }
+
+    //Add valid text to domInfo
     var domInfo = {
       data: pageData
     }
