@@ -748,6 +748,13 @@ function minimize(e) {
   document.getElementById('toggle').checked = false;
 }
 
+function setUser(user) {
+  chrome.storage.sync.set({'user': user}, function(){
+    //saves user to check for a page reload
+    console.debug('User saved');
+  })
+}
+
 function printSection(e) {
   console.log("Sent print message");
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
