@@ -555,34 +555,6 @@ app.controller('MainCtrl', [
       var studId = "";
       var newUser = false;
 
-      //Get studId
-      for(var i = 0 ; i < tokens.length ; i++){
-        studId = tokens[i];
-        if(lastTok === "ID:"){
-          break;
-        }else{
-          lastTok = studId;
-        }
-      }
-
-      //Check if student ID is the same, if not, dump memory and read page
-      chrome.storage.sync.get('user', function(result){
-        //Check if previous user exists
-        if(typeof(result.user) != "undefined"){
-          console.log(result.user);
-          //Check if new ID matches last used ID
-          if(studId != result.user){
-            console.log("Different user");
-          }else{
-            console.log("Same user");
-          }
-        }else{
-          console.log("No previous user");
-          setUser(studId);
-        }
-        $scope.$apply();
-      });
-
       //Check mode
       chrome.storage.sync.get('mode', function(result){
         //console.debug("Mode: " + result.mode);
@@ -611,27 +583,106 @@ app.controller('MainCtrl', [
         }
       });
 
-      //Check classes
-      chrome.storage.sync.get('CBEclasses', function(result){
-        if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
-          $scope.classList = result.CBEclasses;
-          //console.debug("Found previous classes");
-          //console.debug($scope.classList);
-          if($scope.cbe){
-            $scope.setGpa();
-          }else{
-            $scope.setGpaFinalOnly();
-          }
-          $scope.$apply();
-        }else{ //Else read from page
-          console.debug("No previous classes");
-          if($scope.cbe){ //CBE/MSCM toggle is on CBE
-            $scope.readFromPageCBE(info);
-          }else{//CBE/MSCM toggle is on MSCM
-            $scope.readFromPageMSCM(info);
-          }
-          $scope.$apply();
+      //Get studId
+      for(var i = 0 ; i < tokens.length ; i++){
+        studId = tokens[i];
+        if(lastTok === "ID:"){
+          break;
+        }else{
+          lastTok = studId;
         }
+      }
+
+      //Check if student ID is the same, if not, dump memory and read page
+      chrome.storage.sync.get('user', function(result){
+        //Check if previous user exists
+        if(typeof(result.user) != "undefined"){
+          console.log(result.user);
+          //Check if new ID matches last used ID
+          if(studId != result.user){
+            console.log("Different user");
+            chrome.storage.sync.remove('CBEclasses');
+
+            //Check classes
+            chrome.storage.sync.get('CBEclasses', function(result){
+              if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
+                $scope.classList = result.CBEclasses;
+                //console.debug("Found previous classes");
+                //console.debug($scope.classList);
+                if($scope.cbe){
+                  $scope.setGpa();
+                }else{
+                  $scope.setGpaFinalOnly();
+                }
+                $scope.$apply();
+              }else{ //Else read from page
+                console.debug("No previous classes");
+                if($scope.cbe){ //CBE/MSCM toggle is on CBE
+                  $scope.readFromPageCBE(info);
+                }else{//CBE/MSCM toggle is on MSCM
+                  $scope.readFromPageMSCM(info);
+                }
+                $scope.$apply();
+              }
+            });
+
+            //Set user
+            setUser(studId);
+          }else{
+            console.log("Same user");
+
+            //Check classes
+            chrome.storage.sync.get('CBEclasses', function(result){
+              if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
+                $scope.classList = result.CBEclasses;
+                //console.debug("Found previous classes");
+                //console.debug($scope.classList);
+                if($scope.cbe){
+                  $scope.setGpa();
+                }else{
+                  $scope.setGpaFinalOnly();
+                }
+                $scope.$apply();
+              }else{ //Else read from page
+                console.debug("No previous classes");
+                if($scope.cbe){ //CBE/MSCM toggle is on CBE
+                  $scope.readFromPageCBE(info);
+                }else{//CBE/MSCM toggle is on MSCM
+                  $scope.readFromPageMSCM(info);
+                }
+                $scope.$apply();
+              }
+            });
+          }
+        }else{
+          console.log("No previous user");
+          //Check classes
+          chrome.storage.sync.get('CBEclasses', function(result){
+            if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
+              $scope.classList = result.CBEclasses;
+              //console.debug("Found previous classes");
+              //console.debug($scope.classList);
+              if($scope.cbe){
+                $scope.setGpa();
+              }else{
+                $scope.setGpaFinalOnly();
+              }
+              $scope.$apply();
+            }else{ //Else read from page
+              console.debug("No previous classes");
+              if($scope.cbe){ //CBE/MSCM toggle is on CBE
+                $scope.readFromPageCBE(info);
+              }else{//CBE/MSCM toggle is on MSCM
+                $scope.readFromPageMSCM(info);
+              }
+              $scope.$apply();
+            }
+          });
+
+          //Set user
+          setUser(studId);
+        }
+        $scope.$apply();
       });
 
       //save other grade info
