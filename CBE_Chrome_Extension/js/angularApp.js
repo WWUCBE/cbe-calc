@@ -549,8 +549,41 @@ app.controller('MainCtrl', [
 
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
-      //console.log("addPrevClasses()");
+      var localData = String(info.data);
+      var tokens = localData.trim().split(/\s+/);
+      var lastTok = "";
+      var studId = "";
+      var newUser = false;
 
+      //Get studId
+      for(var i = 0 ; i < tokens.length ; i++){
+        studId = tokens[i];
+        if(lastTok === "ID:"){
+          break;
+        }else{
+          lastTok = studId;
+        }
+      }
+
+      //Check if student ID is the same, if not, dump memory and read page
+      chrome.storage.sync.get('user', function(result){
+        //Check if previous user exists
+        if(typeof(result.user) != "undefined"){
+          console.log(result.user);
+          //Check if new ID matches last used ID
+          if(studId != result.user){
+            console.log("Different user");
+          }else{
+            console.log("Same user");
+          }
+        }else{
+          console.log("No previous user");
+          setUser(studId);
+        }
+        $scope.$apply();
+      });
+
+      //Check mode
       chrome.storage.sync.get('mode', function(result){
         //console.debug("Mode: " + result.mode);
         if(typeof(result.mode) != "undefined"){
@@ -578,6 +611,7 @@ app.controller('MainCtrl', [
         }
       });
 
+      //Check classes
       chrome.storage.sync.get('CBEclasses', function(result){
         if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
           $scope.classList = result.CBEclasses;
@@ -590,7 +624,7 @@ app.controller('MainCtrl', [
           }
           $scope.$apply();
         }else{ //Else read from page
-          //console.debug("No previous classes");
+          console.debug("No previous classes");
           if($scope.cbe){ //CBE/MSCM toggle is on CBE
             $scope.readFromPageCBE(info);
           }else{//CBE/MSCM toggle is on MSCM
