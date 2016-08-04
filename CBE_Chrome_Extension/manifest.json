@@ -2,7 +2,7 @@
   "name": "WWU CBE GPA Calculator",
   "short_name": "CBE GPA Calc",
   "description": "Western students may view their current CBE or MSCM Foundation GBA and add/remove grades to see how their GPA will be affected.",
-  "version": "1.0.1.0",
+  "version": "1.0.1.1",
   "author": "Jesten Herrild",
 
   "browser_action": {
