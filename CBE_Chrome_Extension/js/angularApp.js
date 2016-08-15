@@ -154,12 +154,23 @@ app.controller('MainCtrl', [
     };
 
     $scope.setGpa = function() {
+      var counter = 0;
+      var target = 1;
       //console.log("setGpa()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
         $scope.classList[i].composite = "unique";
+        counter = 0;
+        if(($scope.classList[i].name === "IBUS 474") || ($scope.classList[i].name === "MGMT 474")){
+          target = 2;
+        }else{
+          target = 1;
+        }
         for(var j = i+1 ; j < $scope.classList.length ; j++){
           if($scope.classList[j].name === $scope.classList[i].name){
-            $scope.classList[i].composite = "composite";
+            counter++;
+            if(counter >= target){
+              $scope.classList[i].composite = "composite";
+            }
           }
         }
       }
