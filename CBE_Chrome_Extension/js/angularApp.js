@@ -304,7 +304,8 @@ app.controller('MainCtrl', [
         'D',
         'D+',
         'D-',
-        'F'
+        'F',
+        'Z'
       ];
       var gpas = [
         4,
@@ -318,6 +319,7 @@ app.controller('MainCtrl', [
         1,
         1.3,
         0.7,
+        0,
         0
       ];
       if(grades.indexOf($scope.classList[index].grade.toUpperCase()) < 0){
@@ -383,6 +385,7 @@ app.controller('MainCtrl', [
         'KF',
         'S',
         'U',
+        'KZ',
         'Z'
       ];
       for(var i = 0 ; i < lines.length ; i++){
@@ -411,7 +414,7 @@ app.controller('MainCtrl', [
               }
 
               //If class is pass/fail, break loop and ignore it
-              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U') || (tempGrade[0] === 'Z')){
+              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
                 break;
               }
 
@@ -493,6 +496,7 @@ app.controller('MainCtrl', [
         'KF',
         'S',
         'U',
+        'KZ',
         'Z'
       ];
       for(var i = 0 ; i < lines.length ; i++){
@@ -515,7 +519,7 @@ app.controller('MainCtrl', [
               }
 
               //If class is pass/fail, break loop and ignore it
-              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U') || (tempGrade[0] === 'Z')){
+              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
                 break;
               }
 
@@ -738,6 +742,8 @@ function getGPAValue(string){
       }else if(letter === "d" || letter === 'D'){
         gpa = 1;
       }else if(letter === "f" || letter === 'F'){
+        gpa = 0;
+      }else if(letter === "z" || letter === 'Z'){
         gpa = 0;
       }else{
         return;
