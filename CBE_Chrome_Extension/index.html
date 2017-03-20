@@ -10,11 +10,13 @@
 </head>
 <body id="main" data-ng-controller="MainCtrl">
 
+  <!-- HELP MENU BUTTON -->
   <input id="toggle" type="checkbox">
     <label for="toggle" id="menuButton">
-      &equiv; <!--The following would be better, but I can't seem to get google chrome to display an SVG: <img src="resources/menu.svg" class="menuButton"> -->
-    </label> <!-- use "&equiv;" without quotations marks for three abr 'menu' symbol -->
+      <img src="resources/help.svg" class="menuButton">
+    </label> 
 
+  <!-- HELP MENU -->
   <div class="slide-menu" id="menu">
     <div id="menuText">
       <!--<h2> Instructions </h2>
@@ -50,6 +52,8 @@
         </li>
       </ul>
 
+      <!-- This toggle switch is literally doing nothing, but commenting it out
+            makes it so the help menu can't close :/ -->
       <label id="toggleSwitch" class="switch-light toggleSwitch">
         <input type="checkbox" id="toggleSwitchBox">
         <strong>
