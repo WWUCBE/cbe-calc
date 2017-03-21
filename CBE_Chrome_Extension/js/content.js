@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 
     //For students who HAVE applied for graduation
     try{
-      pageData = document.children[0].children[1].children[2].children[1].innerText;
+      pageData = document.getElementsByClassName("pagebodydiv")[0].children[1].innerText;
 
       if(pageData.includes("Subj")){
         //Add valid text to domInfo
@@ -28,11 +28,11 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
         return;
       }
     }catch (e){
-
+      console.log("Caught error from student applied block (content.js)");
     }
     //For advisers
     try{
-      pageData = document.children[0].children[1].children[0].children[2].innerText;
+      pageData = document.getElementsByClassName("pagebodydiv")[0].children[2].innerText;
 
       if(pageData.includes("Subj")){
         //Add valid text to domInfo
@@ -45,11 +45,11 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
         return;
       }
     }catch (f){
-
+      console.log("Caught error from advisor block (content.js)");
     }
     //For students who have NOT applied for graduation
     try{
-      pageData = document.children[0].children[1].children[0].children[3].innerText;
+      pageData = document.getElementsByClassName("pagebodydiv")[0].children[3].innerText;
 
       if(pageData.includes("Subj")){
         //Add valid text to domInfo
@@ -62,7 +62,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
         return;
       }
     }catch (g){
-
+      console.log("Caught error from student not applied block (content.js)");
     }
 
   }
