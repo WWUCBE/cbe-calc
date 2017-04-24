@@ -169,7 +169,10 @@ app.controller('MainCtrl', [
           if($scope.classList[j].name === $scope.classList[i].name){
             counter++;
             if(counter >= target){
-              $scope.classList[i].composite = "composite";
+              if ($scope.classList[i].gpa > $scope.classList[j].gpa) { 
+                $scope.classList[j].composite = "composite";
+                $scope.classList[i].composite = "unique";
+              }
             }
           }
         }
@@ -366,6 +369,7 @@ app.controller('MainCtrl', [
         'B',
         'B+',
         'B-',
+        'K',
         'KB',
         'KB+',
         'KB-',
@@ -409,7 +413,7 @@ app.controller('MainCtrl', [
               tempGrade = lineArray[ind];
 
               //Class has a 'K' preceeding the grade
-              if(tempGrade[0] === 'K'){
+              if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
                 tempGrade = tempGrade.substring(1,tempGrade.length);
               }
 
@@ -472,6 +476,7 @@ app.controller('MainCtrl', [
       var grades = [
         'A',
         'A-',
+        'K',
         'KA',
         'KA-',
         'B',
@@ -514,7 +519,7 @@ app.controller('MainCtrl', [
               tempGrade = lineArray[ind];
 
               //Class has a 'K' preceeding the grade
-              if(tempGrade[0] === 'K'){
+              if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
                 tempGrade = tempGrade.substring(1,tempGrade.length);
               }
 
