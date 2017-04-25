@@ -158,6 +158,11 @@ app.controller('MainCtrl', [
       var target = 1;
       //console.log("setGpa()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+        /* if the class was already looked at as a duplicate and determined to be the lower gpa, we
+         * do nothing and go to the next class*/
+        if ($scope.classList[i].composite === "lowerGPA") {
+          continue
+        }
         $scope.classList[i].composite = "unique";
         counter = 0;
         if(($scope.classList[i].name === "IBUS 474") || ($scope.classList[i].name === "MGMT 474")){
@@ -169,9 +174,11 @@ app.controller('MainCtrl', [
           if($scope.classList[j].name === $scope.classList[i].name){
             counter++;
             if(counter >= target){
-              if ($scope.classList[i].gpa > $scope.classList[j].gpa) { 
-                $scope.classList[j].composite = "composite";
-                $scope.classList[i].composite = "unique";
+              if ($scope.classList[j].gpa > $scope.classList[i].gpa) { 
+                $scope.classList[i].composite = "composite";
+              } else {
+                $scope.classList[j].composite = "lowerGPA";
+
               }
             }
           }
@@ -183,9 +190,12 @@ app.controller('MainCtrl', [
       var countCredits = 0.00; //The number of credits minus credits from classes that were retaken
 
       for(var i = 0 ; i < $scope.classList.length ; i++){
-        gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
-        countCredits += +$scope.classList[i].credits;
-        if($scope.classList[i].composite != "composite"){
+        if($scope.classList[i].composite === "unique"){
+          /* only count classes -- both gradewise and creditwise -- if they haven't been
+           * elminated as lower-scoring duplicates*/
+          gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
+          countCredits += +$scope.classList[i].credits;
+          console.log($scope.classList[i].name + $scope.classList[i].grade);
           credits +=  +$scope.classList[i].credits;
         }
       }
@@ -614,7 +624,7 @@ app.controller('MainCtrl', [
       }
 
       //Check if student ID is the same, if not, dump memory and read page
-      chrome.storage.sync.get('user', function(result){
+      chrome.storage.sync.get('test', function(result){
         //Check if previous user exists
         if(typeof(result.user) != "undefined"){
           console.log(result.user);
