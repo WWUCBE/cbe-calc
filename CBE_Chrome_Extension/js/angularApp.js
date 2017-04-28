@@ -198,6 +198,10 @@ app.controller('MainCtrl', [
           console.log($scope.classList[i].name + $scope.classList[i].grade);
           credits +=  +$scope.classList[i].credits;
         }
+        else {
+          /* fix up composite tag, which is used for greying out duplicates in UI */
+          $scope.classList[i].composite = "composite";
+        }
       }
 
       if(gpa != 0){
