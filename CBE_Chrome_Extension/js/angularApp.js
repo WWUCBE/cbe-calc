@@ -161,7 +161,11 @@ app.controller('MainCtrl', [
         /* if the class was already looked at as a duplicate and determined to be the lower gpa, we
          * do nothing and go to the next class*/
         if ($scope.classList[i].composite === "lowerGPA") {
-          continue
+          continue;
+        }
+        /* don't touch K grade classes */
+        if ($scope.classList[i].grade === "K" || $scope.classList[i].grade === "K*") {
+          continue;
         }
         $scope.classList[i].composite = "unique";
         counter = 0;
@@ -232,6 +236,10 @@ app.controller('MainCtrl', [
     $scope.setGpaFinalOnly = function() {
       //console.log("setGpaFinalOnly()");
       for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+        /* don't touch K grade classes */
+        if ($scope.classList[i].grade === "K" || $scope.classList[i].grade === "K*") {
+          continue;
+        }
         $scope.classList[i].composite = "unique";
         for(var j = i+1 ; j < $scope.classList.length ; j++){
           if($scope.classList[j].name === $scope.classList[i].name){
@@ -244,7 +252,7 @@ app.controller('MainCtrl', [
       var credits = 0.00;
 
       for(var i = 0 ; i < $scope.classList.length ; i++){
-        if($scope.classList[i].composite != "composite"){
+        if($scope.classList[i].composite === "unique"){
           gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
           credits +=  +$scope.classList[i].credits;
         }
@@ -384,6 +392,7 @@ app.controller('MainCtrl', [
         'B+',
         'B-',
         'K',
+        'K*',
         'KB',
         'KB+',
         'KB-',
@@ -428,7 +437,8 @@ app.controller('MainCtrl', [
 
               //Class has a 'K' preceeding the grade
               if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
-                tempGrade = tempGrade.substring(1,tempGrade.length);
+                //tempGrade = tempGrade.substring(1,tempGrade.length);
+                console.log("K was hit, tempgrade=" + tempGrade);
               }
 
               //If class is pass/fail, break loop and ignore it
@@ -491,6 +501,7 @@ app.controller('MainCtrl', [
         'A',
         'A-',
         'K',
+        'K*',
         'KA',
         'KA-',
         'B',
@@ -763,6 +774,8 @@ function getGPAValue(string){
       }else if(letter === "f" || letter === 'F'){
         gpa = 0;
       }else if(letter === "z" || letter === 'Z'){
+        gpa = 0;
+      }else if(letter === "K" || string === 'K*'){
         gpa = 0;
       }else{
         return;
