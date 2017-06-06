@@ -92,6 +92,14 @@ document.addEventListener('DOMContentLoaded', function() {
       hide('onPageMSCM');
       show('toggleSwitch');
       chrome.tabs.executeScript(null, {file: "js/content.js"});
+    }
+      //wesley's test pages
+    else if(url == "file:///Users/Wesley/cbe-calc/CBE_Chrome_Extension/testpages/testPage.html"){
+      show('onPageCBE');
+      hide('notOnPage');
+      hide('onPageMSCM');
+      show('toggleSwitch');
+      chrome.tabs.executeScript(null, {file: "js/content.js"});
     }else{
       show('notOnPage');
       hide('onPageCBE');
