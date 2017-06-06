@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.tabs.executeScript(null, {file: "js/content.js"});
     }
       //wesley's test pages
-    else if(url == "file:///Users/Wesley/cbe-calc/CBE_Chrome_Extension/testpages/testPage.html"){
+    else if((url == "file:///Users/Wesley/cbe-calc/CBE_Chrome_Extension/testpages/testPage.html") || (url == "file:///Users/Wesley/cbe-calc/CBE_Chrome_Extension/testpages/testPage2.html")){
       show('onPageCBE');
       hide('notOnPage');
       hide('onPageMSCM');
