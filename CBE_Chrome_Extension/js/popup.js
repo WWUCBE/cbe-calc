@@ -73,7 +73,7 @@ window.addEventListener('load', function() {
 }, false);
 
 
-//Decide what to do when COM Content is loaded
+//Decide what to do when DOM Content is loaded
 document.addEventListener('DOMContentLoaded', function() {
     getCurrentTabUrl(function(url) {
         if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
