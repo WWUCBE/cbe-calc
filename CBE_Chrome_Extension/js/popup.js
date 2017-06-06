@@ -72,42 +72,39 @@ window.addEventListener('load', function() {
    }
 }, false);
 
+
+//Decide what to do when COM Content is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  getCurrentTabUrl(function(url) {
-    if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else if((url == "file:///C:/Users/Jherr/Desktop/testPage.html") || (url == "file:///C:/Users/Jherr/Desktop/teriTranscript.html")){ //For testing
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }
-      //wesley's test pages
-    else if((url == "file:///Users/Wesley/cbe-calc/CBE_Chrome_Extension/testpages/testPage.html") || (url == "file:///Users/Wesley/cbe-calc/CBE_Chrome_Extension/testpages/testPage2.html")){
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else{
-      show('notOnPage');
-      hide('onPageCBE');
-      hide('onPageMSCM');
-      hide('toggleSwitch');
-      hide('toggleDiv');
-    };
-  });
+    getCurrentTabUrl(function(url) {
+        if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
+            show('onPageCBE');
+            hide('notOnPage');
+            hide('onPageMSCM');
+            show('toggleSwitch');
+            chrome.tabs.executeScript(null, {file: "js/content.js"});
+        }
+        else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
+            show('onPageCBE');
+            hide('notOnPage');
+            hide('onPageMSCM');
+            show('toggleSwitch');
+            chrome.tabs.executeScript(null, {file: "js/content.js"});
+        }
+        //pulls data from any test page starting with 'testPage'
+        else if(url.includes("/CBE_Chrome_Extension/testpages/testPage")){
+            show('onPageCBE');
+            hide('notOnPage');
+            hide('onPageMSCM');
+            show('toggleSwitch');
+            chrome.tabs.executeScript(null, {file: "js/content.js"});
+        }else{
+            show('notOnPage');
+            hide('onPageCBE');
+            hide('onPageMSCM');
+            hide('toggleSwitch');
+            hide('toggleDiv');
+        };
+    });
 });
 
 /*
