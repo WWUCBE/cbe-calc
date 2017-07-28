@@ -81,14 +81,24 @@ document.addEventListener('DOMContentLoaded', function() {
             hide('notOnPage');
             hide('onPageMSCM');
             show('toggleSwitch');
-            chrome.tabs.executeScript(null, {file: "js/content.js"});
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
         }
         else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
             show('onPageCBE');
             hide('notOnPage');
             hide('onPageMSCM');
             show('toggleSwitch');
-            chrome.tabs.executeScript(null, {file: "js/content.js"});
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
         }
         //pulls data from any test page starting with 'testPage'
         else if(url.includes("/CBE_Chrome_Extension/testpages/testPage")){
@@ -96,7 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
             hide('notOnPage');
             hide('onPageMSCM');
             show('toggleSwitch');
-            chrome.tabs.executeScript(null, {file: "js/content.js"});
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
         }else{
             show('notOnPage');
             hide('onPageCBE');

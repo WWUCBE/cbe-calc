@@ -151,6 +151,7 @@ function formatForPrint(){
     var credits = 0;
 
     //Get mode and store it in variable
+	console.log("getting mode");
     chrome.storage.sync.get('mode', function(result){
         //Check if mode has been set
         if(typeof(result.mode) != "undefined"){
@@ -167,6 +168,7 @@ function formatForPrint(){
     });
 
     //Get gpa
+	console.log("Getting GPA");
     chrome.storage.sync.get('gradeInfo', function(result){
         //Check if mode has been set
         if(typeof(result.gradeInfo) != "undefined"){
@@ -182,32 +184,35 @@ function formatForPrint(){
     });
 
     //Get classes and store them in variable
+	console.log("getting CBE classes");
     chrome.storage.sync.get('CBEclasses', function(result){
         //Check to see if there are classes saved in storage
+		console.log("checking class list");
         if((typeof(result.CBEclasses) != "undefined") 
             && (result.CBEclasses.length > 0)){
             //Set classList variable
+			console.log("setting class list");
             classList = result.CBEclasses;
             console.debug(classList);
             //Loop to append each class to page
             for(var i = 0 ; i < classList.length ; i++){
+				console.log("adding class");
                 printWindow.document.write("<b>" + classList[i].name + "</b><br/>GPA: " + 
                     classList[i].gpa + "<br/>CREDITS: " + classList[i].credits +
                     "<br/><br/>");
             }
         printWindow.document.write( "<hr>");
+		printWindow.document.write('</body></html>');
+
+        printWindow.document.close();
+        printWindow.focus();
+
+
+        //print the output
+        printWindow.print();
+		printWindow.close();
         }
     });
-
-    printWindow.document.write('</body></html>');
-
-    printWindow.document.close();
-    printWindow.focus();
-
-
-    //print the output
-    printWindow.print();
-    printWindow.close();
 
 }
 
