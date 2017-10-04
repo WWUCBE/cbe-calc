@@ -4,36 +4,23 @@ app.run(function(editableOptions) {
   editableOptions.theme = 'bs3';
 });
 
-app.factory('classList', [function(){
-  var o = {
-    classList: []
-  };
-  return o;
-}]);
-
-app.factory('classPrefixes', [function(){
-  var c = {
-    classPrefixes: []
-  };
-  return c;
-}]);
 
 app.controller('MainCtrl', [
   '$scope',
-  'classList',
-  'classPrefixes',
-  function($scope, classList, classPrefixes){
+  function($scope){
     //console.log("mainControllerFunction()");
-    $scope.classList = classList.classList;
+    $scope.classList = [];
     $scope.previousGPA = [];
-    $scope.classPrefixes = classPrefixes.classPrefixes;
+    $scope.classPrefixes = [];
     $scope.gpa = (0.0).toFixed(2);
     $scope.standing = 'good';
     $scope.totalCredits = 0;
     $scope.cbe = true;
 
+    /* Triggered when clicking the "ADD" button in the ui to 
+     * add a class. */
     $scope.addClass = function(){
-      //console.log("addClass()");
+      /* if any of the three text fields are empty, do nothing */
       if(!$scope.name || $scope.name === ''){
         return;
       }
@@ -44,156 +31,75 @@ app.controller('MainCtrl', [
         return;
       }
 
-      var gpa = 0;
-      var tempGrade = $scope.grade;
-      var letter = tempGrade.substring(0,1).toUpperCase();
-      var mod = '';
-      if(tempGrade.length >= 2){
-        mod = tempGrade.substring(1,2);
-        if(!(mod === '+' || mod ==='-')){
-          mod = '';
-        }
-        //Remove disallowed modifiers
-        if((mod === '+') && ((letter === 'A') || (letter === 'F'))){
-          mod = '';
-        }else if((mod === '-') && (letter === 'F')){
-          mod = '';
-        }
-      }
-      if(letter === "a" || letter === 'A'){
-        gpa = 4;
-      }else if(letter === "b" || letter === 'B'){
-        gpa = 3;
-      }else if(letter === "c" || letter === 'C'){
-        gpa = 2;
-      }else if(letter === "d" || letter === 'D'){
-        gpa = 1;
-      }else if(letter === "f" || letter === 'F'){
-        gpa = 0;
-      }else{
-        return;
-      }
-
-      if(mod === '+' && gpa < 4){
-        gpa += 0.3;
-      }else if(mod === '-'){
-        gpa -= 0.3;
-      }
-
-      //var found = false;
+      /* see if the new class is a duplicate, if it is, mark 
+       * the old one as such */
       for(var i = 0 ; i < $scope.classList.length ; i++){
         if($scope.classList[i].name === $scope.name.toUpperCase()){
-          //found = true;
-          //$scope.classList[i].gpa = ((+$scope.classList[i].gpa + gpa)/2).toFixed(2);
-          //$scope.classList[i].grade = $scope.classList[i].gpa;
           $scope.classList[i].composite = 'composite';
         }
       }
 
+      /* convert the letter grade into a numbered grade */
+      var tempGrade = $scope.grade;
+      var gpa = getGPAValue(tempGrade);
+
+      /* add the new class to the global list*/
       $scope.classList.push({
         name: $scope.name.substring(0,15).toUpperCase(),
-        grade: letter.toUpperCase() + mod,
+        grade: tempGrade.toUpperCase(),
         gpa: gpa.toFixed(2),
         credits: $scope.credits
       });
 
+      /* reset the fields (remember, these are linked with
+       * the  html) */
       $scope.name = '';
       $scope.grade = '';
       $scope.credits = '';
 
+      /* update the GPA with the appropriate algorithm */
       if($scope.cbe){
-        $scope.setGpa();
+        $scope.setGpaCBE();
       }else{
-        $scope.setGpaFinalOnly();
+        $scope.setGpaMSCM();
       }
-      setProgress($scope.classList);
 
-      var cbe = "CBE"
-      if(!$scope.cbe){
-        cbe = "MSCM";
-      }
+      /* save the new classlist to chrome storage */
+      storeClassList($scope.classList);
 
       return;
     };
 
-    $scope.updatePrevious = function() {
-      //console.log("updatePrevious()");
-      //console.log($scope.prevGPA);
-      //console.log($scope.prevCredits);
-      if(!$scope.prevGPA || $scope.prevGPA === ''){
-        return;
-      }
-      if(parseInt($scope.prevGPA) > 4){
-        return;
-      }
-      if(!$scope.prevCredits || $scope.prevCredits === ''){
-        return;
-      }
-      if($scope.prevCredits != parseInt($scope.prevCredits, 10)){
-        return;
-      }
-      if($scope.previousGPA.length > 0){
-        $scope.previousGPA.splice(0, $scope.previousGPA.length);
-      }
-
-      $scope.previousGPA.push({
-        gpa: parseFloat($scope.prevGPA).toFixed(2),
-        prevCredits: parseInt($scope.prevCredits)
-      });
-
-      $scope.prevGPA = '';
-      $scope.prevCredits = '';
-
-      if($scope.cbe){
-        $scope.setGpa();
-      }else{
-        $scope.setGpaFinalOnly();
-      }
-
-      return;
-    };
-
-    $scope.setGpa = function() {
-      var counter = 0;
-      var target = 1;
-      //console.log("setGpa()");
-      for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
-        $scope.classList[i].composite = "unique";
-        counter = 0;
-        if(($scope.classList[i].name === "IBUS 474") || ($scope.classList[i].name === "MGMT 474")){
-          target = 2;
-        }else{
-          target = 1;
-        }
-        for(var j = i+1 ; j < $scope.classList.length ; j++){
-          if($scope.classList[j].name === $scope.classList[i].name){
-            counter++;
-            if(counter >= target){
-              $scope.classList[i].composite = "composite";
-            }
-          }
-        }
-      }
-
-      var gpa = 0.00;
-      var credits = 0.00;
-      var countCredits = 0.00; //The number of credits minus credits from classes that were retaken
-
-      for(var i = 0 ; i < $scope.classList.length ; i++){
-        gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
-        countCredits += +$scope.classList[i].credits;
-        if($scope.classList[i].composite != "composite"){
-          credits +=  +$scope.classList[i].credits;
-        }
-      }
-
-      if(gpa != 0){
-        gpa = gpa / countCredits;
-      }
-      $scope.totalCredits = countCredits;
-      $scope.gpa = gpa.toFixed(2);
+    $scope.setGpaCBE = function() {
+      var gradeInfo = calculateCBEGPA($scope.classList);
+      $scope.totalCredits = gradeInfo.credits;
+      $scope.gpa = gradeInfo.gpa;
+      $scope.classList = gradeInfo.classList;
 
       //Adjust academic standing color (good, bad)
+      $scope.updateColorWarning();
+
+      //save class info
+      setGradeInfo([$scope.gpa, $scope.totalCredits]);
+    };
+
+    $scope.setGpaMSCM = function() {
+      var gradeInfo = calculateMSCMGPA($scope.classList);
+
+      $scope.totalCredits = gradeInfo.credits;
+      $scope.gpa = gradeInfo.gpa;
+      $scope.classList = gradeInfo.classList;
+
+      //Adjust academic standing color (good, bad)
+			$scope.updateColorWarning();
+
+      //save class info
+      setGradeInfo([$scope.gpa, $scope.totalCredits]);
+    };
+
+    /* controls the color change of the GPA display */
+    $scope.updateColorWarning = function() {
+    	//Adjust academic standing color (good, bad)
       if($scope.cbe){
         if($scope.gpa > 2.3){
           $scope.standing = 'good';
@@ -207,60 +113,6 @@ app.controller('MainCtrl', [
           $scope.standing = 'bad';
         }
       }
-
-      //save class info
-      setGradeInfo([$scope.gpa, $scope.totalCredits]);
-    };
-
-    $scope.setGpaFinalOnly = function() {
-      //console.log("setGpaFinalOnly()");
-      for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
-        /* don't touch K grade classes */
-        if ($scope.classList[i].grade === "K" || $scope.classList[i].grade === "K*") {
-          continue;
-        }
-        $scope.classList[i].composite = "unique";
-        for(var j = i+1 ; j < $scope.classList.length ; j++){
-          if($scope.classList[j].name === $scope.classList[i].name){
-            $scope.classList[i].composite = "composite";
-          }
-        }
-      }
-
-      var gpa = 0.00;
-      var credits = 0.00;
-
-      for(var i = 0 ; i < $scope.classList.length ; i++){
-        if($scope.classList[i].composite === "unique"){
-          gpa += (+$scope.classList[i].gpa * +$scope.classList[i].credits);
-          credits +=  +$scope.classList[i].credits;
-        }
-      }
-
-      if(gpa != 0){
-        gpa = gpa / credits;
-      }
-
-      $scope.totalCredits = credits;
-      $scope.gpa = gpa.toFixed(2);
-
-      //Adjust academic standing color (good, bad)
-      if($scope.cbe){
-        if($scope.gpa > 2.3){
-          $scope.standing = 'good';
-        }else{
-          $scope.standing = 'bad';
-        }
-      }else{
-        if($scope.gpa >= 3.0){
-          $scope.standing = 'good';
-        }else{
-          $scope.standing = 'bad';
-        }
-      }
-
-      //save class info
-      setGradeInfo([$scope.gpa, $scope.totalCredits]);
     };
 
     $scope.removeClass = function(item) {
@@ -269,7 +121,7 @@ app.controller('MainCtrl', [
       $scope.classList.splice(index, 1);
 
       //Save class list
-      setProgress($scope.classList);
+      storeClassList($scope.classList);
 
       //save other grade info
       var cbe = "CBE"
@@ -278,306 +130,17 @@ app.controller('MainCtrl', [
       }
 
       if($scope.cbe){
-        $scope.setGpa();
+        $scope.setGpaCBE();
       }else{
-        $scope.setGpaFinalOnly();
+        $scope.setGpaMSCM();
       }
     };
 
-    $scope.reCalc = function(index){
-      //console.log("reCalc()");
-      for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
-        $scope.classList[i].composite = "unique";
-        $scope.classList[i].name = $scope.classList[i].name.toUpperCase();
-        for(var j = i+1 ; j < $scope.classList.length ; j++){
-          if($scope.classList[j].name === $scope.classList[i].name){
-            $scope.classList[i].composite = "composite";
-          }
-        }
-      }
-
-      var grades = [
-        'A',
-        'A-',
-        'B',
-        'B+',
-        'B-',
-        'C',
-        'C+',
-        'C-',
-        'D',
-        'D+',
-        'D-',
-        'F',
-        'Z'
-      ];
-      var gpas = [
-        4,
-        3.7,
-        3,
-        3.3,
-        2.7,
-        2,
-        2.3,
-        1.7,
-        1,
-        1.3,
-        0.7,
-        0,
-        0
-      ];
-      if(grades.indexOf($scope.classList[index].grade.toUpperCase()) < 0){
-        $scope.classList[index].gpa = 0;
-        $scope.classList[index].credits = 0;
-        $scope.classList[index].grade = "invalid";
-      }else{
-        $scope.classList[index].gpa = gpas[grades.indexOf($scope.classList[index].grade.toUpperCase())].toFixed(2);
-        $scope.classList[index].grade = $scope.classList[index].grade.toUpperCase();
-      }
-
-      if($scope.cbe){
-        $scope.setGpa();
-      }else{
-        $scope.setGpaFinalOnly();
-      }
-
-      //save classes
-      setProgress($scope.classList);
-      setGradeInfo([$scope.gpa, $scope.totalCredits]);
-    }
-
-    $scope.readFromPageCBE = function(info){
-      //console.debug("readFromPageCBE()");
-      var localData = String(info.data);
-      var lines = localData.split('\n');
-      var headers = [
-        'ECON',
-        'ACCT',
-        'DSCI',
-        'MIS',
-        'FIN',
-        'MKTG',
-        'OPS',
-        'MGMT',
-        'IBUS',
-        'HRM'
-      ];
-      var grades = [
-        'A',
-        'A-',
-        'KA',
-        'KA-',
-        'B',
-        'B+',
-        'B-',
-        'K',
-        'K*',
-        'KB',
-        'KB+',
-        'KB-',
-        'C',
-        'C+',
-        'C-',
-        'KC',
-        'KC+',
-        'KC-',
-        'D',
-        'D+',
-        'D-',
-        'KD',
-        'KD+',
-        'KD-',
-        'F',
-        'KF',
-        'S',
-        'U',
-        'KZ',
-        'Z'
-      ];
-      for(var i = 0 ; i < lines.length ; i++){
-        //split on space or group of spaces and store in lineArray
-        var lineArray = lines[i].trim().split(/\s+/);
-
-        if(headers.indexOf(lineArray[0]) >= 0){
-          var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
-          var tempGrade;
-          var tempCredits;
-          /*
-          for(var j = 0 ; j < grades.length ; j++){
-            if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
-              tempGrade = lineArray[j];
-              break;
-            }
-          }*/
-          var realGrade = false;
-          for(var ind = 5; ind < lineArray.length; ind++){
-            if(grades.indexOf(lineArray[ind])>=0){
-              tempGrade = lineArray[ind];
-
-              //Class has a 'K' preceeding the grade
-              if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
-                //tempGrade = tempGrade.substring(1,tempGrade.length);
-                console.log("K was hit, tempgrade=" + tempGrade);
-              }
-
-              //If class is pass/fail, break loop and ignore it
-              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
-                break;
-              }
-
-              //credits are located one before the grade.
-              tempCredits = lineArray[ind-1];
-              realGrade = true;
-              break;
-            }
-          }
-
-          if(realGrade){
-            for(var j = 0 ; j < $scope.classList.length ; j++){
-              if($scope.classList[j].name === tempName){
-                $scope.classList[j].composite = 'composite';
-              }
-            }
-
-            $scope.classList.push({
-              name: tempName,
-              grade: tempGrade,
-              gpa: getGPAValue(tempGrade).toFixed(1),
-              credits: tempCredits
-            });
-          }
-        }
-      }
-      //save classes
-      setProgress($scope.classList);
-
-      //Save other grade info
-      var cbe = "CBE"
-      if(!$scope.cbe){
-        cbe = "MSCM";
-      }
-
-      $scope.updatePrevious();
-      $scope.setGpa();
-      return;
-    }
-
-    $scope.readFromPageMSCM = function(info){
-      //console.debug("readFromPageMSCM()");
-      var localData = String(info.data);
-      var lines = localData.split('\n');
-      var validclasses = {
-        'MATH': ['157'],
-        'DSCI': ['205'],
-        'ACCT': ['240','245'],
-        'ECON':['206','207'],
-        'MIS': ['220'],
-        'MGMT':['271'],
-        'PHYS':['114'],
-        'CHEM': ['121']
-      }
-      var grades = [
-        'A',
-        'A-',
-        'K',
-        'K*',
-        'KA',
-        'KA-',
-        'B',
-        'B+',
-        'B-',
-        'KB',
-        'KB+',
-        'KB-',
-        'C',
-        'C+',
-        'C-',
-        'KC',
-        'KC+',
-        'KC-',
-        'D',
-        'D+',
-        'D-',
-        'KD',
-        'KD+',
-        'KD-',
-        'F',
-        'KF',
-        'S',
-        'U',
-        'KZ',
-        'Z'
-      ];
-      for(var i = 0 ; i < lines.length ; i++){
-        //split on space or group of spaces and store in lineArray
-        var lineArray = lines[i].trim().split(/\s+/);
-
-        if(validclasses.hasOwnProperty(lineArray[0]) && validclasses[lineArray[0]].indexOf(lineArray[1].substring(0,3))>=0){
-          var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
-          var tempGrade;
-          var tempCredits;
-
-          var realGrade = false;
-          for(var ind = 5; ind < lineArray.length; ind++){
-            if(grades.indexOf(lineArray[ind])>=0){
-              tempGrade = lineArray[ind];
-
-              //Class has a 'K' preceeding the grade
-              if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
-                tempGrade = tempGrade.substring(1,tempGrade.length);
-              }
-
-              //If class is pass/fail, break loop and ignore it
-              if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
-                break;
-              }
-
-              //credits are located one before the grade.
-              tempCredits = lineArray[ind-1];
-              realGrade = true;
-              break;
-            }
-          }
-
-          if(realGrade){
-            for(var j = 0 ; j < $scope.classList.length ; j++){
-              if($scope.classList[j].name === tempName){
-                $scope.classList[j].composite = 'composite';
-              }
-            }
-
-            $scope.classList.push({
-              name: tempName,
-              grade: tempGrade,
-              gpa: getGPAValue(tempGrade).toFixed(1),
-              credits: tempCredits
-            });
-          }
-        }
-      }
-
-      //save classes
-      setProgress($scope.classList);
-
-      $scope.updatePrevious();
-      $scope.setGpaFinalOnly();
-
-      //Save other class info
-      var cbe = "CBE"
-      if(!$scope.cbe){
-        cbe = "MSCM";
-      }
-
-      return;
-    }
 
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
       var localData = String(info.data);
       var tokens = localData.trim().split(/\s+/);
-      var lastTok = "";
-      var studId = "";
-      var newUser = false;
 
       //Check mode
       chrome.storage.sync.get('mode', function(result){
@@ -607,114 +170,42 @@ app.controller('MainCtrl', [
         }
       });
 
-      //Get studId
-      for(var i = 0 ; i < tokens.length ; i++){
-        studId = tokens[i];
-        if(lastTok === "ID:"){
-          break;
-        }else{
-          lastTok = studId;
-        }
-      }
+      /* name shit (pull out later) */
+      // TODO: put into storage so print function can get it
+      var name = tokens.slice(4, 7);
+      saveStudentName(name);
+          
+      // Check to see if there are classes saved in storage, which
+      // will only happen if the user is switching between CBE/MSCM
+      chrome.storage.sync.get('CBEclasses', function(result){
+        if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ 
+          $scope.classList = result.CBEclasses;
 
-      //Check if student ID is the same, if not, dump memory and read page
-      chrome.storage.sync.get('test', function(result){
-        //Check if previous user exists
-        if(typeof(result.user) != "undefined"){
-          console.log(result.user);
-          //Check if new ID matches last used ID
-          if(studId != result.user){
-            console.log("Different user");
-            chrome.storage.sync.remove('CBEclasses');
-
-            //Check classes
-            chrome.storage.sync.get('CBEclasses', function(result){
-              if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
-                $scope.classList = result.CBEclasses;
-                //console.debug("Found previous classes");
-                //console.debug($scope.classList);
-                if($scope.cbe){
-                  $scope.setGpa();
-                }else{
-                  $scope.setGpaFinalOnly();
-                }
-                $scope.$apply();
-              }else{ //Else read from page
-                console.debug("No previous classes");
-                if($scope.cbe){ //CBE/MSCM toggle is on CBE
-                  $scope.readFromPageCBE(info);
-                }else{//CBE/MSCM toggle is on MSCM
-                  $scope.readFromPageMSCM(info);
-                }
-                $scope.$apply();
-              }
-            });
-
-            //Set user
-            setUser(studId);
+          if($scope.cbe){
+            $scope.setGpaCBE();
           }else{
-            console.log("Same user");
-
-            //Check classes
-            chrome.storage.sync.get('CBEclasses', function(result){
-              if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
-                $scope.classList = result.CBEclasses;
-                //console.debug("Found previous classes");
-                //console.debug($scope.classList);
-                if($scope.cbe){
-                  $scope.setGpa();
-                }else{
-                  $scope.setGpaFinalOnly();
-                }
-                $scope.$apply();
-              }else{ //Else read from page
-                console.debug("No previous classes");
-                if($scope.cbe){ //CBE/MSCM toggle is on CBE
-                  $scope.readFromPageCBE(info);
-                }else{//CBE/MSCM toggle is on MSCM
-                  $scope.readFromPageMSCM(info);
-                }
-                $scope.$apply();
-              }
-            });
+            $scope.setGpaMSCM();
           }
-        }else{
-          console.log("No previous user");
-          //Check classes
-          chrome.storage.sync.get('CBEclasses', function(result){
-            if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ //Check to see if there are classes saved in storage
-              $scope.classList = result.CBEclasses;
-              //console.debug("Found previous classes");
-              //console.debug($scope.classList);
-              if($scope.cbe){
-                $scope.setGpa();
-              }else{
-                $scope.setGpaFinalOnly();
-              }
-              $scope.$apply();
-            }else{ //Else read from page
-              console.debug("No previous classes");
-              if($scope.cbe){ //CBE/MSCM toggle is on CBE
-                $scope.readFromPageCBE(info);
-              }else{//CBE/MSCM toggle is on MSCM
-                $scope.readFromPageMSCM(info);
-              }
-              $scope.$apply();
-            }
-          });
+          $scope.$apply();
+        }else{ //Else read from page
+          console.debug("No previous classes");
+          if($scope.cbe){ //CBE/MSCM toggle is on CBE
+            $scope.classList = parseClassesCBE(info);
 
-          //Set user
-          setUser(studId);
+			      $scope.setGpaCBE();
+          }else{//CBE/MSCM toggle is on MSCM
+            $scope.classList = parseClassesMSCM(info);
+
+			      $scope.setGpaMSCM();
+          }
+
+          storeClassList($scope.classList);
+          $scope.$apply();
         }
-        $scope.$apply();
       });
-
-      //save other grade info
-      var cbe = "CBE"
-      if(!$scope.cbe){
-        cbe = "MSCM";
-      }
-
+ 
+      $scope.$apply();
+     
       return;
     };
   }
@@ -723,49 +214,9 @@ app.controller('MainCtrl', [
 //Function to clean added classes and read classes that were removed when 'refresh' button is pressed
 function clearCache(){
   chrome.storage.sync.clear();
-  //console.log("Classes deleted");
-
   var scope = angular.element(document.getElementById("main")).scope();
   var bool = scope.cbe.toString();
   setMode(bool);
-
-}
-
-//function to calculate GPA point based on letter grades
-function getGPAValue(string){
-  //console.log("getGPAValue()");
-  var gpa;
-  var letter = string.substring(0,1);
-  if(string.length >= 2){
-        var mod = string.substring(1,2);
-        if(!(mod === '+' || mod ==='-')){
-          var mod = '';
-        }
-      }
-      if(letter === "a" || letter === 'A'){
-        gpa = 4;
-      }else if(letter === "b" || letter === 'B'){
-        gpa = 3;
-      }else if(letter === "c" || letter === 'C'){
-        gpa = 2;
-      }else if(letter === "d" || letter === 'D'){
-        gpa = 1;
-      }else if(letter === "f" || letter === 'F'){
-        gpa = 0;
-      }else if(letter === "z" || letter === 'Z'){
-        gpa = 0;
-      }else if(letter === "K" || string === 'K*'){
-        gpa = 0;
-      }else{
-        return;
-      }
-
-      if(mod === '+' && gpa < 4){
-        gpa += 0.3;
-      }else if(mod === '-'){
-        gpa -= 0.3;
-      }
-  return gpa;
 }
 
 //Saves mode - either 'True' or 'False', where 'True' is CBE and 'False' is MSCM
@@ -777,21 +228,14 @@ function setMode(mode) {
 }
 
 //Save entered classes to chrome.storage.sync
-function setProgress(classList) {
+function storeClassList(classList) {
   chrome.storage.sync.set({'CBEclasses': classList}, function(){
     //Saves classes to variable for persistent storage
     console.debug('Classes saved');
   })
-  /*
-  var scope = angular.element(document.getElementById("main")).scope();
-  scope.$apply(function(){
-    setGradeInfo([$scope.gpa, $scope.totalCredits]);
-    console.log("TEST: " + $scope.gpa + " " + $scope.totalCredits);
-    scope.$apply();
-  })
-  */
 }
 
+/* Saves total GPA information, used for printing */
 function setGradeInfo(gradeInfo) {
   chrome.storage.sync.set({'gradeInfo': gradeInfo}, function(){
     //saves grade info for printing
@@ -861,10 +305,10 @@ function minimize(e) {
   document.getElementById('toggle').checked = false;
 }
 
-function setUser(user) {
-  chrome.storage.sync.set({'user': user}, function(){
-    //saves user to check for a page reload
-    console.debug('User saved');
+//saves name so print formatter can grab it
+function saveStudentName(name) {
+  chrome.storage.sync.set({'studentName': name}, function(){
+
   })
 }
 
@@ -898,6 +342,9 @@ document.getElementById("refreshButton2").addEventListener("click", function () 
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
+	// clear everything from the cache to force a refresh
+  chrome.storage.sync.clear();
+
   // ...query for the active tab...
   chrome.tabs.query({
     active: true,

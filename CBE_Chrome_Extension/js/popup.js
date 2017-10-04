@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
               setDOMInfo);
         }
         //pulls data from any test page starting with 'testPage'
-        else if(url.includes("/CBE_Chrome_Extension/testpages/testPage")){
+        else if(url.includes("/CBE_Chrome_Extension/testpages/")){
             show('onPageCBE');
             hide('notOnPage');
             hide('onPageMSCM');
