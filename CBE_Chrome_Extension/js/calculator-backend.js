@@ -1,5 +1,5 @@
 function parseClassesCBE(info) {
-  //console.debug("readFromPageCBE()");
+  //console.log("readFromPageCBE()");
   var classList = [];
   var localData = String(info.data);
   var lines = localData.split('\n');
@@ -50,7 +50,6 @@ function parseClassesCBE(info) {
   for(var i = 0 ; i < lines.length ; i++){
     //split on space or group of spaces and store in lineArray
     var lineArray = lines[i].trim().split(/\s+/);
-
     if(headers.indexOf(lineArray[0]) >= 0){
       var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
       var tempGrade;
@@ -70,7 +69,7 @@ function parseClassesCBE(info) {
           //Class has a 'K' preceeding the grade
           if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
             //tempGrade = tempGrade.substring(1,tempGrade.length);
-            console.log("K was hit, tempgrade=" + tempGrade);
+            //console.log("K was hit, tempgrade=" + tempGrade);
           }
 
           //If class is pass/fail, break loop and ignore it

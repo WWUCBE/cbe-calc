@@ -170,8 +170,7 @@ app.controller('MainCtrl', [
         }
       });
 
-      /* name shit (pull out later) */
-      // TODO: put into storage so print function can get it
+      /* save the student name for later use */
       var name = tokens.slice(4, 7);
       saveStudentName(name);
           
