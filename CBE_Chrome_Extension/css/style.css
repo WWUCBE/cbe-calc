@@ -1,11 +1,11 @@
 @font-face{
   font-family: 'Avenir';
-  src: url('Fonts/AvenirLTStd-light.otf');
+  src: url('Fonts/AvenirLTStd-Light.otf');
 }
 
 @font-face{
   font-family: 'Avenir-bold';
-  src: url('Fonts/AvenirLTStd-light.otf');
+  src: url('Fonts/AvenirLTStd-Light.otf');
 }
 
 html{

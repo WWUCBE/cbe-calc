@@ -72,34 +72,54 @@ window.addEventListener('load', function() {
    }
 }, false);
 
+
+//Decide what to do when DOM Content is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  getCurrentTabUrl(function(url) {
-    if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else if((url == "file:///C:/Users/Jherr/Desktop/testPage.html") || (url == "file:///C:/Users/Jherr/Desktop/teriTranscript.html")){ //For testing
-      show('onPageCBE');
-      hide('notOnPage');
-      hide('onPageMSCM');
-      show('toggleSwitch');
-      chrome.tabs.executeScript(null, {file: "js/content.js"});
-    }else{
-      show('notOnPage');
-      hide('onPageCBE');
-      hide('onPageMSCM');
-      hide('toggleSwitch');
-      hide('toggleDiv');
-    };
-  });
+    getCurrentTabUrl(function(url) {
+        if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
+            show('onPageCBE');
+            hide('notOnPage');
+            hide('onPageMSCM');
+            show('toggleSwitch');
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
+        }
+        else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
+            show('onPageCBE');
+            hide('notOnPage');
+            hide('onPageMSCM');
+            show('toggleSwitch');
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
+        }
+        //pulls data from any test page starting with 'testPage'
+        else if(url.includes("/CBE_Chrome_Extension/testpages/")){
+            show('onPageCBE');
+            hide('notOnPage');
+            hide('onPageMSCM');
+            show('toggleSwitch');
+          chrome.tabs.sendMessage(
+              tabs[0].id,
+              {from: 'popup', subject: 'DOMInfo'},
+              // ...also specifying a callback to be called
+              //    from the receiving end (content script)
+              setDOMInfo);
+        }else{
+            show('notOnPage');
+            hide('onPageCBE');
+            hide('onPageMSCM');
+            hide('toggleSwitch');
+            hide('toggleDiv');
+        };
+    });
 });
 
 /*
