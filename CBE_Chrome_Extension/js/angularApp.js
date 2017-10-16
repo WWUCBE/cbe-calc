@@ -326,7 +326,7 @@ function printSection(e) {
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('toggleSwitchBox').addEventListener('change', bind);
   document.getElementById('toggleSwitchBox2').addEventListener('change', bind);
-  document.getElementById('menu').addEventListener('click', minimize);
+ // document.getElementById('menu').addEventListener('click', minimize);
   document.getElementById('backFilter').addEventListener('click', minimize);
   document.getElementById('printButton').addEventListener('click', printSection);
   document.getElementById('printButton2').addEventListener('click', printSection);
