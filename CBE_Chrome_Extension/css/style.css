@@ -1,11 +1,11 @@
 @font-face{
   font-family: 'Avenir';
-  src: url('Fonts/AvenirLTStd-light.otf');
+  src: url('Fonts/AvenirLTStd-Light.otf');
 }
 
 @font-face{
   font-family: 'Avenir-bold';
-  src: url('Fonts/AvenirLTStd-light.otf');
+  src: url('Fonts/AvenirLTStd-Light.otf');
 }
 
 html{
@@ -77,6 +77,8 @@ li:not(:last-child) {
 
 #toggleSwitch2 {
   width: 200;
+  height: 35;
+  margin: 0;
 }
 
 #toggleDiv {
@@ -84,6 +86,10 @@ li:not(:last-child) {
   left: 500;
   top: 460;
   z-index: 2;
+}
+
+#gpa-minimum-text {
+    color: black;
 }
 
 #CBEBlurb {
@@ -230,27 +236,36 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 #printButton {
   position: absolute;
   width: 125;
-  height: 45;
+  height: 40;
   border-radius: 10px;
-  left: 670; /*537.5*/
-  top: 550;
+  left: 14; /*537.5*/
+  top: 13;
   background: rgba(0, 63, 135, 1); /*WWU Blue*/
   z-index: 2;
   font-family: 'Avenir';
   font-size: 19;
+  border-top: 1px solid slategrey;
+  border-left: 1px solid slategrey;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+
 }
 
 #printButton2 {
   position: absolute;
   width: 125;
-  height: 45;
+  height: 40;
   border-radius: 10px;
-  left: 670; /*537.5*/
-  top: 550;
+  left: 14; /*537.5*/
+  top: 13;
   background: rgba(0, 63, 135, 1); /*WWU Blue*/
   z-index: 2;
   font-family: 'Avenir';
   font-size: 19;
+   border-top: 1px solid slategrey;
+   border-left: 1px solid slategrey;
+   border-right: 1px solid black;
+   border-bottom: 1px solid black;
 }
 /*
 #printButton {
@@ -350,7 +365,7 @@ div.stats{
   border-radius: 15px;
   border-width: 2;
   border-color: lightgray;
-  top: 300;
+  top: 398;
   margin-left: 480;
   width: 240;
   background: rgba(240, 240, 240, 1); /* CBE Gray */
