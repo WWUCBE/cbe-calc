@@ -203,9 +203,13 @@ function parseClassesMSCM(info) {
   return classList;
 }
 
+
+// calculate gpa specific to MSCM
 function calculateMSCMGPA(classList) {
+  
   /* detect duplicates */
   for(var i = 0 ; i < classList.length ; i++){ //Remove unecessary "composite" flags
+    
     /* don't touch K grade classes */
     if (classList[i].grade === "K" || classList[i].grade === "K*") {
       continue;
@@ -221,8 +225,9 @@ function calculateMSCMGPA(classList) {
   var gpa = 0.00;
   var credits = 0.00;
 
+  // tally gpa and credits for all classes in classList
   for(var i = 0 ; i < classList.length ; i++){
-    if(classList[i].composite === "unique"){
+    if(classList[i].composite === "unique" && classList[i].gpa >= 0){
       gpa += (+classList[i].gpa * +classList[i].credits);
       credits +=  +classList[i].credits;
     }
@@ -241,20 +246,28 @@ function calculateMSCMGPA(classList) {
   return gradeInfo;
 }
 
+// calculates gpa specific to CBE
 function calculateCBEGPA(classList) {
   var counter = 0;
+
+  // stores the number of times a class can be taken
   var target = 1;
 
   /*  detect duplicates */
-  for(var i = 0 ; i < classList.length ; i++){ //Remove unecessary "composite" flags
+  for(var i = 0 ; i < classList.length ; i++){ 
+    //Remove unecessary "composite" flags
     classList[i].composite = "unique";
+    
     counter = 0;
+    
     /* allow for certain classes to be retaken for credit */
     if((classList[i].name === "IBUS 474") || (classList[i].name === "MGMT 474")){
       target = 2;
     }else{
       target = 1;
     }
+
+    // mark duplicate classes
     for(var j = i+1 ; j < classList.length ; j++){
       if(classList[j].name === classList[i].name){
         counter++;
@@ -267,11 +280,15 @@ function calculateCBEGPA(classList) {
 
   var gpa = 0.00;
   var credits = 0.00; 
-  //The number of credits minus credits from classes that were retaken
 
+  //The number of credits minus credits from classes that were retaken
   for(var i = 0 ; i < classList.length ; i++){
-    gpa += (+classList[i].gpa * +classList[i].credits);
-    credits += +classList[i].credits;
+
+    // only calculate info from standard gpa grades
+    if(classList[i].gpa >= 0){
+      gpa += (+classList[i].gpa * +classList[i].credits);
+      credits += +classList[i].credits;
+    }
   }
 
   if(gpa != 0){
@@ -311,7 +328,7 @@ function getGPAValue(string){
       }else if(letter === "z" || letter === 'Z'){
         gpa = 0;
       }else if(letter === "K" || string === 'K*'){
-        gpa = 0;
+        gpa = -1;
       }else{
         return;
       }

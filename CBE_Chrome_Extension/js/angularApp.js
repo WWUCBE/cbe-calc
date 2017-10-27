@@ -341,7 +341,7 @@ document.getElementById("refreshButton2").addEventListener("click", function () 
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
-	// clear everything from the cache to force a refresh
+  // clear everything from the cache to force a refresh
   chrome.storage.sync.clear();
 
   // ...query for the active tab...
