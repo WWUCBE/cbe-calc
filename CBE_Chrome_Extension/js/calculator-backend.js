@@ -50,26 +50,23 @@ function parseClassesCBE(info) {
   for(var i = 0 ; i < lines.length ; i++){
     //split on space or group of spaces and store in lineArray
     var lineArray = lines[i].trim().split(/\s+/);
+    // check if the line has a class listed in the class prefix list
     if(headers.indexOf(lineArray[0]) >= 0){
       var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
       var tempGrade;
       var tempCredits;
-      /*
-      for(var j = 0 ; j < grades.length ; j++){
-        if((lineArray.indexOf(grades[j]) >= 0) || (lineArray.indexOf('K' + grades[j]) >= 0)){
-          tempGrade = lineArray[j];
-          break;
-        }
-      }*/
       var realGrade = false;
+      
+      // start at gpa position for course record and loop to end of line
       for(var ind = 5; ind < lineArray.length; ind++){
         if(grades.indexOf(lineArray[ind])>=0){
           tempGrade = lineArray[ind];
 
-          //Class has a 'K' preceeding the grade
-          if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
+          //Class has a '*' after the grade
+          if(tempGrade[1] === '*' || tempGrade[2] === '*') {
             //tempGrade = tempGrade.substring(1,tempGrade.length);
             //console.log("K was hit, tempgrade=" + tempGrade);
+            break;
           }
 
           //If class is pass/fail, break loop and ignore it
@@ -167,8 +164,8 @@ function parseClassesMSCM(info) {
           tempGrade = lineArray[ind];
 
           //Class has a 'K' preceeding the grade
-          if(tempGrade[0] === 'K' || (tempGrade[0] === 'K' && tempGrade[1] === '*')) {
-            tempGrade = tempGrade.substring(1,tempGrade.length);
+          if(tempGrade[1] === '*' || tempGrade[2] === '*') {
+            break;
           }
 
           //If class is pass/fail, break loop and ignore it
