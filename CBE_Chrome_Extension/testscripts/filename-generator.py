@@ -6,4 +6,4 @@ testpages = "../testpages"
 for f in listdir(testpages):
 	path = join(testpages,f)
 	if isfile(path):
-		print('"testpages/' + f + '",')
+		print('{path: "testpages/' + f + '", name: "' + f[0:-5] + '"},')

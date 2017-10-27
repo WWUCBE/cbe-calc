@@ -1,0 +1,12 @@
+.result {
+	border: 1px solid black;
+	margin: 5px;
+}
+
+.success {
+	background-color: #84ff88;
+}
+
+.failure {
+	background-color: #ff6868;
+}
