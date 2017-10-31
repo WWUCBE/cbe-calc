@@ -154,9 +154,60 @@ function formatForPrint(){
       
       //Loop to append each class to page 
       for(var i = 0 ; i < classList.length ; i++){
+        
+        
+        //find the letter for the gpa of a give class
+        var gpa = classList[i].gpa;
+        var gpa_letter = "";
+
+        switch(gpa){
+            case("4.0"):
+                gpa_letter = "A";
+                break;
+            case("3.7"):
+                gpa_letter = "A-";
+                break;
+            case("3.3"):
+                gpa_letter = "B+";
+                break;
+            case("3.0"):
+                gpa_letter = "B";
+                break;
+            case("2.7"):
+                gpa_letter = "B-";
+                break;
+            case("2.3"):
+                gpa_letter = "C-";
+                break;
+            case("2.0"):
+                gpa_letter = "C";
+                break;
+            case("1.7"):
+                gpa_letter = "C-";
+                break;
+            case("1.3"):
+                gpa_letter = "D+";
+                break;
+            case("1.0"):
+                gpa_letter = "D";
+                break;
+            case("0.0"):
+                gpa_letter = "F";
+                break;
+            case("-1.0"):
+                gpa_letter = "K";
+                break;
+            default:
+                gpa_letter = "N/A";
+
+        }
+          
         console.log("adding class");
-        printWindow.document.write('<tr><td>' + classList[i].name + '</td>'); 
-        printWindow.document.write('<td>' + classList[i].gpa + '</td>');
+        printWindow.document.write('<tr><td>' + classList[i].name + '</td>');
+
+        //printWindow.document.write('<td>' + classList[i].gpa + '</td>'); 
+        printWindow.document.write('<td>' + gpa_letter + '</td>');
+          
         printWindow.document.write('<td>' + classList[i].credits + '</td></tr>');
       }
           
