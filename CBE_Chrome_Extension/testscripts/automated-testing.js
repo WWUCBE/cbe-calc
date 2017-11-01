@@ -27,27 +27,21 @@ var testPagePaths = [
 
 var testPages = [];
 
-var backend = this["cbe-backend"];
-
 function calculateGPA() {
 	testPages.forEach(function(htmlFile, index) {
 		var parser = new DOMParser();
 		var doc = parser.parseFromString(htmlFile.html, "text/html");
 		var text = doc.getElementsByClassName("pagebodydiv")[0].children[1].innerText;
-		
-		var rawList = backend.getRawClassList(text);
-		var classList = backend.createCourseObjects(rawList);
-
-		var cbeGPA = backend.getCBEGPA(classList).toFixed(2);
-		var mscmGPA = backend.getMSCMGPA(classList).toFixed(2);
 
 
-		// var classlist = parseClassesCBE({data:text});
-		// var gradeInfoCBE = calculateCBEGPA(classlist);
-		// var gradeInfoMSCM = calculateMSCMGPA(classlist);
-		//console.log(classlist);
+		var classlist = parseClassesCBE({data:text});
+		var gradeInfoCBE = calculateCBEGPA(classlist);
+		var gradeInfoMSCM = calculateMSCMGPA(classlist);
+		var cbeGPA = gradeInfoCBE.gpa;
+		var mscmGPA = gradeInfoMSCM.gpa;
+		// console.log(classlist);
 		// console.log(htmlFile.name);
-		// console.log(gradeInfoCBE.gpa);
+		//console.log(gradeInfoCBE.gpa);
 		gpas = extractGpa(htmlFile.html);
 
 		/* see if they're correct */
@@ -87,11 +81,6 @@ function calculateGPA() {
 			innerDiv.appendChild(textNode);
 		} 
 
-
-
-
-		
-
 		/* last element processed */
 		if (index === testPages.length-1) {
 			console.log("done");
@@ -106,6 +95,7 @@ function loadPage(testFile) {
 			testPages.push({html: this.responseText, name: testFile.name});
 			/* check if we're all done */
 			if (testPages.length === testPagePaths.length) {
+				testPages.sort();
 				calculateGPA();
 			}
 		}
