@@ -177,7 +177,7 @@ function formatForPrint(){
                 gpa_letter = "B-";
                 break;
             case("2.3"):
-                gpa_letter = "C-";
+                gpa_letter = "C+";
                 break;
             case("2.0"):
                 gpa_letter = "C";
@@ -199,7 +199,6 @@ function formatForPrint(){
                 break;
             default:
                 gpa_letter = "N/A";
-
         }
           
         console.log("adding class");
