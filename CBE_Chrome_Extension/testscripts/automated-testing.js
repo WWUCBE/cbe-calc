@@ -95,7 +95,9 @@ function loadPage(testFile) {
 			testPages.push({html: this.responseText, name: testFile.name});
 			/* check if we're all done */
 			if (testPages.length === testPagePaths.length) {
-				testPages.sort();
+				testPages.sort(function(page1, page2){
+					return (( page1.name == page2.name ) ? 0 : ( ( page1.name > page2.name ) ? 1 : -1 ) );
+				});
 				calculateGPA();
 			}
 		}
@@ -106,10 +108,6 @@ function loadPage(testFile) {
   xhttp.open("GET", "http://localhost:8000/" + testFile.path, true);
   xhttp.send();
 }
-
-testPagePaths.forEach(function(testFile) {
-	loadPage(testFile);
-});
 
 function extractGpa(html) {
 	var lines = html.split("\n", 2).join(" ");
@@ -125,6 +123,12 @@ function extractGpa(html) {
 	return gpas;
 
 }
+
+window.onload = function() {
+	testPagePaths.forEach(function(testFile) {
+		loadPage(testFile);
+	});
+};
 
 
 // <!-- GPA CBE:  2.75 (Average)

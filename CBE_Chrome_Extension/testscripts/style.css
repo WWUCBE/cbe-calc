@@ -10,3 +10,10 @@
 .failure {
 	background-color: #ff6868;
 }
+
+#notice {
+    border: 3px dashed black;
+    margin: 10px;
+    width: 600px;
+    font-size: 120%;
+}
