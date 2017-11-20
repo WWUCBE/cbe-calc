@@ -138,7 +138,7 @@ function formatForPrint(){
       printWindow.document.write('</td></tr>');
       printWindow.document.write('<tr><td><b>Program:</b> ' + mode + '</td></tr>');
       printWindow.document.write('<tr><td><b>Progam GPA:</b> ' + result.gradeInfo[0] + '</td></tr>');
-      printWindow.document.write('<tr><td><b>Total Credits:</b> ' + result.gradeInfo[1] + '</td></tr>');
+      printWindow.document.write('<tr><td><b>Applicable Credits:</b> ' + result.gradeInfo[1] + '</td></tr>');
       printWindow.document.write('</table><br/>');
     }
 
