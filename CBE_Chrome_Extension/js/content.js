@@ -169,7 +169,8 @@ function formatForPrint(){
         
         
         //find the letter for the gpa of a give class
-        var gpa = classList[i].gpa;
+        var grade = classList[i].gpa;
+        var gpa = grade.substring(0,3);
         var gpa_letter = "";
 
         switch(gpa){
@@ -211,6 +212,7 @@ function formatForPrint(){
                 break;
             default:
                 gpa_letter = "N/A";
+                console.log(gpa);
         }
           
         console.log("adding class");

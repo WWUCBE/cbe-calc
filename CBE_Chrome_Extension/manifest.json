@@ -17,7 +17,6 @@
       "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran",
         "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent", "file://*/*"],
     "js":["js/content.js"],
-    "css":["css/print.css"],
     "run_at": "document_end"
     }],
 
