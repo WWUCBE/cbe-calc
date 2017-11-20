@@ -134,7 +134,7 @@ function formatForPrint(){
       
       printWindow.document.write('</br><table style="width=60%">');
       printWindow.document.write('<tr><td><b>Name:</b> ');
-      printWindow.document.write(name[1].replace(',', '') + ' ' + name[0].replace(',', ''));
+      printWindow.document.write(name);
       printWindow.document.write('</td></tr>');
       printWindow.document.write('<tr><td><b>Program:</b> ' + mode + '</td></tr>');
       printWindow.document.write('<tr><td><b>Progam GPA:</b> ' + result.gradeInfo[0] + '</td></tr>');
@@ -161,12 +161,11 @@ function formatForPrint(){
 
       // setup class table
       printWindow.document.write('<table class="grades" style="width=80%">');
-      printWindow.document.write('<tr><th>Class</th><th>Class GPA</th><th>Credits</th></tr>');
+      printWindow.document.write('<tr><th>Class</th><th>Grade</th><th>Credits</th></tr>');
       
       
       //Loop to append each class to page 
       for(var i = 0 ; i < classList.length ; i++){
-        
         
         //find the letter for the gpa of a give class
         var grade = classList[i].gpa;
@@ -207,7 +206,7 @@ function formatForPrint(){
             case("0.0"):
                 gpa_letter = "F";
                 break;
-            case("-1.0"):
+            case("-1."):
                 gpa_letter = "K";
                 break;
             default:
