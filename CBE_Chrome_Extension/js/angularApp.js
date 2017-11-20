@@ -170,8 +170,11 @@ app.controller('MainCtrl', [
         }
       });
 
-      /* save the student name for later use */
-      var name = tokens.slice(4, 7);
+      /* save the student name for later use, supports people
+       * with more than three names (EG Wesley Alexander Van Komen) */
+      var re = /.*?(?= ID:)/;
+      var possibleNameString = tokens.slice(4, 20).join(" ");
+      var name = re.exec(possibleNameString)[0];
       saveStudentName(name);
           
       // Check to see if there are classes saved in storage, which
