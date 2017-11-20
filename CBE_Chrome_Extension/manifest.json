@@ -17,8 +17,14 @@
       "matches":["https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran",
         "https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent", "file://*/*"],
     "js":["js/content.js"],
+    "css":["css/print.css"],
     "run_at": "document_end"
     }],
+
+  "web_accessible_resources": [
+        "css/print.css",
+        "resources/Western-logo-CBE.jpg"
+    ],
   "permissions": [
     "webNavigation",
     "activeTab",

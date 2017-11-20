@@ -75,9 +75,21 @@ function formatForPrint(){
   var printWindow = window.open('', 'PRINT', 'height=800,width=700');
 
   // Setup the title and header for the print document
-  printWindow.document.write('<html><head><link rel="stylesheet" href="../css/print.css" type="text/css" media="all">');
-  printWindow.document.write('<html><title>Unofficial GPA</title></head><body>');
-  printWindow.document.write('<img src="../resources/Western-logo-CBE.jpg" alt="WWU CBE logo" width="600"><br/>');
+  printWindow.document.write('<html><head>')
+  printWindow.document.write('<title>Unofficial GPA</title></head><body>');
+ 
+  //Attach style sheet
+  var link = document.createElement("link");
+  link.href = chrome.extension.getURL("css/print.css");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  printWindow.document.getElementsByTagName("head")[0].appendChild(link);
+
+  //add cbe logo 
+  var imgURL = chrome.extension.getURL("resources/Western-logo-CBE.jpg"); 
+  printWindow.document.write('<body><img id="cbe_logo" alt="WWU CBE logo" width="600"><br/>');
+  printWindow.document.getElementById("cbe_logo").src = imgURL;
+
     
   //Create necessary variables
   var classList = [];
