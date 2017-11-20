@@ -102,7 +102,7 @@ function formatForPrint(){
   // get name from chrome storage
   chrome.storage.sync.get('studentName', function(result){
     name = result.studentName;
-    console.log('name: ' + name); 
+    //console.log('name: ' + name); 
   });
 
   //Get mode and store it in variable
@@ -116,7 +116,7 @@ function formatForPrint(){
       }else{
         mode = 'MSCM';
       }
-      console.debug("Mode: " + mode);
+      //console.debug("Mode: " + mode);
     }
   });
 
@@ -124,10 +124,10 @@ function formatForPrint(){
   console.log("Getting GPA");
   chrome.storage.sync.get('gradeInfo', function(result){
 
-    console.log(result.gradeInfo);
+    //console.log(result.gradeInfo);
     //Check if mode has been set
     if(typeof(result.gradeInfo) != "undefined"){
-      console.log("adding header info");
+      //console.log("adding header info");
 
       //Append mode  and title to print page
       //printWindow.document.write("<h1>Academic History</h1>");
@@ -146,18 +146,18 @@ function formatForPrint(){
   });
 
   //Get classes and store them in variable
-  console.log("getting CBE classes");
+  //console.log("getting CBE classes");
   chrome.storage.sync.get('CBEclasses', function(result){
     //Check to see if there are classes saved in storage
-    console.log("checking class list");
+    //console.log("checking class list");
 
     // add classes to page if there are any to add
     if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){
     
       //Set classList variable
-      console.log("setting class list");
+      //console.log("setting class list");
       classList = result.CBEclasses;
-      console.debug(classList);
+      //console.debug(classList);
 
       // setup class table
       printWindow.document.write('<table class="grades" style="width=80%">');
@@ -214,7 +214,7 @@ function formatForPrint(){
                 console.log(gpa);
         }
           
-        console.log("adding class");
+        //console.log("adding class");
         printWindow.document.write('<tr><td>' + classList[i].name + '</td>');
 
         //printWindow.document.write('<td>' + classList[i].gpa + '</td>'); 
