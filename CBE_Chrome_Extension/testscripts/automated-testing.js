@@ -21,8 +21,7 @@ var testPagePaths = [
 	{path: "testpages/Test KD KD+.html", name: "Test KD KD+"},
 	{path: "testpages/Test KD- KF.html", name: "Test KD- KF"},
 	{path: "testpages/Test KZ Z.html", name: "Test KZ Z"},
-	{path: "testpages/testPage Template.html", name: "testPage Template"},
-	{path: "testpages/testPage2.html", name: "testPage2"}
+	{path: "testpages/testPage Template.html", name: "testPage Template"}
 	]
 
 var testPages = [];
