@@ -304,7 +304,7 @@ function calculateCBEGPA(classList) {
 //function to calculate GPA point based on letter grades
 function getGPAValue(string){
   /* checks if it's a completed K grade */
-  var re = /K[A-F][\-+\++]?/;
+  var re = /K[A-Z][\-+\++]?/;
   if (re.test(string)) {
     string = string.substring(1,4);
   }
