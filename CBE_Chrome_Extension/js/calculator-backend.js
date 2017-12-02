@@ -303,37 +303,47 @@ function calculateCBEGPA(classList) {
 
 //function to calculate GPA point based on letter grades
 function getGPAValue(string){
+  /* checks if it's a completed K grade */
+  var re = /K[A-F][\-+\++]?/;
+  if (re.test(string)) {
+    string = string.substring(1,4);
+  }
+
   //console.log("getGPAValue()");
   var gpa;
   var letter = string.substring(0,1);
   if(string.length >= 2){
-        var mod = string.substring(1,2);
-        if(!(mod === '+' || mod ==='-')){
-          var mod = '';
-        }
-      }
-      if(letter === "a" || letter === 'A'){
-        gpa = 4;
-      }else if(letter === "b" || letter === 'B'){
-        gpa = 3;
-      }else if(letter === "c" || letter === 'C'){
-        gpa = 2;
-      }else if(letter === "d" || letter === 'D'){
-        gpa = 1;
-      }else if(letter === "f" || letter === 'F'){
-        gpa = 0;
-      }else if(letter === "z" || letter === 'Z'){
-        gpa = 0;
-      }else if(letter === "K" || string === 'K*'){
-        gpa = -1;
-      }else{
-        return;
-      }
 
-      if(mod === '+' && gpa < 4){
-        gpa += 0.3;
-      }else if(mod === '-'){
-        gpa -= 0.3;
-      }
+
+    var mod = string.substring(1,2);
+    if(!(mod === '+' || mod ==='-')){
+      var mod = '';
+    }
+  }
+
+  if(letter === "a" || letter === 'A'){
+    gpa = 4;
+  }else if(letter === "b" || letter === 'B'){
+    gpa = 3;
+  }else if(letter === "c" || letter === 'C'){
+    gpa = 2;
+  }else if(letter === "d" || letter === 'D'){
+    gpa = 1;
+  }else if(letter === "f" || letter === 'F'){
+    gpa = 0;
+  }else if(letter === "z" || letter === 'Z'){
+    gpa = 0;
+  }else if(letter === "K" || string === 'K*'){
+    gpa = -1;
+  }else{
+    return;
+  }
+
+  if(mod === '+' && gpa < 4){
+    gpa += 0.3;
+  }else if(mod === '-'){
+    gpa -= 0.3;
+  }
+
   return gpa;
 }
