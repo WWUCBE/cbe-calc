@@ -1,3 +1,10 @@
+/* calculator-beckend.js 
+ * This file contains all the transcript parsing and
+ * and GPA calculation logic. 
+ */
+
+ /* Input: object containing the raw text of the transcript. 
+  * Output: list of course objects, as interpreted by CBE rules. */
 function parseClassesCBE(info) {
   //console.log("readFromPageCBE()");
   var classList = [];
@@ -101,7 +108,8 @@ function parseClassesCBE(info) {
   return classList;
 }
 
-
+ /* Input: object containing the raw text of the transcript. 
+  * Output: list of course objects, as interpreted by MSCM rules. */
 function parseClassesMSCM(info) {
   //console.debug("readFromPageMSCM()");
   var classList = [];
@@ -201,7 +209,9 @@ function parseClassesMSCM(info) {
 }
 
 
-// calculate gpa specific to MSCM
+/* Input: list of course objects 
+ * Output: GPA and total credits for MSCM, as well as 
+ *         the original list but modified to mark duplicates */
 function calculateMSCMGPA(classList) {
   
   /* detect duplicates */
@@ -243,7 +253,9 @@ function calculateMSCMGPA(classList) {
   return gradeInfo;
 }
 
-// calculates gpa specific to CBE
+/* Input: list of course objects 
+ * Output: GPA and total credits for CBE, as well as 
+ *         the original list but modified to mark duplicates */
 function calculateCBEGPA(classList) {
   var counter = 0;
 
@@ -301,7 +313,9 @@ function calculateCBEGPA(classList) {
   return gradeInfo;
 }
 
-//function to calculate GPA point based on letter grades
+/* Input: string representing letter grade 
+ * Output: floating point equivalent; -1 in cases where
+ *         the grade doesn't factor in to the GPA. */
 function getGPAValue(string){
   /* checks if it's a completed K grade */
   var re = /K[A-Z][\-+\++]?/;
