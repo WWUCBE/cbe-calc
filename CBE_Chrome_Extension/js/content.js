@@ -7,15 +7,16 @@ chrome.runtime.sendMessage({
 });
 
 // Listen for messages from the popup
+/* "response" is the function setDOMInfo from angular.js */
 chrome.runtime.onMessage.addListener(function (msg, sender, response) {
   // First, validate the message's structure
   if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
     // Collect the necessary data
-    var pageData = ""
+    var pageData = "";
 
     //For students who HAVE applied for graduation
     try{
-      pageData = document.getElementsByClassName("pagebodydiv")[0].children[1].innerText;
+      pageData = document.getElementsByTagName("pre")[0].innerText;
 
       if(pageData.includes("Subj")){
         //Add valid text to domInfo
@@ -32,7 +33,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     }
     //For advisers
     try{
-      pageData = document.getElementsByClassName("pagebodydiv")[0].children[2].innerText;
+      pageData = document.getElementsByTagName("pre")[0].innerText;
 
       if(pageData.includes("Subj")){
         //Add valid text to domInfo
@@ -49,7 +50,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     }
     //For students who have NOT applied for graduation
     try{
-      pageData = document.getElementsByClassName("pagebodydiv")[0].children[3].innerText;
+      pageData = document.getElementsByTagName("pre")[0].innerText;
 
       if(pageData.includes("Subj")){
         //Add valid text to domInfo
