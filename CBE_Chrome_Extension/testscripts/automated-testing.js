@@ -49,9 +49,13 @@ function calculateGPA() {
 		if (gpas[0].toFixed(2) === cbeGPA) {
 			testPassed.cbe = true;
 		}
+
+		/* if there was no MSCM GPA specified in the file, then
+		   it's supposed to be the same as CBE*/
 		if (typeof gpas[1] === 'undefined') {
-			testPassed.mscm = true;
-		} else if (gpas[1].toFixed(2) === mscmGPA) {
+			gpas[1] = gpas[0];
+		}
+		if (gpas[1].toFixed(2) === mscmGPA) {
 			testPassed.mscm = true;
 		}
 
@@ -74,12 +78,13 @@ function calculateGPA() {
 		textNode = document.createTextNode(words);
 		innerDiv.appendChild(textNode);
 		
-		if (typeof gpas[1] !== 'undefined') {
-			innerDiv.appendChild(document.createElement("br"));
-			var words = "MSCM is " + mscmGPA + ", should be " + gpas[1].toFixed(2); 
-			textNode = document.createTextNode(words);
-			innerDiv.appendChild(textNode);
-		} 
+		/* if there was no MSCM GPA specified in the file, then
+		   it's supposed to be the same as CBE*/
+
+		innerDiv.appendChild(document.createElement("br"));
+		var words = "MSCM is " + mscmGPA + ", should be " + gpas[1].toFixed(2); 
+		textNode = document.createTextNode(words);
+		innerDiv.appendChild(textNode);
 
 		/* last element processed */
 		if (index === testPages.length-1) {
