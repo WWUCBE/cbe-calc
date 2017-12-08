@@ -101,7 +101,7 @@ app.controller('MainCtrl', [
     $scope.updateColorWarning = function() {
     	//Adjust academic standing color (good, bad)
       if($scope.cbe){
-        if($scope.gpa > 2.3){
+        if($scope.gpa >= 2.3){
           $scope.standing = 'good';
         }else{
           $scope.standing = 'bad';
@@ -322,11 +322,12 @@ function printSection(e) {
   });
 }
 
+
 //Add listener to CBE/MSCM toggle
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('toggleSwitchBox').addEventListener('change', bind);
   document.getElementById('toggleSwitchBox2').addEventListener('change', bind);
- // document.getElementById('menu').addEventListener('click', minimize);
+  document.getElementById('closeButton').addEventListener('click', minimize);
   document.getElementById('backFilter').addEventListener('click', minimize);
   document.getElementById('printButton').addEventListener('click', printSection);
   document.getElementById('printButton2').addEventListener('click', printSection);
