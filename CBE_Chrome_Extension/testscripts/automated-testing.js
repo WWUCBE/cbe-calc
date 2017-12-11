@@ -1,3 +1,4 @@
+/* Generate these with the incldued python script. */
 var testPagePaths = [
 	{path: "testpages/Duplicate Retake after K Grade.html", name: "Duplicate Retake after K Grade"},
 	{path: "testpages/Test A(star) & B grade.html", name: "Test A(star) & B grade"},
