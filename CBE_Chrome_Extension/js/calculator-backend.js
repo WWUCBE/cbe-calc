@@ -91,7 +91,7 @@ function parseClassesCBE(info) {
       if(realGrade){
         for(var j = 0 ; j < classList.length ; j++){
           if(classList[j].name === tempName){
-            classList[j].composite = 'unique';
+            classList[j].composite = 'composite';
           }
         }
 
