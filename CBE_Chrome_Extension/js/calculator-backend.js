@@ -191,7 +191,10 @@ function parseClassesMSCM(info) {
       if(realGrade){
         for(var j = 0 ; j < classList.length ; j++){
           if(classList[j].name === tempName){
-            classList[j].composite = 'composite';
+            /* Remove duplicates */
+            classList.splice(j, 1);
+            j--;
+
           }
         }
 
