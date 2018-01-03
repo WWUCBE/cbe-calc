@@ -91,7 +91,7 @@ function parseClassesCBE(info) {
       if(realGrade){
         for(var j = 0 ; j < classList.length ; j++){
           if(classList[j].name === tempName){
-            classList[j].composite = 'composite';
+            classList[j].composite = 'unique';
           }
         }
 
@@ -257,36 +257,6 @@ function calculateMSCMGPA(classList) {
  * Output: GPA and total credits for CBE, as well as 
  *         the original list but modified to mark duplicates */
 function calculateCBEGPA(classList) {
-  var counter = 0;
-
-  // stores the number of times a class can be taken
-  var target = 1;
-
-  /*  detect duplicates */
-  for(var i = 0 ; i < classList.length ; i++){ 
-    //Remove unecessary "composite" flags
-    classList[i].composite = "unique";
-    
-    counter = 0;
-    
-    /* allow for certain classes to be retaken for credit */
-    if((classList[i].name === "IBUS 474") || (classList[i].name === "MGMT 474")){
-      target = 2;
-    }else{
-      target = 1;
-    }
-
-    // mark duplicate classes
-    for(var j = i+1 ; j < classList.length ; j++){
-      if(classList[j].name === classList[i].name){
-        counter++;
-        if(counter >= target){
-          classList[i].composite = "composite";
-        }
-      }
-    }
-  }
-
   var gpa = 0.00;
   var credits = 0.00; 
 
