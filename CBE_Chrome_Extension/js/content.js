@@ -164,9 +164,13 @@ function formatForPrint(){
       printWindow.document.write('<table class="grades" style="width=80%">');
       printWindow.document.write('<tr><th>Class</th><th>Grade</th><th>Credits</th></tr>');
       
-      
+      console.log(classList[1]);
       //Loop to append each class to page 
       for(var i = 0 ; i < classList.length ; i++){
+        /* skip duplicate classes for MSCM */
+        if (classList[i].composite === "composite" && mode == "MSCM") {
+          continue;
+        }
         
         //find the letter for the gpa of a give class
         var grade = classList[i].gpa;
