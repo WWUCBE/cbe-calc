@@ -70,6 +70,80 @@ app.controller('MainCtrl', [
       return;
     };
 
+    /* triggered when a class is modified */
+    $scope.reCalc = function(index){
+      // console.log("reCalc()");
+
+      /* rewrite idea:
+         Validate grade using regex, then pass to getGPAValue()*/
+
+
+      /* Recalculate if it's unique or not */
+      // need to user updated version? Maybe add "mscm dupe" to class objects
+      if (!$scope.cbe) {
+        for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
+          $scope.classList[i].composite = "unique";
+          $scope.classList[i].name = $scope.classList[i].name.toUpperCase();
+          for(var j = i+1 ; j < $scope.classList.length ; j++){
+            if($scope.classList[j].name === $scope.classList[i].name){
+              $scope.classList[i].composite = "composite";
+            }
+          }
+        } 
+      }
+
+     
+      var grades = [
+        'A',
+        'A-',
+        'B',
+        'B+',
+        'B-',
+        'C',
+        'C+',
+        'C-',
+        'D',
+        'D+',
+        'D-',
+        'F',
+        'Z'
+      ];
+      var gpas = [
+        4,
+        3.7,
+        3,
+        3.3,
+        2.7,
+        2,
+        2.3,
+        1.7,
+        1,
+        1.3,
+        0.7,
+        0,
+        0
+      ];
+      if(grades.indexOf($scope.classList[index].grade.toUpperCase()) < 0){
+        $scope.classList[index].gpa = 0;
+        $scope.classList[index].credits = 0;
+        $scope.classList[index].grade = "invalid";
+      }else{
+        $scope.classList[index].gpa = gpas[grades.indexOf($scope.classList[index].grade.toUpperCase())].toFixed(2);
+        $scope.classList[index].grade = $scope.classList[index].grade.toUpperCase();
+      }
+
+      if($scope.cbe){
+        $scope.setGpaCBE();
+      }else{
+        $scope.setGpaMSCM();
+      }
+
+      // //save classes
+      // setProgress($scope.classList);
+    }
+
+    
+
     $scope.setGpaCBE = function() {
       var gradeInfo = calculateCBEGPA($scope.classList);
       $scope.totalCredits = gradeInfo.credits;
