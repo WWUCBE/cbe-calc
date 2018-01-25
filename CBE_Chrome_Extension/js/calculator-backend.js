@@ -3,8 +3,78 @@
  * and GPA calculation logic. 
  */
 
- /* Input: object containing the raw text of the transcript. 
-  * Output: list of course objects, as interpreted by CBE rules. */
+/* Input: raw text of the transcript. 
+ * Output: list of course objects */
+function parseTranscript(transcript) {
+  /* this mess pulls out all the important stuff as capture groups. 
+   * In order, from 1: Subject, course number, class name, credits, grade.
+   * Note that class name will have extra trailing spaces. */ 
+  var re = /\n(\w{3,4})\s+(\d+\w+)\s+\d+\s+(.{1,30})\s*(\d+)\s+(K?\w*[+-]?\*?)/g;
+
+  var classString;
+  while (classString = re.exec(transcript)) {
+    var course = {
+      subject: classString[1],
+      crse: classString[2],
+      name: classString[3],
+      credits: classString[4],
+      grade: classString[5],
+      gpa: getGPAValue(classString[5]),
+      isCBE: false,
+      isMSCM: false
+    }
+
+
+    course.isCBE = isCBE(course);
+    course.isMSCM = isMSCM(course);
+    console.log(course);
+  }
+}
+
+function isCBE(course) {
+  var subjects = [
+    'ECON',
+    'ACCT',
+    'DSCI',
+    'MIS',
+    'FIN',
+    'MKTG',
+    'OPS',
+    'MGMT',
+    'IBUS',
+    'HRM'
+  ];
+
+  /* index of is the best way to check for membership in list */
+  if (subjects.indexOf(course.subject) != -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isMSCM(course) {
+  var validclasses = {
+    'MATH': ['157'],
+    'DSCI': ['205'],
+    'ACCT': ['240','245'],
+    'ECON':['206','207'],
+    'MIS': ['220'],
+    'MGMT':['271'],
+    'PHYS':['114'],
+    'CHEM': ['121']
+  }
+
+  if (validclasses.hasOwnProperty(course.subject) &&
+      validclasses[course.subject].indexOf(course.crse) != -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/* Input: object containing the raw text of the transcript. 
+ * Output: list of course objects, as interpreted by CBE rules. */
 function parseClassesCBE(info) {
   //console.log("readFromPageCBE()");
   var classList = [];
@@ -98,7 +168,7 @@ function parseClassesCBE(info) {
         classList.push({
           name: tempName,
           grade: tempGrade,
-          gpa: getGPAValue(tempGrade).toFixed(1),
+          gpa: getGPAValue(tempGrade),
           credits: tempCredits
         });
       }
@@ -201,7 +271,7 @@ function parseClassesMSCM(info) {
         classList.push({
           name: tempName,
           grade: tempGrade,
-          gpa: getGPAValue(tempGrade).toFixed(1),
+          gpa: getGPAValue(tempGrade),
           credits: tempCredits
         });
       }
@@ -289,48 +359,58 @@ function calculateCBEGPA(classList) {
 /* Input: string representing letter grade 
  * Output: floating point equivalent; -1 in cases where
  *         the grade doesn't factor in to the GPA. */
-function getGPAValue(string){
-  /* checks if it's a completed K grade */
-  var re = /K[A-Z][\-+\++]?/;
-  if (re.test(string)) {
-    string = string.substring(1,4);
+function getGPAValue(letterGrade) {
+  var regex = /(K?)([ABCDFZ])([+-]?)(\*?)/;
+  var match = regex.exec(letterGrade);
+
+  var grade;
+
+  /* if the match failed, it's something like W or XM and doesn't count */
+  if (match == null) {
+    grade = -1;
+  } 
+  /* if there's an asterisk, it doesn't count */
+  else if (match[4] != "") {
+    grade = -1;
+  } 
+  /* if there's a K and no letter grade, it doesn't count */
+  else if (match[1] != "" && match[2] == "") {
+    grade = -1;
   }
-
-  //console.log("getGPAValue()");
-  var gpa;
-  var letter = string.substring(0,1);
-  if(string.length >= 2){
-
-
-    var mod = string.substring(1,2);
-    if(!(mod === '+' || mod ==='-')){
-      var mod = '';
+  /* if there's a letter grade, get the value associated with it */
+  else if (match[2] != "") {
+    switch (match[2]) {
+      case "A":
+        grade = 4;
+        break;
+     case "B":
+        grade = 3;
+        break;
+      case "C":
+        grade = 2;
+        break;
+      case "D":
+        grade = 1;
+        break;
+      case "Z":
+      case "F":
+        grade = 0;
+        break;
     }
+
+    /* now we factor in the optional plus or minus */
+    if (match[3] === "-") {
+      grade -= 0.3;
+    } else if (match[3] === "+") {
+      grade += 0.3;
+    }
+
+  }
+  /* if it gets here it's something weird that I didn't account for. */
+  else {
+    grade = -1;
+    console.log("Unexpected grade: " + letterGrade);
   }
 
-  if(letter === "a" || letter === 'A'){
-    gpa = 4;
-  }else if(letter === "b" || letter === 'B'){
-    gpa = 3;
-  }else if(letter === "c" || letter === 'C'){
-    gpa = 2;
-  }else if(letter === "d" || letter === 'D'){
-    gpa = 1;
-  }else if(letter === "f" || letter === 'F'){
-    gpa = 0;
-  }else if(letter === "z" || letter === 'Z'){
-    gpa = 0;
-  }else if(letter === "K" || string === 'K*'){
-    gpa = -1;
-  }else{
-    return;
-  }
-
-  if(mod === '+' && gpa < 4){
-    gpa += 0.3;
-  }else if(mod === '-'){
-    gpa -= 0.3;
-  }
-
-  return gpa;
+  return grade.toFixed(1);
 }

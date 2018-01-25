@@ -16,6 +16,7 @@ app.controller('MainCtrl', [
     $scope.standing = 'good';
     $scope.totalCredits = 0;
     $scope.cbe = true;
+    $scope.mode = "cbe";
 
     /* Triggered when clicking the "ADD" button in the ui to 
      * add a class. */
@@ -92,7 +93,7 @@ app.controller('MainCtrl', [
         } 
       }
 
-     
+     /* ISSUE: doesn't handle K grades. Does it really have to? */
       var grades = [
         'A',
         'A-',
@@ -139,7 +140,7 @@ app.controller('MainCtrl', [
       }
 
       // //save classes
-      // setProgress($scope.classList);
+      storeClassList($scope.classList);
     }
 
     
@@ -213,23 +214,19 @@ app.controller('MainCtrl', [
 
     /* Function to scrape text off page and parse out class information */
     $scope.addPrevClasses = function(info){
-      var localData = String(info.data);
-      var tokens = localData.trim().split(/\s+/);
+      parseTranscript(info.data);
+      
+      var rawTranscriptText = String(info.data);
+      var tokens = rawTranscriptText.trim().split(/\s+/);
 
-      //Check mode
+      /* set the mode (CBE or MSCM) to whatever was last looked at) */
       chrome.storage.sync.get('mode', function(result){
         //console.debug("Mode: " + result.mode);
         if(typeof(result.mode) != "undefined"){
           if(result.mode === 'true'){
-            $scope.cbe = true;
-            //console.debug("$scope.cbe = " + result.mode);
-            $scope.$apply();
+            setMode("cbe");
           }else{
-            $scope.cbe = false;
-            document.getElementById("toggleSwitchBox").checked="true";
-            document.getElementById("toggleSwitchBox2").checked="true";
-            hide('onPageCBE');
-            show('onPageMSCM');
+            setMode("mscm");
             // Check to see if other div is visible - if so, hide MSCM div
             if(document.getElementById("notOnPage").style.display == "inline"){
               hide('onPageMSCM');
@@ -239,20 +236,33 @@ app.controller('MainCtrl', [
           }
         }else{
           $scope.cbe = true;
-          setMode('true');
+          saveMode('true');
           $scope.$apply();
         }
       });
 
-      /* save the student name for later use, supports people
-       * with more than three names (EG Wesley Alexander Van Komen) */
-      var re = /.*?(?= ID:)/;
-      var possibleNameString = tokens.slice(4, 20).join(" ");
-      var name = re.exec(possibleNameString)[0];
+      /* save the student name and ID for later use */
+      var re = /Name:(.*) ID: (.*) Previous/;
+      var name = re.exec(rawTranscriptText)[1];
+      var id = re.exec(rawTranscriptText)[2];
+      console.log("name: " + name + " ID: " + id);
       saveStudentName(name);
+
+      /* check if id is same as saved */
+      chrome.storage.sync.get('studentID', function(storedID){
+        /* if they're the same, we pull saved class list*/
+        if (id === storedID) {
+          chrome.storage.sync.get('CBEclasses', function(result){
+            $scope.classList = result.CBEclasses;
+          });
+        } else {
+          /* save this users ID */
+          chrome.storage.sync.clear();
+          chrome.storage.sync.set({'studentID': id});
+        }
+      });
           
-      // Check to see if there are classes saved in storage, which
-      // will only happen if the user is switching between CBE/MSCM
+      // Check to see if there are classes saved in storage
       chrome.storage.sync.get('CBEclasses', function(result){
         if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ 
           $scope.classList = result.CBEclasses;
@@ -292,15 +302,36 @@ function clearCache(){
   chrome.storage.sync.clear();
   var scope = angular.element(document.getElementById("main")).scope();
   var bool = scope.cbe.toString();
-  setMode(bool);
+  saveMode(bool);
 }
 
 //Saves mode - either 'True' or 'False', where 'True' is CBE and 'False' is MSCM
+function saveMode(mode) {
+  chrome.storage.sync.set({'mode': mode});
+}
+
+/* takes string, either "cbe" or "mscm" and sets the mode appropriatly.*/
 function setMode(mode) {
-  chrome.storage.sync.set({'mode': mode}, function(){
-    //console.debug("setMode(): " + mode);
-    //console.debug('Mode Saved');
-  })
+    $scope.mode = mode;
+    if (mode === "cbe") {
+      document.getElementById("toggleSwitchBox").checked="false";
+      document.getElementById("toggleSwitchBox2").checked="false";
+      show('onPageCBE');
+      hide('onPageMSCM');
+      saveMode('true');
+      $scope.cbe = true;
+      $scope.setGpaCBE();
+    } else {
+      document.getElementById("toggleSwitchBox").checked="true";
+      document.getElementById("toggleSwitchBox2").checked="true";
+      hide('onPageCBE');
+      show('onPageMSCM');
+      saveMode('false');
+      $scope.cbe = false;
+      $scope.setGpaMSCM();
+    }
+
+    $scope.apply();
 }
 
 //Save entered classes to chrome.storage.sync
@@ -331,20 +362,20 @@ function setDOMInfo(info) {
 
 function toggleView(e) {
   // Clear the cache...
-  clearCache();
+  //clearCache();
   // ...set CBE/MSCM mode...
   var scope = angular.element(document.getElementById("main")).scope();
   if(e.target.checked){
     hide('onPageCBE');
     show('onPageMSCM');
-    setMode('false');
+    saveMode('false');
     scope.$apply(function(){
       scope.cbe = false;
     });
   }else{
     hide('onPageMSCM');
     show('onPageCBE');
-    setMode('true');
+    saveMode('true');
     scope.$apply(function(){
       scope.cbe = true;
     });
@@ -419,7 +450,7 @@ document.getElementById("refreshButton2").addEventListener("click", function () 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
   // clear everything from the cache to force a refresh
-  chrome.storage.sync.clear();
+  //chrome.storage.sync.clear();
 
   // ...query for the active tab...
   chrome.tabs.query({

@@ -237,8 +237,8 @@ function formatForPrint(){
 
           
       //print the output
-      setTimeout(function(){printWindow.print();},1000);    
-      setTimeout(function(){printWindow.close();},1000);
+      setTimeout(function(){printWindow.print();},500);    
+      setTimeout(function(){printWindow.close();},500);
     }
 
   });
