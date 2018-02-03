@@ -12,177 +12,90 @@ app.controller('MainCtrl', [
     $scope.classList = [];
     $scope.previousGPA = [];
     $scope.classPrefixes = [];
-    $scope.gpa = (0.0).toFixed(2);
+    $scope.gpaCBE = {gpa: 0, credits: 0};
+    $scope.gpaMSCM = 0;
+    $scope.gpa = $scope.gpaCBE;
     $scope.standing = 'good';
     $scope.totalCredits = 0;
     $scope.cbe = true;
     $scope.mode = "cbe";
+    /* used to apply invalid input class to input fields.
+      * Pristine used to only apply the styles AFTER the 
+      * user clicks the button*/
+    $scope.validInput = {
+      pristine: true,
+      name: false,
+      credits: false,
+      grade: false
+    };
 
     /* Triggered when clicking the "ADD" button in the ui to 
      * add a class. */
     $scope.addClass = function(){
-      /* if any of the three text fields are empty, do nothing */
-      if(!$scope.name || $scope.name === ''){
-        return;
+      console.log("adding class...");
+      /* Create a course object and populate it accordingly */
+      var splitName = $scope.name.split(" ");
+      var course = createCourse(splitName[0], splitName[1], $scope.credits, $scope.grade);
+      
+      /* set isCBE/isMSCM fields as well as countsFor */
+      setProgramStatus(course);
+      
+      $scope.validInput.name = course.isCBE || course.isMSCM;
+      $scope.validInput.grade = course.gpa >= 0;
+      $scope.validInput.credits = course.credits >= 0;
+
+      console.log(course);
+      console.log($scope.validInput);
+     
+      if ($scope.validInput.name && $scope.validInput.grade && $scope.validInput.credits) {
+        $scope.classList.push(course);
+        setDupeStatus($scope.classList);
+        $scope.recalculateGPA();
+
+        /* reset the fields (remember, these are linked with
+         * the  html) */
+        $scope.name = '';
+        $scope.grade = '';
+        $scope.credits = '';
+        
+        $scope.validInput.pristine = true;
+      } else {
+        console.log("invalid class!");
+        $scope.validInput.pristine = false;
       }
-      if(!$scope.grade || $scope.grade === ''){
-        return;
-      }
-      if(!$scope.credits || $scope.credits === '' || $scope.credits != parseInt($scope.credits, 10)){
-        return;
-      }
-
-      /* see if the new class is a duplicate, if it is, mark 
-       * the old one as such */
-      for(var i = 0 ; i < $scope.classList.length ; i++){
-        if($scope.classList[i].name === $scope.name.toUpperCase()){
-          $scope.classList[i].composite = 'composite';
-        }
-      }
-
-      /* convert the letter grade into a numbered grade */
-      var tempGrade = $scope.grade;
-      var gpa = getGPAValue(tempGrade);
-
-      /* add the new class to the global list*/
-      $scope.classList.push({
-        name: $scope.name.substring(0,15).toUpperCase(),
-        grade: tempGrade.toUpperCase(),
-        gpa: gpa.toFixed(2),
-        credits: $scope.credits
-      });
-
-      /* reset the fields (remember, these are linked with
-       * the  html) */
-      $scope.name = '';
-      $scope.grade = '';
-      $scope.credits = '';
-
-      /* update the GPA with the appropriate algorithm */
-      if($scope.cbe){
-        $scope.setGpaCBE();
-      }else{
-        $scope.setGpaMSCM();
-      }
-
-      /* save the new classlist to chrome storage */
-      storeClassList($scope.classList);
 
       return;
     };
 
     /* triggered when a class is modified */
-    $scope.reCalc = function(index){
-      // console.log("reCalc()");
-
-      /* rewrite idea:
-         Validate grade using regex, then pass to getGPAValue()*/
-
-
-      /* Recalculate if it's unique or not */
-      // need to user updated version? Maybe add "mscm dupe" to class objects
-      if (!$scope.cbe) {
-        for(var i = 0 ; i < $scope.classList.length ; i++){ //Remove unecessary "composite" flags
-          $scope.classList[i].composite = "unique";
-          $scope.classList[i].name = $scope.classList[i].name.toUpperCase();
-          for(var j = i+1 ; j < $scope.classList.length ; j++){
-            if($scope.classList[j].name === $scope.classList[i].name){
-              $scope.classList[i].composite = "composite";
-            }
-          }
-        } 
-      }
-
-     /* ISSUE: doesn't handle K grades. Does it really have to? */
-      var grades = [
-        'A',
-        'A-',
-        'B',
-        'B+',
-        'B-',
-        'C',
-        'C+',
-        'C-',
-        'D',
-        'D+',
-        'D-',
-        'F',
-        'Z'
-      ];
-      var gpas = [
-        4,
-        3.7,
-        3,
-        3.3,
-        2.7,
-        2,
-        2.3,
-        1.7,
-        1,
-        1.3,
-        0.7,
-        0,
-        0
-      ];
-      if(grades.indexOf($scope.classList[index].grade.toUpperCase()) < 0){
-        $scope.classList[index].gpa = 0;
-        $scope.classList[index].credits = 0;
-        $scope.classList[index].grade = "invalid";
-      }else{
-        $scope.classList[index].gpa = gpas[grades.indexOf($scope.classList[index].grade.toUpperCase())].toFixed(2);
-        $scope.classList[index].grade = $scope.classList[index].grade.toUpperCase();
-      }
-
-      if($scope.cbe){
-        $scope.setGpaCBE();
-      }else{
-        $scope.setGpaMSCM();
-      }
-
-      // //save classes
-      storeClassList($scope.classList);
+    $scope.modifyClass = function(index){
+       
     }
 
-    
-
-    $scope.setGpaCBE = function() {
-      var gradeInfo = calculateCBEGPA($scope.classList);
-      $scope.totalCredits = gradeInfo.credits;
-      $scope.gpa = gradeInfo.gpa;
-      $scope.classList = gradeInfo.classList;
-
-      //Adjust academic standing color (good, bad)
+    $scope.recalculateGPA = function() {
+      $scope.gpaCBE = calculateCBEGPA($scope.classList);
+      $scope.gpaMSCM = calculateMSCMGPA($scope.classList);
+     
+      if ($scope.cbe) {
+        $scope.gpa = $scope.gpaCBE;
+      } else {
+        $scope.gpa = $scope.gpaMSCM;
+      }
       $scope.updateColorWarning();
 
-      //save class info
-      setGradeInfo([$scope.gpa, $scope.totalCredits]);
-    };
-
-    $scope.setGpaMSCM = function() {
-      var gradeInfo = calculateMSCMGPA($scope.classList);
-
-      $scope.totalCredits = gradeInfo.credits;
-      $scope.gpa = gradeInfo.gpa;
-      $scope.classList = gradeInfo.classList;
-
-      //Adjust academic standing color (good, bad)
-			$scope.updateColorWarning();
-
-      //save class info
-      setGradeInfo([$scope.gpa, $scope.totalCredits]);
-    };
+    }
 
     /* controls the color change of the GPA display */
     $scope.updateColorWarning = function() {
     	//Adjust academic standing color (good, bad)
       if($scope.cbe){
-        if($scope.gpa > 2.3){
+        if($scope.gpa.gpa > 2.3){
           $scope.standing = 'good';
         }else{
           $scope.standing = 'bad';
         }
       }else{
-        if($scope.gpa >= 3.0){
+        if($scope.gpa.gpa >= 3.0){
           $scope.standing = 'good';
         }else{
           $scope.standing = 'bad';
@@ -196,103 +109,115 @@ app.controller('MainCtrl', [
       $scope.classList.splice(index, 1);
 
       //Save class list
-      storeClassList($scope.classList);
 
-      //save other grade info
-      var cbe = "CBE"
-      if(!$scope.cbe){
-        cbe = "MSCM";
-      }
+      $scope.recalculateGPA();
+    };
 
-      if($scope.cbe){
-        $scope.setGpaCBE();
-      }else{
-        $scope.setGpaMSCM();
+    $scope.switchMode = function() {
+      if ($scope.mode === "cbe") {
+        $scope.cbe = false;
+        $scope.mode = "mscm";
+        $scope.gpa = $scope.gpaMSCM;
+      } else {
+        $scope.cbe = true;
+        $scope.mode = "cbe";
+        $scope.gpa = $scope.gpaCBE;
       }
     };
 
-
     /* Function to scrape text off page and parse out class information */
-    $scope.addPrevClasses = function(info){
-      parseTranscript(info.data);
-      
-      var rawTranscriptText = String(info.data);
-      var tokens = rawTranscriptText.trim().split(/\s+/);
-
-      /* set the mode (CBE or MSCM) to whatever was last looked at) */
-      chrome.storage.sync.get('mode', function(result){
-        //console.debug("Mode: " + result.mode);
-        if(typeof(result.mode) != "undefined"){
-          if(result.mode === 'true'){
-            setMode("cbe");
-          }else{
-            setMode("mscm");
-            // Check to see if other div is visible - if so, hide MSCM div
-            if(document.getElementById("notOnPage").style.display == "inline"){
-              hide('onPageMSCM');
-            }
-            //console.debug("$scope.cbe = " + result.mode);
-            $scope.$apply();
-          }
-        }else{
-          $scope.cbe = true;
-          saveMode('true');
-          $scope.$apply();
-        }
-      });
-
-      /* save the student name and ID for later use */
+    $scope.initialize = function(info){
       var re = /Name:(.*) ID: (.*) Previous/;
-      var name = re.exec(rawTranscriptText)[1];
-      var id = re.exec(rawTranscriptText)[2];
-      console.log("name: " + name + " ID: " + id);
-      saveStudentName(name);
+      var name = re.exec(info.data);
+      var id = re.exec(info.data);
 
-      /* check if id is same as saved */
-      chrome.storage.sync.get('studentID', function(storedID){
-        /* if they're the same, we pull saved class list*/
-        if (id === storedID) {
-          chrome.storage.sync.get('CBEclasses', function(result){
-            $scope.classList = result.CBEclasses;
+      $scope.mode = "cbe";
+      chrome.storage.sync.get("id", function(result) {
+        console.log(result.id);
+        if (result != undefined && result.id === id) {
+          console.log("this is odd");
+          chrome.storage.get("classList", function(result) {
+            $scope.classList = result.classList;
           });
         } else {
-          /* save this users ID */
-          chrome.storage.sync.clear();
-          chrome.storage.sync.set({'studentID': id});
-        }
-      });
-          
-      // Check to see if there are classes saved in storage
-      chrome.storage.sync.get('CBEclasses', function(result){
-        if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ 
-          $scope.classList = result.CBEclasses;
-
-          if($scope.cbe){
-            $scope.setGpaCBE();
-          }else{
-            $scope.setGpaMSCM();
-          }
-          $scope.$apply();
-        }else{ //Else read from page
-          console.debug("No previous classes");
-          if($scope.cbe){ //CBE/MSCM toggle is on CBE
-            $scope.classList = parseClassesCBE(info);
-
-			      $scope.setGpaCBE();
-          }else{//CBE/MSCM toggle is on MSCM
-            $scope.classList = parseClassesMSCM(info);
-
-			      $scope.setGpaMSCM();
-          }
-
-          storeClassList($scope.classList);
+          $scope.classList = parseTranscript(info.data);
+          $scope.recalculateGPA();
           $scope.$apply();
         }
       });
- 
-      $scope.$apply();
-     
-      return;
+      
+
+//      saveStudentName(name);
+//      saveStudentID(id);
+
+      /* set the mode (CBE or MSCM) to whatever was last looked at) */
+//      chrome.storage.sync.get('mode', function(result){
+//        //console.debug("Mode: " + result.mode);
+//        if(typeof(result.mode) != "undefined"){
+//          if(result.mode === 'true'){
+//            setMode("cbe");
+//          }else{
+//            setMode("mscm");
+//            // Check to see if other div is visible - if so, hide MSCM div
+//            if(document.getElementById("notOnPage").style.display == "inline"){
+//              hide('onPageMSCM');
+//            }
+//            //console.debug("$scope.cbe = " + result.mode);
+//            $scope.$apply();
+//          }
+//        }else{
+//          $scope.cbe = true;
+//          saveMode('true');
+//          $scope.$apply();
+//        }
+//      });
+//
+//
+//      /* check if id is same as saved */
+//      chrome.storage.sync.get('studentID', function(storedID){
+//        /* if they're the same, we pull saved class list*/
+//        if (id === storedID) {
+//          chrome.storage.sync.get('CBEclasses', function(result){
+//            $scope.classList = result.CBEclasses;
+//          });
+//        } else {
+//          /* save this users ID */
+//          chrome.storage.sync.clear();
+//          chrome.storage.sync.set({'studentID': id});
+//        }
+//      });
+//          
+//      // Check to see if there are classes saved in storage
+//      chrome.storage.sync.get('CBEclasses', function(result){
+//        if((typeof(result.CBEclasses) != "undefined") && (result.CBEclasses.length > 0)){ 
+//          $scope.classList = result.CBEclasses;
+//
+//          if($scope.cbe){
+//            $scope.setGpaCBE();
+//          }else{
+//            $scope.setGpaMSCM();
+//          }
+//          $scope.$apply();
+//        }else{ //Else read from page
+//          console.debug("No previous classes");
+//          if($scope.cbe){ //CBE/MSCM toggle is on CBE
+//            $scope.classList = parseClassesCBE(info);
+//
+//			      $scope.setGpaCBE();
+//          }else{//CBE/MSCM toggle is on MSCM
+//            $scope.classList = parseClassesMSCM(info);
+//
+//			      $scope.setGpaMSCM();
+//          }
+//
+//          storeClassList($scope.classList);
+//          $scope.$apply();
+//        }
+//      });
+// 
+//      $scope.$apply();
+//     
+//      return;
     };
   }
 ]);
@@ -356,44 +281,10 @@ function setDOMInfo(info) {
   var scope = angular.element(document.getElementById("main")).scope();
   scope.$apply(function(){
     scope.classList.length = 0;
-    scope.addPrevClasses(info);
+    scope.initialize(info);
   });
 }
 
-function toggleView(e) {
-  // Clear the cache...
-  //clearCache();
-  // ...set CBE/MSCM mode...
-  var scope = angular.element(document.getElementById("main")).scope();
-  if(e.target.checked){
-    hide('onPageCBE');
-    show('onPageMSCM');
-    saveMode('false');
-    scope.$apply(function(){
-      scope.cbe = false;
-    });
-  }else{
-    hide('onPageMSCM');
-    show('onPageCBE');
-    saveMode('true');
-    scope.$apply(function(){
-      scope.cbe = true;
-    });
-  }
-  // ...query for the active tab...
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, function (tabs) {
-    // ...and send a request for the DOM info...
-    chrome.tabs.sendMessage(
-        tabs[0].id,
-        {from: 'popup', subject: 'DOMInfo'},
-        // ...also specifying a callback to be called
-        //    from the receiving end (content script)
-        setDOMInfo);
-  });
-}
 
 function bind(e) {
   if(e.target.id == "toggleSwitchBox2"){
@@ -431,11 +322,9 @@ function printSection(e) {
 //Add listener to CBE/MSCM toggle
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('toggleSwitchBox').addEventListener('change', bind);
-  document.getElementById('toggleSwitchBox2').addEventListener('change', bind);
   document.getElementById('closeButton').addEventListener('click', minimize);
   document.getElementById('backFilter').addEventListener('click', minimize);
   document.getElementById('printButton').addEventListener('click', printSection);
-  document.getElementById('printButton2').addEventListener('click', printSection);
 });
 
 //listener to purge storage when 'refreshButton' is pressed
@@ -443,9 +332,6 @@ document.getElementById("refreshButton").addEventListener("click", function () {
   clearCache();
 });
 
-document.getElementById("refreshButton2").addEventListener("click", function () {
-  clearCache();
-});
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {

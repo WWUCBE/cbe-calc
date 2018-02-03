@@ -113,10 +113,10 @@ li:not(:last-child) {
 }
 
 #closeButton {
-	position: absolute;
-	left: 10;
-	top: 25;
-	color: blue;
+  position: absolute;
+  left: 10;
+  top: 25;
+  color: blue;
 }
 
 #menuText{
@@ -128,6 +128,9 @@ li:not(:last-child) {
   margin-right: 10px;
 }
 
+.invalidInput {
+  background-color: red;
+}
 input[type=checkbox] {
   position: absolute;
   opacity: 0;
@@ -419,7 +422,7 @@ div.stats{
 
 }
 
-#composite{
+#oldDupe {
   color: darkgray;
   text-shadow: 1px 1px black;
 }

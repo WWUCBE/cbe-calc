@@ -10,24 +10,67 @@ function parseTranscript(transcript) {
    * In order, from 1: Subject, course number, class name, credits, grade.
    * Note that class name will have extra trailing spaces. */ 
   var re = /\n(\w{3,4})\s+(\d+\w+)\s+\d+\s+(.{1,30})\s*(\d+)\s+(K?\w*[+-]?\*?)/g;
-
+  
+  /* add every class to classList. At the sime time, check for and mark
+   * retaken classes. */
+  var classList = [];
   var classString;
   while (classString = re.exec(transcript)) {
-    var course = {
-      subject: classString[1],
-      crse: classString[2],
-      name: classString[3],
-      credits: classString[4],
-      grade: classString[5],
-      gpa: getGPAValue(classString[5]),
-      isCBE: false,
-      isMSCM: false
-    }
+    var course = createCourse(classString[1], classString[2], classString[4], classString[5]); 
+    classList.push(course);
+  }
 
+  setDupeStatus(classList);
 
-    course.isCBE = isCBE(course);
-    course.isMSCM = isMSCM(course);
-    console.log(course);
+  return classList;
+}
+
+/* see if the new class is a duplicate, if it is, mark 
+ * the old one as such */
+function setDupeStatus(classList) {
+  /* key will be the same for repeat classes */
+  var key = function(course) {
+    return course.subject + course.crse;
+  }
+
+  classList.forEach(function(course) {
+    if (key(course) === key(course)) {
+      course.isOldDupe = true;
+      course.dupeStatus = "oldDupe";
+    }   
+  });
+}
+
+function createCourse(subj, crse, credits, grade) {
+  var course = {
+    subject: subj,
+    crse: crse,
+    name: subj + " " + crse,
+    credits: parseInt(credits),
+    grade: grade,
+    gpa: getGPAValue(grade),
+    isCBE: false,
+    isMSCM: false,
+    isOldDupe: false
+  }
+
+  setProgramStatus(course);
+
+  return course;
+}
+
+function setProgramStatus(course) {
+  course.isCBE = isCBE(course);
+  course.isMSCM = isMSCM(course);
+
+  /* add a text only tag to allow the filter to search it. Not the best
+   * way to do this, probably */
+  course.countsFor = ""; 
+  if (course.isCBE) {
+    course.countsFor += "cbe ";
+  } 
+  if (course.isMSCM) {
+    course.countsFor += "mscm";
   }
 }
 
@@ -73,287 +116,44 @@ function isMSCM(course) {
   }
 }
 
-/* Input: object containing the raw text of the transcript. 
- * Output: list of course objects, as interpreted by CBE rules. */
-function parseClassesCBE(info) {
-  //console.log("readFromPageCBE()");
-  var classList = [];
-  var localData = String(info.data);
-  var lines = localData.split('\n');
-  var headers = [
-    'ECON',
-    'ACCT',
-    'DSCI',
-    'MIS',
-    'FIN',
-    'MKTG',
-    'OPS',
-    'MGMT',
-    'IBUS',
-    'HRM'
-  ];
-  var grades = [
-    'A',
-    'A-',
-    'KA',
-    'KA-',
-    'B',
-    'B+',
-    'B-',
-    'K',
-    'K*',
-    'KB',
-    'KB+',
-    'KB-',
-    'C',
-    'C+',
-    'C-',
-    'KC',
-    'KC+',
-    'KC-',
-    'D',
-    'D+',
-    'D-',
-    'KD',
-    'KD+',
-    'KD-',
-    'F',
-    'KF',
-    'S',
-    'U',
-    'KZ',
-    'Z'
-  ];
-  for(var i = 0 ; i < lines.length ; i++){
-    //split on space or group of spaces and store in lineArray
-    var lineArray = lines[i].trim().split(/\s+/);
-    // check if the line has a class listed in the class prefix list
-    if(headers.indexOf(lineArray[0]) >= 0){
-      var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
-      var tempGrade;
-      var tempCredits;
-      var realGrade = false;
-      
-      // start at gpa position for course record and loop to end of line
-      for(var ind = 5; ind < lineArray.length; ind++){
-        if(grades.indexOf(lineArray[ind])>=0){
-          tempGrade = lineArray[ind];
-
-          //Class has a '*' after the grade
-          if(tempGrade[1] === '*' || tempGrade[2] === '*') {
-            //tempGrade = tempGrade.substring(1,tempGrade.length);
-            //console.log("K was hit, tempgrade=" + tempGrade);
-            break;
-          }
-
-          //If class is pass/fail, break loop and ignore it
-          if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
-            break;
-          }
-
-          //credits are located one before the grade.
-          tempCredits = lineArray[ind-1];
-          realGrade = true;
-          break;
-        }
-      }
-
-      if(realGrade){
-        for(var j = 0 ; j < classList.length ; j++){
-          if(classList[j].name === tempName){
-            classList[j].composite = 'composite';
-          }
-        }
-
-        classList.push({
-          name: tempName,
-          grade: tempGrade,
-          gpa: getGPAValue(tempGrade),
-          credits: tempCredits
-        });
-      }
-    }
-  }
-
-  return classList;
-}
-
- /* Input: object containing the raw text of the transcript. 
-  * Output: list of course objects, as interpreted by MSCM rules. */
-function parseClassesMSCM(info) {
-  //console.debug("readFromPageMSCM()");
-  var classList = [];
-  var localData = String(info.data);
-  var lines = localData.split('\n');
-  var validclasses = {
-    'MATH': ['157'],
-    'DSCI': ['205'],
-    'ACCT': ['240','245'],
-    'ECON':['206','207'],
-    'MIS': ['220'],
-    'MGMT':['271'],
-    'PHYS':['114'],
-    'CHEM': ['121']
-  }
-  var grades = [
-    'A',
-    'A-',
-    'K',
-    'K*',
-    'KA',
-    'KA-',
-    'B',
-    'B+',
-    'B-',
-    'KB',
-    'KB+',
-    'KB-',
-    'C',
-    'C+',
-    'C-',
-    'KC',
-    'KC+',
-    'KC-',
-    'D',
-    'D+',
-    'D-',
-    'KD',
-    'KD+',
-    'KD-',
-    'F',
-    'KF',
-    'S',
-    'U',
-    'KZ',
-    'Z'
-  ];
-  for(var i = 0 ; i < lines.length ; i++){
-    //split on space or group of spaces and store in lineArray
-    var lineArray = lines[i].trim().split(/\s+/);
-
-    if(validclasses.hasOwnProperty(lineArray[0]) && validclasses[lineArray[0]].indexOf(lineArray[1].substring(0,3))>=0){
-      var tempName = (lineArray[0] + ' ' + lineArray[1]).substring(0, 8)
-      var tempGrade;
-      var tempCredits;
-
-      var realGrade = false;
-      for(var ind = 5; ind < lineArray.length; ind++){
-        if(grades.indexOf(lineArray[ind])>=0){
-          tempGrade = lineArray[ind];
-
-          //Class has a 'K' preceeding the grade
-          if(tempGrade[1] === '*' || tempGrade[2] === '*') {
-            break;
-          }
-
-          //If class is pass/fail, break loop and ignore it
-          if((tempGrade[0] === 'S') || (tempGrade[0] === 'U')){
-            break;
-          }
-
-          //credits are located one before the grade.
-          tempCredits = lineArray[ind-1];
-          realGrade = true;
-          break;
-        }
-      }
-
-      if(realGrade){
-        for(var j = 0 ; j < classList.length ; j++){
-          if(classList[j].name === tempName){
-            /* Remove duplicates */
-            classList.splice(j, 1);
-            j--;
-
-          }
-        }
-
-        classList.push({
-          name: tempName,
-          grade: tempGrade,
-          gpa: getGPAValue(tempGrade),
-          credits: tempCredits
-        });
-      }
-    }
-  }
-
-  return classList;
-}
-
 
 /* Input: list of course objects 
  * Output: GPA and total credits for MSCM, as well as 
  *         the original list but modified to mark duplicates */
 function calculateMSCMGPA(classList) {
-  
-  /* detect duplicates */
-  for(var i = 0 ; i < classList.length ; i++){ //Remove unecessary "composite" flags
+
     
-    /* don't touch K grade classes */
-    if (classList[i].grade === "K" || classList[i].grade === "K*") {
-      continue;
+  var credits = 0;
+  var gpa = 0.0;
+
+  /* only count most recent attempt */
+  classList.forEach(function(course) {
+    if (course.isMSCM && course.isOldDupe === false && course.gpa >= 0) {
+      credits += course.credits;
+      gpa += course.gpa * course.credits;
     }
-    classList[i].composite = "unique";
-    for(var j = i+1 ; j < classList.length ; j++){
-      if(classList[j].name === classList[i].name){
-        classList[i].composite = "composite";
-      }
-    }
-  }
+  });
 
-  var gpa = 0.00;
-  var credits = 0.00;
-
-  // tally gpa and credits for all classes in classList
-  for(var i = 0 ; i < classList.length ; i++){
-    if(classList[i].composite === "unique" && classList[i].gpa >= 0){
-      gpa += (+classList[i].gpa * +classList[i].credits);
-      credits +=  +classList[i].credits;
-    }
-  }
-
-  if(gpa != 0){
-    gpa = gpa / credits;
-  }
-
-  var gradeInfo = {
-    gpa: gpa.toFixed(2),
-    credits: credits,
-    classList: classList
-  };
-
-  return gradeInfo;
+  var finalGpa = gpa / credits;
+  return {gpa: finalGpa.toFixed(2), credits: credits};
 }
 
 /* Input: list of course objects 
  * Output: GPA and total credits for CBE, as well as 
  *         the original list but modified to mark duplicates */
 function calculateCBEGPA(classList) {
-  var gpa = 0.00;
-  var credits = 0.00; 
+  var credits = 0;
+  var gpa = 0.0;
 
-  //The number of credits minus credits from classes that were retaken
-  for(var i = 0 ; i < classList.length ; i++){
-
-    // only calculate info from standard gpa grades
-    if(classList[i].gpa >= 0){
-      gpa += (+classList[i].gpa * +classList[i].credits);
-      credits += +classList[i].credits;
+  classList.forEach(function(course) {
+    if (course.isCBE && course.gpa >= 0) {
+      credits += course.credits;
+      gpa += course.gpa * course.credits;
     }
-  }
+  });
 
-  if(gpa != 0){
-    gpa = gpa / credits;
-  }
-
-  var gradeInfo = {
-    gpa: gpa.toFixed(2),
-    credits: credits,
-    classList: classList
-  };
-
-  return gradeInfo;
+  var finalGpa = gpa / credits;
+  return {gpa: finalGpa.toFixed(2), credits: credits};
 }
 
 /* Input: string representing letter grade 
@@ -409,8 +209,7 @@ function getGPAValue(letterGrade) {
   /* if it gets here it's something weird that I didn't account for. */
   else {
     grade = -1;
-    console.log("Unexpected grade: " + letterGrade);
   }
 
-  return grade.toFixed(1);
+  return grade;
 }
