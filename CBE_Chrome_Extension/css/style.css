@@ -130,6 +130,8 @@ li:not(:last-child) {
 
 .invalidInput {
   background-color: red;
+  color: #dbdbdb;
+  font-weight: bold;
 }
 input[type=checkbox] {
   position: absolute;
@@ -633,4 +635,52 @@ body.has-active-menu {
 .c-menu--slide-bottom.is-active,
 .c-menu--push-bottom.is-active {
   transform: translateY(0);
+}
+
+.popover-wrapper .editable-error {
+    position: absolute;
+    top: -59px;
+    background: #FFF;
+    border: 1px solid #AAA;
+    border-radius: 5px;
+    padding: 7px;
+    width: auto;
+    display: inline-block;
+    left: 50%;
+    z-index: 101;
+}
+
+.popover-wrapper .editable-error:before {
+    content:"";
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #AAA;
+    position:absolute;
+    bottom:-10px;
+}
+
+.popover-wrapper .editable-error:after {
+    content:"";
+    width:0;
+    height:0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #FFF;
+    position:relative;
+    bottom:-9px;
+}
+
+@media screen and (min-width: 750px) {
+    .popover-wrapper .editable-error {
+        margin-left: -260px;
+    }
+    .popover-wrapper form:before, .popover-wrapper .editable-error:before {
+        left:100px;
+    }
+
+    .popover-wrapper form:after, .popover-wrapper .editable-error:after {
+        left:101px;
+    }
 }

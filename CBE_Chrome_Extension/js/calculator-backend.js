@@ -33,45 +33,61 @@ function setDupeStatus(classList) {
     return course.subject + course.crse;
   }
 
+  /* we're using an object for it's hashmap properties */
+  uniqueClasses = {};
+
   classList.forEach(function(course) {
-    if (key(course) === key(course)) {
-      course.isOldDupe = true;
-      course.dupeStatus = "oldDupe";
-    }   
+    var oldClass = uniqueClasses[key(course)];
+    if (oldClass !== undefined) {
+      oldClass.isOldDupe = true;
+      oldClass.dupeStatus = "oldDupe";
+    }
+    uniqueClasses[key(course)] = course;
   });
 }
 
 function createCourse(subj, crse, credits, grade) {
   var course = {
-    subject: subj,
+    subject: subj.toUpperCase(),
     crse: crse,
-    name: subj + " " + crse,
+    name: subj.toUpperCase() + " " + crse,
     credits: parseInt(credits),
-    grade: grade,
+    grade: grade.toUpperCase(),
     gpa: getGPAValue(grade),
     isCBE: false,
     isMSCM: false,
-    isOldDupe: false
+    isOldDupe: false,
+    isValid: {
+      course: true,
+      name: true,
+      grade: true,
+      credits: true
+    }
   }
 
-  setProgramStatus(course);
+  course.isCBE = isCBE(course);
+  course.isMSCM = isMSCM(course);
 
   return course;
 }
 
-function setProgramStatus(course) {
-  course.isCBE = isCBE(course);
-  course.isMSCM = isMSCM(course);
+/* Used to validate added and modified classes.*/
+function validateInput(name, grade, credits) {
+  /* Create a course object and populate it accordingly */
+  var splitName = name.split(" ");
+  var course = createCourse(splitName[0], splitName[1], credits, grade);
 
-  /* add a text only tag to allow the filter to search it. Not the best
-   * way to do this, probably */
-  course.countsFor = ""; 
-  if (course.isCBE) {
-    course.countsFor += "cbe ";
-  } 
-  if (course.isMSCM) {
-    course.countsFor += "mscm";
-  }
+  /* return a validity object */
+  var valid = {
+    name: course.isCBE || course.isMSCM,
+    grade: course.gpa >= 0,
+    credits: course.credits >= 0
+  };
+  /* if the individial components are valid, then the class is. */
+  valid.course = valid.name && valid.grade && valid.credits;
+  Object.assign(course.isValid, valid);
+
+  return {validity: valid, newCourse: course};
 }
 
 function isCBE(course) {
@@ -160,6 +176,7 @@ function calculateCBEGPA(classList) {
  * Output: floating point equivalent; -1 in cases where
  *         the grade doesn't factor in to the GPA. */
 function getGPAValue(letterGrade) {
+  letterGrade = letterGrade.toUpperCase();
   var regex = /(K?)([ABCDFZ])([+-]?)(\*?)/;
   var match = regex.exec(letterGrade);
 
