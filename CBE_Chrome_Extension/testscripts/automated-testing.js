@@ -33,11 +33,9 @@ function calculateGPA() {
 		var doc = parser.parseFromString(htmlFile.html, "text/html");
 		var text = doc.getElementsByClassName("pagebodydiv")[0].children[1].innerText;
 
-
-		var classlistCBE = parseClassesCBE({data:text});
-		var gradeInfoCBE = calculateCBEGPA(classlistCBE);
-		var classlistMSCM = parseClassesMSCM({data:text});
-		var gradeInfoMSCM = calculateMSCMGPA(classlistMSCM);
+    var classList = parseTranscript(text);
+		var gradeInfoCBE = calculateCBEGPA(classList);
+		var gradeInfoMSCM = calculateMSCMGPA(classList);
 		var cbeGPA = gradeInfoCBE.gpa;
 		var mscmGPA = gradeInfoMSCM.gpa;
 		// console.log(classlist);
