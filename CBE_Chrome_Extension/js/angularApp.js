@@ -204,7 +204,6 @@ function printSection(e) {
   });
 }
 
-//Add listener to CBE/MSCM toggle
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('closeButton').addEventListener('click', minimize);
   document.getElementById('backFilter').addEventListener('click', minimize);
