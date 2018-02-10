@@ -421,8 +421,8 @@ div.stats{
   padding: 20;
 }
 
-#oldDupe {
-  color: darkgray;
+.oldDupe #editableField {
+  color: darkgray !important;
   text-shadow: 1px 1px black;
 }
 

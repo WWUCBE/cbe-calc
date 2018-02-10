@@ -17,7 +17,7 @@ app.filter('programFilter', function() {
         out.push(course);
       } else {
         if (modeMSCM) {
-          if (course.isMSCM) {
+          if (course.isMSCM & !course.isOldDupe) {
             out.push(course);
           }
         } else {
@@ -55,6 +55,8 @@ app.controller('MainCtrl', [
     /* Called when the extension is opened. The variable "page" is what it
      * gets passed from the content script. */
     $scope.initialize = function(page){
+      console.log("initializing with page");
+      console.log(page);
       /* saves the rawText, to be used when clicking the refresh button */
       $scope.rawTranscript = page.data;
       
@@ -82,6 +84,7 @@ app.controller('MainCtrl', [
         $scope.classList.push(v.newCourse);
         setDupeStatus($scope.classList);
         $scope.recalculateGPA();
+        $scope.saveClassInfo();
 
         /* reset the fields (remember, these are linked with
          * the  html) */
@@ -142,6 +145,7 @@ app.controller('MainCtrl', [
 
     /* returns the name and ID of the student */
     $scope.getNameAndID = function() {
+      console.log($scope.rawTranscript);
       var re = /Name:(.*) ID: (.*) Previous/;
       var name = re.exec($scope.rawTranscript)[1];
       var id = re.exec($scope.rawTranscript)[2];
@@ -187,6 +191,7 @@ function saveNameAndID(name, id) {
 
 /* this is the function passed as a callback to content.js. */
 function setDOMInfo(info) {
+  console.log("setDomeInfo");
   var scope = angular.element(document.getElementById("main")).scope();
   scope.initialize(info);
 }
@@ -213,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
+  console.log("DOM Content loaded");
   // ...query for the active tab...
   chrome.tabs.query({
     active: true,

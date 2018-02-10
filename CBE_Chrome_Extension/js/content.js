@@ -14,6 +14,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
     // Collect the necessary data
     var pageData = "";
 
+      console.log(pageData);
     //For students who HAVE applied for graduation
     try{
       pageData = document.getElementsByTagName("pre")[0].innerText;
@@ -122,17 +123,12 @@ function formatForPrint(){
       }
     });
         
-
     printWindow.document.write( "</table>");
     printWindow.document.write('</body></html>');
     printWindow.document.close();      
     printWindow.focus();
-
-
-        
     //print the output
-    setTimeout(function(){printWindow.print();},500);    
-    setTimeout(function(){printWindow.close();},500);
+    printWindow.print();    
 
   });
 }

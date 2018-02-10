@@ -34,14 +34,14 @@ function setDupeStatus(classList) {
   }
 
   /* we're using an object for it's hashmap properties */
-  uniqueClasses = {};
+  var uniqueClasses = {};
 
   classList.forEach(function(course) {
+    course.isOldDupe = false;
     var oldClass = uniqueClasses[key(course)];
     if (oldClass !== undefined) {
       oldClass.isOldDupe = true;
-      oldClass.dupeStatus = "oldDupe";
-    }
+    } 
     uniqueClasses[key(course)] = course;
   });
 }
