@@ -11,8 +11,6 @@ chrome.runtime.sendMessage({
 chrome.runtime.onMessage.addListener(function (msg, sender, response) {
   // First, validate the message's structure
   if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
-    console.log("listener from content");
-    
     // Collect the necessary data
     var pageData = document.getElementsByTagName("pre")[0].innerText;
     
@@ -91,10 +89,6 @@ function formatForPrint(){
 
 chrome.runtime.onMessage.addListener(
   function(message, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
-    //console.log(sender + message + sendResponse);
     if (message.action == "print"){
         console.log("print message recieved");
       console.debug("Message received");
