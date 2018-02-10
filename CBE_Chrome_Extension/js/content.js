@@ -90,8 +90,6 @@ function formatForPrint(){
 chrome.runtime.onMessage.addListener(
   function(message, sender, sendResponse) {
     if (message.action == "print"){
-        console.log("print message recieved");
-      console.debug("Message received");
       formatForPrint();
     }
   }
