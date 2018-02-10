@@ -82,8 +82,8 @@ function formatForPrint(){
     printWindow.document.close();      
     printWindow.focus();
     //print the output; timeouts needed to get it to work
-    setTimeout(function(){printWindow.print();},500);    
-    setTimeout(function(){printWindow.close();},500);
+    setTimeout(function(){printWindow.print();},100);    
+    setTimeout(function(){printWindow.close();},100);
   });
 }
 
