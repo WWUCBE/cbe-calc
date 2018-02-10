@@ -77,9 +77,8 @@ window.addEventListener('load', function() {
 document.addEventListener('DOMContentLoaded', function() {
     getCurrentTabUrl(function(url) {
         if(url=="https://admin.wwu.edu/pls/wwis/wwskahst.WWU_ViewTran"){
-            show('onPageCBE');
+            show('applicationView');
             hide('notOnPage');
-            hide('onPageMSCM');
             show('toggleSwitch');
           chrome.tabs.sendMessage(
               tabs[0].id,
@@ -89,9 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
               setDOMInfo);
         }
         else if(url=="https://admin.wwu.edu/pls/wwis/wwfkfhst.P_FacDispCurrent"){
-            show('onPageCBE');
+            show('applicationView');
             hide('notOnPage');
-            hide('onPageMSCM');
             show('toggleSwitch');
           chrome.tabs.sendMessage(
               tabs[0].id,
@@ -102,9 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         //pulls data from any test page starting with 'testPage'
         else if(url.includes("/testpages/")){
-            show('onPageCBE');
+            show('applicationView');
             hide('notOnPage');
-            hide('onPageMSCM');
             show('toggleSwitch');
           chrome.tabs.sendMessage(
               tabs[0].id,
@@ -114,8 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
               setDOMInfo);
         }else{
             show('notOnPage');
-            hide('onPageCBE');
-            hide('onPageMSCM');
+            hide('applicationView');
             hide('toggleSwitch');
             hide('toggleDiv');
         };

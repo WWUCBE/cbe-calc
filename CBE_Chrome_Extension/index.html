@@ -87,7 +87,7 @@
 
   <div id="toggleDiv" class="backBlur">
     <label id="toggleSwitch2" class="switch-light toggleSwitch">
-      <input type="checkbox" id="toggleSwitchBox2">
+      <input ng-click="saveMode(modeMSCM)" type="checkbox" ng-checked="modeMSCM" ng-model="modeMSCM" id="toggleSwitchBox2">
       <strong>
       </strong>
       <span class="well">
@@ -98,11 +98,17 @@
     </label>
   </div>
 
-  <div class="container backBlur" id="onPageCBE">
+  <div class="container backBlur" id="applicationView">
     <div id="inputBanner"></div>
     <div id="gpaIndent"></div>
     <div id="grayBlock"></div>
-    <div id="gpaBanner"><div id="gpaText"><b id={{standing}}> GPA: {{gpa}} </b></div></div>
+    <div id="gpaBanner">
+        <div id="gpaText">
+            <b ng-class="{'bad': modeMSCM ? gpaMSCM.badStanding : gpaCBE.badStanding}"> 
+                GPA: {{(modeMSCM) ? gpaMSCM.gpa : gpaCBE.gpa}}
+            </b>
+        </div>
+    </div>
     <div id="gradeBanner"></div>
     <div id="headerBanner"></div>
     <button id="printButton" type="button">Print</button>
@@ -126,7 +132,7 @@
 	        </div>
 	        <div class = "col-xs-4 col-xs-offset-1">
 	          <h3 data-toggle="popover" title="This number includes all attempted credits for your CBE GPA. Western will only include the most recent attempt in your credits toward degree." data-trigger="hover">
-	            GPA Credits ({{totalCredits}})*
+	            GPA Credits {{(modeMSCM) ? gpaMSCM.credits : gpaCBE.credits}}*
 	          </h3>
 	        </div>
         </div>
@@ -138,35 +144,48 @@
       <div id = "grades">
   	    <div class = "col-md-6 col-md-offset-3 backBlur">
   	      <div id = "gradeBlock">
-  	        <div ng-repeat="class in classList track by $index" id="contentRow" ng-class-even="'even'">
+                  <div ng-repeat="course in classList | programFilter:modeMSCM track by $index"
+                       id="contentRow" ng-class-even="'even'" 
+                       ng-class="{'invalidCourse': !course.isValid.course}">
               <div class = "col-xs-1" style="text-align:left">
                 <span id=removeIcon
                   class="glyphicon glyphicon-remove glyphicon-large"
-                  ng-click="removeClass(class)"
+                  ng-click="removeClass(course)">
                 </span>
               </div>
               <div class = "col-xs-5" style="text-align:left">
-                <span id="editableField" editable-text="classList[$index].name" blur="submit" e-style="height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
-                  <div id={{class.composite}}>
-                    {{ class.name }}
+                <span id="editableField" editable-text="course.name"  e-style="height:
+                    20px;" buttons="no" e-required 
+                           ng-class="{invalidInput: !course.isValid.name}"
+                    onaftersave="modifyClass(course)">
+                  <div id={{course.dupeStatus}}>
+                    {{ course.name }}
                   </div>
                 </span>
               </div>
               <div class = "col-xs-2" style="text-align:left">
-                <span id="editableField" editable-text="classList[$index].grade" blur="submit" e-style="width:50px; height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
-                  <div id={{class.composite}}>
-                    {{ class.grade }}
+                <span id="editableField" editable-text="course.grade" 
+                    e-style="width:50px; height: 20px;" buttons="no" e-required
+                    ng-class="{invalidInput: !course.isValid.grade}"
+                    onaftersave="modifyClass(course)">
+                  <div id={{course.dupeStatus}}>
+                    {{ course.grade }}
                   </div>
                 </span>
               </div>
               <div class = "col-xs-4">
-                <span id="editableField" editable-text="classList[$index].credits" blur="submit" e-style="width:50px; height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
-                  <div id={{class.composite}}>
-                    {{ class.credits }}
+                <span id="editableField" editable-text="course.credits" 
+                    e-style="width:50px; height: 20px;" buttons="no" e-required
+                    ng-class="{invalidInput: !course.isValid.credits}"
+                    onaftersave="modifyClass(course)">
+                  <div id={{course.dupeStatus}}>
+                    {{ course.credits }}
                   </div>
                 </span>
               </div>
+
   	        </div>
+              <!-- end repeat -->
   	      </div>
   	    </div>
       </div>
@@ -176,155 +195,43 @@
 	      <div id = "submitBlock">
           <!--**Insert "old grades" block here if needed**-->
 	        <section>
-	          <form ng-submit="addClass()">
+	          <form name="submitForm" ng-submit="addClass()">
               <div class = "row" id = "addAClass">
   	              Add a Class
               </div>
 	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
+                        ng-class="{invalidInput : !validInput.name && !validInput.pristine}"
 	                placeholder="Class Name"
+                        ng-required="true"
 	                ng-model="name">
 	              </input>
 	            </div>
 	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
+                        ng-class="{invalidInput : !validInput.grade && !validInput.pristine}"
 	                placeholder="Letter Grade"
+                        ng-required="true"
 	                ng-model="grade">
 	              </input>
 	            </div>
 	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
+                        ng-class="{invalidInput : !validInput.credits && !validInput.pristine}"
 	                placeholder="# Credits"
+                        ng-required="true"
 	                ng-model="credits">
 	              </input>
 	            </div>
 <!--TODO: fix refresh -->
-              <button id="refreshButton" type="button" class="blueButton btn btn-primary refreshData text-center" style="float: left;">
+              <button ng-click="freshStart()" id="refreshButton" type="button" class="blueButton btn btn-primary refreshData text-center" style="float: left;">
                 Restore
               </button>
               <!-- <button id="c-button--slide-bottom" class="c-button">Slide Botton</button> -->
-	            <button id="addButton" type="submit" class="blueButton btn btn-primary" style="float: right;">
-	              Add
-	            </button>
-	          </form>
-	        </section>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-  <div class="container backBlur" id="onPageMSCM">
-    <div id="inputBanner"></div>
-    <div id="gpaIndent"></div>
-    <div id="grayBlock"></div>
-    <div id="gpaBanner"><div id="gpaText"><b id={{standing}}> GPA: {{gpa}} </b></div></div>
-    <div id="gradeBanner"></div>
-    <div id="headerBanner"></div>
-    <button id="printButton2" type="button">Print</button>
-	  <div class = "row" id = "title" >
-	    <div id="titleBlock" class="col-xs-12">
-        <div class = "row" id = "appName">
-          <div class="col-sm-12 title">
-            <h2 class="backBlur"><b> MSCM Foundation Calculator </b></h2>
-          </div>
-        </div>
-        <div class = "row backBlur" id = "headers">
-	        <div class = "col-xs-2 col-xs-offset-1">
-	          <h3>
-	            Course
-	          </h3>
-	        </div>
-	        <div class = "col-xs-2 col-xs-offset-2">
-	          <h3 class="leftBuffer">
-	            Grade
-	          </h3>
-	        </div>
-	        <div class = "col-xs-4 col-xs-offset-1">
-	          <h3 data-toggle="popover" title="This number reflects only the most recent attempts of each class in your MSCM Foundation." data-trigger="hover">
-	            GPA Credits ({{totalCredits}})*
-	          </h3>
-	        </div>
-        </div>
-	    </div>
-	  </div>
-
-    <!--Grade Block-->
-	  <div class = "row">
-      <div id = "grades">
-  	    <div class = "col-md-6 col-md-offset-3 backBlur">
-  	      <div id = "gradeBlock">
-  	        <div ng-repeat="class in classList track by $index" id="contentRow" ng-class-even="'even'">
-              <div class = "col-xs-1" style="text-align:left">
-                <span id=removeIcon
-                  class="glyphicon glyphicon-remove glyphicon-large"
-                  ng-click="removeClass(class)"
-                </span>
-              </div>
-              <div class = "col-xs-5" style="text-align:left">
-                <span id="editableField" editable-text="classList[$index].name" blur="submit" e-style="height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
-                  <div id={{class.composite}}>
-                    {{ class.name }}
-                  </div>
-                </span>
-              </div>
-              <div class = "col-xs-2" style="text-align:left">
-                <span id="editableField" editable-text="classList[$index].grade" blur="submit" e-style="width:50px; height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
-                  <div id={{class.composite}}>
-                    {{ class.grade }}
-                  </div>
-                </span>
-              </div>
-              <div class = "col-xs-4">
-                <span id="editableField" editable-text="classList[$index].credits" blur="submit" e-style="width:50px; height: 20px;" buttons="no" e-required onaftersave="reCalc($index)">
-                  <div id={{class.composite}}>
-                    {{ class.credits }}
-                  </div>
-                </span>
-              </div>
-  	        </div>
-  	      </div>
-  	    </div>
-      </div>
-
-      <!--Submit sub-block-->
-	    <div class = "col-md-3 backBlur">
-	      <div id = "submitBlock">
-          <!--**Insert "old grades" block here if needed**-->
-	        <section>
-	          <form ng-submit="addClass()">
-              <div class = "row" id = "addAClass">
-  	              Add a Class
-              </div>
-	            <div class="form-group myform">
-	              <input type="text"
-	                class="form-control"
-	                placeholder="Class Name"
-	                ng-model="name">
-	              </input>
-	            </div>
-	            <div class="form-group myform">
-	              <input type="text"
-	                class="form-control"
-	                placeholder="Letter Grade"
-	                ng-model="grade">
-	              </input>
-	            </div>
-	            <div class="form-group myform">
-	              <input type="text"
-	                class="form-control"
-	                placeholder="# Credits"
-	                ng-model="credits">
-	              </input>
-	            </div>
-<!--TODO: fix refresh -->
-              <button id="refreshButton2" type="button" class="blueButton btn btn-primary refreshData text-center" style="float: left;">
-                Restore
-              </button>
-              <!-- <button id="c-button--slide-bottom" class="c-button">Slide Botton</button> -->
-	            <button id="addButton" type="submit" class="blueButton btn btn-primary" style="float: right;">
+	            <button ng-disabled="submitForm.$invalid" id="addButton" type="submit" class="blueButton btn btn-primary" style="float: right;">
 	              Add
 	            </button>
 	          </form>
