@@ -52,13 +52,14 @@ app.controller('MainCtrl', [
       grade: false
     };
 
-    /* Function to scrape text off page and parse out class information */
+    /* Called when the extension is opened. The variable "page" is what it
+     * gets passed from the content script. */
     $scope.initialize = function(page){
-      //chrome.storage.local.clear();
+      /* saves the rawText, to be used when clicking the refresh button */
       $scope.rawTranscript = page.data;
       
       var student = $scope.getNameAndID();
-
+      /* Uses the student ID to see if it should load the saved class list */
       chrome.storage.local.get("studentID", function(result) {
         if (result != undefined && result.studentID === student.id) {
           $scope.restoreSavedData();
@@ -76,7 +77,7 @@ app.controller('MainCtrl', [
 
       /* copy values over to the scoped object */
       Object.assign($scope.validInput, v.validity);
-
+      
       if (v.validity.course) {
         $scope.classList.push(v.newCourse);
         setDupeStatus($scope.classList);
@@ -86,11 +87,9 @@ app.controller('MainCtrl', [
          * the  html) */
         $scope.name = '';
         $scope.grade = '';
-        $scope.credits = '';
-        
+        $scope.credits = ''; 
         $scope.validInput.pristine = true;
       } else {
-        console.log("invalid class!");
         $scope.validInput.pristine = false;
       }
     };
@@ -104,7 +103,8 @@ app.controller('MainCtrl', [
       $scope.recalculateGPA();
       $scope.saveClassInfo();
     };
-    
+   
+    /* called by every function that affects the classList */
     $scope.recalculateGPA = function() {
       $scope.gpaCBE = calculateCBEGPA($scope.classList);
       $scope.gpaMSCM = calculateMSCMGPA($scope.classList);
@@ -113,20 +113,18 @@ app.controller('MainCtrl', [
       $scope.gpaMSCM.badStanding = $scope.gpaMSCM.gpa < 3.0;
     };
 
+    /* triggered by clicking the X button by a class in the UI */
     $scope.removeClass = function(item) {
-      //console.log("removeClass()");
       var index = $scope.classList.indexOf(item);
       $scope.classList.splice(index, 1);
 
-      //Save class list
       setDupeStatus($scope.classList);
       $scope.recalculateGPA();
-
       $scope.saveClassInfo();
     };
 
-
-
+    /* triggered by the refresh button, and called by initialize if
+      * a new ID is seen */
     $scope.freshStart = function() {
       chrome.storage.local.clear();
       $scope.classList = parseTranscript($scope.rawTranscript);
@@ -142,6 +140,7 @@ app.controller('MainCtrl', [
       $scope.saveClassInfo();
     };
 
+    /* returns the name and ID of the student */
     $scope.getNameAndID = function() {
       var re = /Name:(.*) ID: (.*) Previous/;
       var name = re.exec($scope.rawTranscript)[1];
@@ -152,12 +151,15 @@ app.controller('MainCtrl', [
       };
     };
 
+    /* Saves the classList and both GPAs */
     $scope.saveClassInfo = function() {
       chrome.storage.local.set({'classList': $scope.classList});
       chrome.storage.local.set({'gpaMSCM': $scope.gpaMSCM});
       chrome.storage.local.set({'gpaCBE': $scope.gpaCBE});
     };
 
+    /* restores all relevent info. Called from intialize if a returning
+     * user is detected. */
     $scope.restoreSavedData = function() {
       chrome.storage.local.get(["classList", "gpaCBE", "gpaMSCM", "modeMSCM"], function(result) {
         $scope.$apply(function() {
@@ -169,6 +171,7 @@ app.controller('MainCtrl', [
       });
     };
 
+    /* saves the mode (mscm or cbe). Triggered by clicking the switch button.*/
     $scope.saveMode = function(modeMSCM) {
       chrome.storage.local.set({'modeMSCM': modeMSCM});
     };
@@ -176,39 +179,21 @@ app.controller('MainCtrl', [
   }
 ]);
 
+/* saves the student name and ID */
 function saveNameAndID(name, id) {
   chrome.storage.local.set({'studentName': name});
   chrome.storage.local.set({'studentID': id});
 }
 
-// Update the relevant fields with the new data
+/* this is the function passed as a callback to content.js. */
 function setDOMInfo(info) {
-  //console.log("setDomInfo()");
   var scope = angular.element(document.getElementById("main")).scope();
-  scope.$apply(function(){
-    scope.classList.length = 0;
-    scope.initialize(info);
-  });
-}
-
-
-function bind(e) {
-  if(e.target.id == "toggleSwitchBox2"){
-    console.log("toggleSwitchBox2");
-    document.getElementById("toggleSwitchBox").checked = document.getElementById("toggleSwitchBox2").checked;
-  }
-  if(e.target.id == "toggleSwitchBox"){
-    console.log("toggleSwitchBox");
-    document.getElementById("toggleSwitchBox2").checked = document.getElementById("toggleSwitchBox").checked;
-  }
-  toggleView(e);
+  scope.initialize(info);
 }
 
 function minimize(e) {
-  console.log("clicked");
   document.getElementById('toggle').checked = false;
 }
-
 
 function printSection(e) {
   console.log("Sent print message");
@@ -229,9 +214,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
-  // clear everything from the cache to force a refresh
-  //chrome.storage.local.clear();
-
   // ...query for the active tab...
   chrome.tabs.query({
     active: true,
