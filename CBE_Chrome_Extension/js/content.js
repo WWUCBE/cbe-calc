@@ -11,62 +11,18 @@ chrome.runtime.sendMessage({
 chrome.runtime.onMessage.addListener(function (msg, sender, response) {
   // First, validate the message's structure
   if ((msg.from === 'popup') && (msg.subject === 'DOMInfo')) {
+    console.log("listener from content");
+    
     // Collect the necessary data
-    var pageData = "";
-
-      console.log(pageData);
-    //For students who HAVE applied for graduation
-    try{
-      pageData = document.getElementsByTagName("pre")[0].innerText;
-
-      if(pageData.includes("Subj")){
-        //Add valid text to domInfo
-        var domInfo = {
-          data: pageData
-        }
-        // Directly respond to the sender (popup),
-        // through the specified callback
-        response(domInfo);
-        return;
-      }
-    }catch (e){
-      console.log("Caught error from student applied block (content.js)");
+    var pageData = document.getElementsByTagName("pre")[0].innerText;
+    
+    //Add valid text to domInfo
+    var domInfo = {
+      data: pageData
     }
-    //For advisers
-    try{
-      pageData = document.getElementsByTagName("pre")[0].innerText;
-
-      if(pageData.includes("Subj")){
-        //Add valid text to domInfo
-        var domInfo = {
-          data: pageData
-        }
-        // Directly respond to the sender (popup),
-        // through the specified callback
-        response(domInfo);
-        return;
-      }
-    }catch (f){
-      console.log("Caught error from advisor block (content.js)");
-    }
-    //For students who have NOT applied for graduation
-    try{
-      pageData = document.getElementsByTagName("pre")[0].innerText;
-
-      if(pageData.includes("Subj")){
-        //Add valid text to domInfo
-        var domInfo = {
-          data: pageData
-        }
-        // Directly respond to the sender (popup),
-        // through the specified callback
-        response(domInfo);
-        return;
-      }
-    }catch (g){
-      console.log("Caught error from student not applied block (content.js)");
-    }
-
+    // Directly respond to the sender (popup),
+    // through the specified callback
+    response(domInfo);
   }
 });
 
@@ -127,9 +83,9 @@ function formatForPrint(){
     printWindow.document.write('</body></html>');
     printWindow.document.close();      
     printWindow.focus();
-    //print the output
-    printWindow.print();    
-
+    //print the output; timeouts needed to get it to work
+    setTimeout(function(){printWindow.print();},500);    
+    setTimeout(function(){printWindow.close();},500);
   });
 }
 

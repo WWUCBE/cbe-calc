@@ -35,7 +35,6 @@ app.filter('programFilter', function() {
 app.controller('MainCtrl', [
   '$scope',
   function($scope){
-    //console.log("mainControllerFunction()");
     $scope.classList = [];
     $scope.gpaCBE = {gpa: 0, credits: 0, badStanding: true};
     $scope.gpaMSCM = 0;
@@ -55,8 +54,6 @@ app.controller('MainCtrl', [
     /* Called when the extension is opened. The variable "page" is what it
      * gets passed from the content script. */
     $scope.initialize = function(page){
-      console.log("initializing with page");
-      console.log(page);
       /* saves the rawText, to be used when clicking the refresh button */
       $scope.rawTranscript = page.data;
       
@@ -145,7 +142,6 @@ app.controller('MainCtrl', [
 
     /* returns the name and ID of the student */
     $scope.getNameAndID = function() {
-      console.log($scope.rawTranscript);
       var re = /Name:(.*) ID: (.*) Previous/;
       var name = re.exec($scope.rawTranscript)[1];
       var id = re.exec($scope.rawTranscript)[2];
@@ -191,7 +187,6 @@ function saveNameAndID(name, id) {
 
 /* this is the function passed as a callback to content.js. */
 function setDOMInfo(info) {
-  console.log("setDomeInfo");
   var scope = angular.element(document.getElementById("main")).scope();
   scope.initialize(info);
 }
@@ -201,10 +196,8 @@ function minimize(e) {
 }
 
 function printSection(e) {
-  console.log("Sent print message");
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {action: "print"}, function(response) {
-      //console.log(response.farewell);
     });
   });
 }
@@ -218,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', function () {
-  console.log("DOM Content loaded");
   // ...query for the active tab...
   chrome.tabs.query({
     active: true,
