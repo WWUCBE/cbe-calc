@@ -133,6 +133,14 @@ li:not(:last-child) {
   color: #dbdbdb;
   font-weight: bold;
 }
+
+/* #gradeblock is there to make it more specific, and
+ * take priority over .even */
+#gradeblock .invalidCourse {
+    background-color: red;
+    color: black;
+}
+
 input[type=checkbox] {
   position: absolute;
   opacity: 0;
@@ -232,6 +240,7 @@ input[type=checkbox]:checked ~ .backBlur .col-md-3 {
 
 #gpaText {
   margin-top: 3; /*old*/
+  color: #32CD32; /*Green*/
 }
 
 #appName {
@@ -399,11 +408,7 @@ div.stats{
   /*background-color: rgba(0,0,0, 0.5); Black */
 }
 
-#good {
-  color: #32CD32; /*Green*/
-}
-
-#bad {
+#gpaText .bad {
   color: #EF2323; /*Red*/
 }
 
@@ -414,14 +419,6 @@ div.stats{
   width: 100%;
   left: 0;
   padding: 20;
-}
-
-#onPageCBE{
-
-}
-
-#onPageMSCM{
-
 }
 
 #oldDupe {

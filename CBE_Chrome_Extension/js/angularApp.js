@@ -37,9 +37,8 @@ app.controller('MainCtrl', [
   function($scope){
     //console.log("mainControllerFunction()");
     $scope.classList = [];
-    $scope.gpaCBE = {gpa: 0, credits: 0};
+    $scope.gpaCBE = {gpa: 0, credits: 0, badStanding: true};
     $scope.gpaMSCM = 0;
-    $scope.standing = 'good';
     $scope.totalCredits = 0;
     $scope.modeMSCM;
     $scope.rawTranscript;
@@ -51,6 +50,23 @@ app.controller('MainCtrl', [
       name: false,
       credits: false,
       grade: false
+    };
+
+    /* Function to scrape text off page and parse out class information */
+    $scope.initialize = function(page){
+      //chrome.storage.local.clear();
+      $scope.rawTranscript = page.data;
+      
+      var student = $scope.getNameAndID();
+
+      chrome.storage.local.get("studentID", function(result) {
+        if (result != undefined && result.studentID === student.id) {
+          $scope.restoreSavedData();
+        } else {
+          $scope.$apply($scope.freshStart());
+          
+        }
+      });
     };
 
     /* Triggered when clicking the "ADD" button in the ui to 
@@ -86,29 +102,15 @@ app.controller('MainCtrl', [
 
       setDupeStatus($scope.classList);
       $scope.recalculateGPA();
+      $scope.saveClassInfo();
     };
     
     $scope.recalculateGPA = function() {
       $scope.gpaCBE = calculateCBEGPA($scope.classList);
       $scope.gpaMSCM = calculateMSCMGPA($scope.classList);
-    };
 
-    /* controls the color change of the GPA display */
-    $scope.updateColorWarning = function() {
-    	//Adjust academic standing color (good, bad)
-      if ($scope.modeMSCM){
-        if ($scope.gpa.gpa > 2.3){
-          $scope.standing = 'good';
-        } else{
-          $scope.standing = 'bad';
-        }
-      } else {
-        if ($scope.gpa.gpa >= 3.0){
-          $scope.standing = 'good';
-        }else {
-          $scope.standing = 'bad';
-        }
-      }
+      $scope.gpaCBE.badStanding = $scope.gpaCBE.gpa < 2.3;
+      $scope.gpaMSCM.badStanding = $scope.gpaMSCM.gpa < 3.0;
     };
 
     $scope.removeClass = function(item) {
@@ -123,20 +125,31 @@ app.controller('MainCtrl', [
       $scope.saveClassInfo();
     };
 
-    /* Function to scrape text off page and parse out class information */
-    $scope.initialize = function(page){
-      chrome.storage.local.clear();
-      $scope.rawTranscript = page.data;
-      
-      var student = $scope.getNameAndID();
 
-      chrome.storage.local.get("studentID", function(result) {
-        if (result != undefined && result.studentID === student.id) {
-          $scope.restoreSavedData();
-        } else {
-          $scope.freshStart();
-        }
-      });
+
+    $scope.freshStart = function() {
+      chrome.storage.local.clear();
+      $scope.classList = parseTranscript($scope.rawTranscript);
+      $scope.recalculateGPA();
+
+      $scope.modeMSCM = false;
+      $scope.name = '';
+      $scope.grade = '';
+      $scope.credits = '';
+
+      var student = $scope.getNameAndID();
+      saveNameAndID(student.name, student.id);
+      $scope.saveClassInfo();
+    };
+
+    $scope.getNameAndID = function() {
+      var re = /Name:(.*) ID: (.*) Previous/;
+      var name = re.exec($scope.rawTranscript)[1];
+      var id = re.exec($scope.rawTranscript)[2];
+      return {
+        name: name,
+        id: id
+      };
     };
 
     $scope.saveClassInfo = function() {
@@ -155,34 +168,6 @@ app.controller('MainCtrl', [
         });
       });
     };
-
-    $scope.freshStart = function() {
-      $scope.$apply(function () {
-        chrome.storage.local.clear();
-        $scope.classList = parseTranscript($scope.rawTranscript);
-        $scope.recalculateGPA();
-
-        $scope.modeMSCM = false;
-        $scope.name = '';
-        $scope.grade = '';
-        $scope.credits = '';
-
-        var student = $scope.getNameAndID();
-        saveNameAndID(student.name, student.id);
-        $scope.saveClassInfo();
-      });
-    };
-
-    $scope.getNameAndID = function() {
-      var re = /Name:(.*) ID: (.*) Previous/;
-      var name = re.exec($scope.rawTranscript)[1];
-      var id = re.exec($scope.rawTranscript)[2];
-      return {
-        name: name,
-        id: id
-      };
-    };
-
 
     $scope.saveMode = function(modeMSCM) {
       chrome.storage.local.set({'modeMSCM': modeMSCM});
