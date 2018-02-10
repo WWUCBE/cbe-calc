@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # all the files we want in the zip file
-list="./icon.png\
+list="./icon2.png\
     ./index.html\
     ./resources/Western-logo-CBE.jpg\
     ./resources/treeHeader.jpg\
