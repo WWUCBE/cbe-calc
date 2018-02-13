@@ -147,8 +147,7 @@
   	      <div id = "gradeBlock">
                   <div ng-repeat="course in classList | programFilter:modeMSCM track by $index"
                        id="contentRow" ng-class-even="'even'" 
-                       ng-class="{'invalidCourse': !course.isValid.course,
-                                  'oldDupe': course.isOldDupe}">
+                       ng-class="{'oldDupe': course.isOldDupe}">
               <div class = "col-xs-1" style="text-align:left">
                 <span id=removeIcon
                   class="glyphicon glyphicon-remove glyphicon-large"
@@ -158,7 +157,7 @@
               <div class = "col-xs-5" style="text-align:left">
                 <span id="editableField" editable-text="course.name"  e-style="height:
                     20px;" buttons="no" e-required 
-                    onaftersave="modifyClass(course)">
+                    onaftersave="modifyClass(course)" blur="submit" e-ng-blur="modifyClass(course)">
                     <div>
                     {{ course.name }}
                   </div>
@@ -167,7 +166,7 @@
               <div class = "col-xs-2" style="text-align:left">
                 <span id="editableField" editable-text="course.grade" 
                     e-style="width:50px; height: 20px;" buttons="no" e-required
-                    onaftersave="modifyClass(course)">
+                    onaftersave="modifyClass(course)" blur="submit" e-ng-blur="modifyClass(course)">
                   <div>
                     {{ course.grade }}
                   </div>
@@ -176,7 +175,7 @@
               <div class = "col-xs-4">
                 <span id="editableField" editable-text="course.credits" 
                     e-style="width:50px; height: 20px;" buttons="no" e-required
-                    onaftersave="modifyClass(course)">
+                    onaftersave="modifyClass(course)" blur="submit" e-ng-blur="modifyClass(course)">
                   <div>
                     {{ course.credits }}
                   </div>
@@ -201,7 +200,6 @@
 	            <div class="form-group myform">
 	              <input type="text"
 	                class="form-control"
-                        ng-class="{invalidInput : !validInput.name && !validInput.pristine}"
 	                placeholder="Class Name"
                         ng-required="true"
 	                ng-model="name">
@@ -240,7 +238,7 @@
 	  </div>
 	</div>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
   <script src="js/xeditable.js"></script>
   <script src="js/menu.js"></script>
   <script src="js/calculator-backend.js"></script>

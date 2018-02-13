@@ -77,7 +77,8 @@ app.controller('MainCtrl', [
       /* copy values over to the scoped object */
       Object.assign($scope.validInput, v.validity);
       
-      if (v.validity.course) {
+      if (v.validity.grade && v.validity.credits) {
+        v.newCourse.userAdded = true;
         $scope.classList.push(v.newCourse);
         setDupeStatus($scope.classList);
         $scope.recalculateGPA();
@@ -96,6 +97,8 @@ app.controller('MainCtrl', [
 
     /* triggered when a class is modified */
     $scope.modifyClass = function(course){
+      console.log("class being modified");
+      console.log(course);
       var newCourse = validateInput(course.name, course.grade, course.credits).newCourse;
       Object.assign(course, newCourse);
 
@@ -103,7 +106,7 @@ app.controller('MainCtrl', [
       $scope.recalculateGPA();
       $scope.saveClassInfo();
     };
-   
+
     /* called by every function that affects the classList */
     $scope.recalculateGPA = function() {
       $scope.gpaCBE = calculateCBEGPA($scope.classList);

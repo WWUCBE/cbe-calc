@@ -9,7 +9,7 @@ function parseTranscript(transcript) {
   /* this mess pulls out all the important stuff as capture groups. 
    * In order, from 1: Subject, course number, class name, credits, grade.
    * Note that class name will have extra trailing spaces. */ 
-  var re = /\n(\w{3,4})\s+(\d+\w+)\s+\d+\s+(.{1,30})\s*(\d+)\s+(K?\w*[+-]?\*?)/g;
+  var re = /\n(\w{3,4})\s+(\d+\w+)\s+\d+\s+(.{1,30})\s*(\d+)\s+(K?[ABCDFZ]+[+-]?\*?)/g;
   
   /* add every class to classList. At the sime time, check for and mark
    * retaken classes. */
@@ -75,6 +75,9 @@ function createCourse(subj, crse, credits, grade) {
 function validateInput(name, grade, credits) {
   /* Create a course object and populate it accordingly */
   var splitName = name.split(" ");
+  if (splitName[1] === undefined) {
+    splitName[1] = "";
+  }
   var course = createCourse(splitName[0], splitName[1], credits, grade);
 
   /* return a validity object */
@@ -144,7 +147,9 @@ function calculateMSCMGPA(classList) {
 
   /* only count most recent attempt */
   classList.forEach(function(course) {
-    if (course.isMSCM && course.isOldDupe === false && course.gpa >= 0) {
+    if ((course.isMSCM && course.isOldDupe === false && course.gpa >= 0) ||
+    course.userAdded){
+      console.log(course);
       credits += course.credits;
       gpa += course.gpa * course.credits;
     }
@@ -162,7 +167,7 @@ function calculateCBEGPA(classList) {
   var gpa = 0.0;
 
   classList.forEach(function(course) {
-    if (course.isCBE && course.gpa >= 0) {
+    if ((course.isCBE && course.gpa >= 0) || course.userAdded) {
       credits += course.credits;
       gpa += course.gpa * course.credits;
     }
