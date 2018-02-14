@@ -97,8 +97,6 @@ app.controller('MainCtrl', [
 
     /* triggered when a class is modified */
     $scope.modifyClass = function(course){
-      console.log("class being modified");
-      console.log(course);
       var newCourse = validateInput(course.name, course.grade, course.credits).newCourse;
       Object.assign(course, newCourse);
 
